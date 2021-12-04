@@ -22,6 +22,9 @@ android {
     }
 
     preBuild.doFirst {
+        assert file('./src/main/assets/mugen/mugen.exe').exists()
+        assert file('./src/main/assets/mugen/CWSDPMI.EXE').exists()
+
         if ((!file('src/main/libs/armeabi-v7a/libdosbox.so').exists()) || (!file('src/main/libs/x86/libdosbox.so').exists())) {
             exec {
                 commandLine 'rm', '-f', 'src/main/jni/Application.mk'

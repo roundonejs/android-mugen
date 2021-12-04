@@ -259,10 +259,11 @@ public class DBMenuSystem {
 				}
 				// handle autoexec
 				if (prefs.getString("dosautoexec","-1").contains("-1")) {
-					out.println("mount c: "+DosBoxPreferences.getExternalDosBoxDir(context)+" \nc:");
+					out.println("mount c: " + context.getMugenDataDirectory() + " \nc:");
 				} else {
-					out.println(prefs.getString("dosautoexec", "mount c: "+DosBoxPreferences.getExternalDosBoxDir(context)+" \nc:"));
+					out.println(prefs.getString("dosautoexec", "mount c: " + context.getMugenDataDirectory() + " \nc:"));
 				}
+				out.println("MUGEN.EXE");
 				out.flush();
 				out.close();
 				myInput.close();

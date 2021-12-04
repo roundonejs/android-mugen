@@ -20,8 +20,10 @@
 package com.fishstix.dosboxfree;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.Buffer;
 import java.util.Locale;
 
@@ -69,11 +71,13 @@ import android.widget.ImageView;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.res.AssetManager;
 
 
 public class DBMain extends SlidingActivity implements OnClickListener, OnCheckedChangeListener {
 	public static final int SPLASH_TIMEOUT_MESSAGE = -1;
 	public static final String START_COMMAND_ID = "start_command";
+	private static final String MUGEN_DIRECTORY = "mugen";
 	public String mConfFile = DosBoxPreferences.CONFIG_FILE;
 	//public String mConfPath = DosBoxPreferences.CONFIG_PATH;
 	public String mConfPath;
@@ -174,7 +178,8 @@ public class DBMain extends SlidingActivity implements OnClickListener, OnChecke
 			}
 		} 
 		mSurfaceView.mGPURendering = prefs.getBoolean("confgpu", false);
-		DBMenuSystem.loadPreference(this,prefs);	
+		createMugenDirectory();
+		DBMenuSystem.loadPreference(this,prefs);
 		
 		initDosBox();
 		startDosBox();
@@ -889,5 +894,93 @@ public class DBMain extends SlidingActivity implements OnClickListener, OnChecke
 		}
 		
 		return false;
+	}
+	
+	private void createMugenDirectory() {
+		AssetManager assetManager = getAssets();
+		String dataDirectory = getApplication().getApplicationInfo().dataDir;
+		copyAssetsToDataDirectory(assetManager, dataDirectory, MUGEN_DIRECTORY);
+	}
+	
+	private void copyAssetsToDataDirectory(
+		final AssetManager assetManager,
+		final String dataDirectory,
+		final String directoryName
+	) {
+		createDataDirectory(dataDirectory, directoryName);
+
+		String[] files = getFilesFromAssets(assetManager, directoryName);
+
+		for (String filename : files) {
+			try {
+				copyFileFromAssetsToDataDirectory(
+					assetManager,
+					dataDirectory,
+					directoryName,
+					filename
+				);
+			} catch (IOException exception) {
+				copyAssetsToDataDirectory(
+					assetManager,
+					dataDirectory,
+					directoryName + "/" + filename
+				);
+			}
+		}
+	}
+
+	private void createDataDirectory(
+		final String dataDirectory,
+		final String directoryName
+	) {
+		File directory = new File(dataDirectory + "/" + directoryName);
+		directory.mkdir();
+	}
+
+	private String[] getFilesFromAssets(
+		final AssetManager assetManager,
+		final String directoryName
+	) {
+		try {
+			return assetManager.list(directoryName);
+		} catch (IOException e) {
+			Log.e("DosBoxTurbo", "Failed to get asset file list.", e);
+			return null;
+		}
+	}
+
+	private void copyFileFromAssetsToDataDirectory(
+		final AssetManager assetManager,
+		final String dataDirectory,
+		final String directoryName,
+		final String filename
+	) throws IOException {
+		InputStream in = assetManager.open(directoryName + "/" + filename);
+		OutputStream out = new FileOutputStream(
+			dataDirectory + "/" + directoryName + "/" + filename
+		);
+		copyFile(in, out);
+		in.close();
+		out.flush();
+		out.close();
+	}
+
+	private void copyFile(
+		final InputStream in,
+		final OutputStream out
+	) throws IOException {
+		byte[] buffer = new byte[1024];
+		int read;
+		while ((read = in.read(buffer)) != -1) {
+			out.write(buffer, 0, read);
+		}
+	}
+
+	public String getMugenDataDirectory() {
+		return (
+			getApplication().getApplicationInfo().dataDir
+			+ "/"
+			+ MUGEN_DIRECTORY
+		);
 	}
 }

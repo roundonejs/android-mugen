@@ -1,20 +1,24 @@
-For instructions on how to use FreeBox / DosBox Turbo, please see:
+# Android Mugen
 
-  https://sites.google.com/site/dosboxturbo/
+This project is a fork of [DosBox Turbo](https://sites.google.com/site/dosboxturbo/), modified to run Mugen games through of DosMugen.
 
-If you are totally new to DOS emulation on Android, please start with the Beginners Guide:
+## Build
 
-  https://sites.google.com/site/dosboxturbo/home/beginning-dosbox-turbo-for-newbies
+### Dependencies
 
-Compilation Details:
+- Linux;
+- Java;
+- Android SDK;
+- Android NDK r9;
+- DosMugen;
+- csdpmi*b.zip.
 
-An android.mk file is supplied for compilation with the Android NDK.  The compilation has only been 
-tested on the Android r8 NDK. 
-  
-Required Dependencies:
-* SlidingMenu
-* ActionBarSherlock
+### Environment variables
 
-Optional Dependencies:
-* Android SDL Libraries (sdl, sdl_net, sdl_sound)
-* mt32 emu
+- `NDK_PATH` the path for **Android NDK r9** directory.
+
+### Compile project
+
+1. Copy your DosMugen game to directory **app/src/main/assets/mugen**;
+2. Extract **csdpmi*b.zip** on **app/src/main/assets/mugen**;
+3. Execute `./gradlew build` on root directory of this project.

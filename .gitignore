@@ -3,7 +3,7 @@ obj
 .idea
 .gradle/
 build/
-
+app/src/main/assets/mugen/
 
 app/src/main/jni/Application.mk
 app/src/main/jni/dosbox/config.h
