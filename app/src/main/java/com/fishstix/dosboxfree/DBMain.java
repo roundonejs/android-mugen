@@ -129,7 +129,7 @@ public class DBMain extends SlidingActivity implements OnClickListener, OnChecke
 		super.onCreate(savedInstanceState);
 	    Log.i("DosBoxTurbo", "onCreate()");
 		mDosBoxLauncher = this;
-	    requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+	    requestWindowFeature((int) Window.FEATURE_ACTION_BAR_OVERLAY);
 
 		setContentView(R.layout.main);
 		setBehindContentView(R.layout.menu_layout);
@@ -190,7 +190,7 @@ public class DBMain extends SlidingActivity implements OnClickListener, OnChecke
 		observer.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 	        public void onGlobalLayout() {
 	    		// re-calculate joystick constants
-	        	mSurfaceView.mActionBarHeight = getSupportActionBar().getHeight();
+	        	mSurfaceView.mActionBarHeight = 30;
 	            Log.v("DosBoxTurbo",
 	                    String.format("new width=%d; new height=%d", mSurfaceView.getWidth(),
 	                            mSurfaceView.getHeight()));
@@ -214,7 +214,7 @@ public class DBMain extends SlidingActivity implements OnClickListener, OnChecke
 	    });
 	    setSlidingActionBarEnabled(true);
 	    getSlidingMenu().setMode(SlidingMenu.LEFT);
-	    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+	    //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	    getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
 
 	    Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
@@ -223,7 +223,7 @@ public class DBMain extends SlidingActivity implements OnClickListener, OnChecke
 		getSlidingMenu().setShadowDrawable(R.drawable.shadow);
 		getSlidingMenu().setFadeDegree(0.35f);
 		
-    	getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#99000000")));
+    	//getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#99000000")));
     	
     	// resources
     	rowCycles = (TableRow)findViewById(R.id.tableRow_Cycles);
@@ -329,7 +329,7 @@ public class DBMain extends SlidingActivity implements OnClickListener, OnChecke
 		
 		// check orientation to hide actionbar (in landscape)
 		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-			getSupportActionBar().hide();
+			//getSupportActionBar().hide();
 		}
         // handle virtual buttons (top or bottom location)
         if (mButtonsView.isShown()) {
@@ -471,30 +471,30 @@ public class DBMain extends SlidingActivity implements OnClickListener, OnChecke
 	    Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
 	    if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) //To fullscreen
 	    {
-	    	getSupportActionBar().hide();
+	    	//getSupportActionBar().hide();
 	    } 
 	    else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) 
 	    {
-	    	getSupportActionBar().show();
+	    	//getSupportActionBar().show();
 	    }
  	    getSlidingMenu().setBehindOffset((int) (display.getWidth()/4.0d));
 		getSlidingMenu().requestLayout();
 	}
 
-	@Override
+	//@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		//return DBMenuSystem.doCreateOptionsMenu(menu);
-	    getSupportMenuInflater().inflate(R.menu.options,  menu);
-	    return super.onCreateOptionsMenu(menu);
+	    //getSupportMenuInflater().inflate(R.menu.options,  menu);
+	    return true;
 	}
 	
-	@Override
+	//@Override
 	public boolean onPrepareOptionsMenu (Menu menu) {
-		super.onPrepareOptionsMenu(menu);
+		//super.onPrepareOptionsMenu(menu);
 		return DBMenuSystem.doPrepareOptionsMenu(this, menu);
 	}
 	
-	@Override
+	//@Override
 	public boolean onOptionsItemSelected(MenuItem item)	{
 		switch (item.getItemId()) {
 		case android.R.id.home:
@@ -503,7 +503,8 @@ public class DBMain extends SlidingActivity implements OnClickListener, OnChecke
 		}
 		if (DBMenuSystem.doOptionsItemSelected(this, item))
 			return true;
-	    return super.onOptionsItemSelected(item);	    
+	    //return super.onOptionsItemSelected(item);	    
+	    return true;
 	}	
 
 	@Override

@@ -1428,17 +1428,17 @@ class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
             	if (Math.abs(e1.getX() - e2.getX()) > SWIPE_MAX_OFF_PATH) {
                     return false;
         		}
-       			mParent.getSupportActionBar().show();
+       			//mParent.getSupportActionBar().show();
        			return true;
         	} else {
         		// swipe up
             	if (Math.abs(e1.getX() - e2.getX()) > SWIPE_MAX_OFF_PATH) {
                     return false;
         		}
-        		if (mParent.getSupportActionBar().isShowing()) {
+        		/*if (mParent.getSupportActionBar().isShowing()) {
         			mParent.getSupportActionBar().hide();
         			return true;
-        		}
+        		}*/
         		return false;
         	}
     	}
