@@ -22,55 +22,57 @@ android {
     }
 
     preBuild.doFirst {
-        exec {
-            commandLine 'rm', '-f', 'src/main/jni/Application.mk'
-        }
-        exec {
-            commandLine 'rm', '-f', 'src/main/jni/dosbox/config.h'
-        }
+        if ((!file('src/main/libs/armeabi-v7a/libdosbox.so').exists()) || (!file('src/main/libs/x86/libdosbox.so').exists())) {
+            exec {
+                commandLine 'rm', '-f', 'src/main/jni/Application.mk'
+            }
+            exec {
+                commandLine 'rm', '-f', 'src/main/jni/dosbox/config.h'
+            }
 
 
-        exec {
-            commandLine 'cp', 'src/main/jni/Application_armeabi_v7a.mk', 'src/main/jni/Application.mk'
-        }
-        exec {
-            commandLine 'cp', 'src/main/jni/dosbox/config_armeabi_v7a.h', 'src/main/jni/dosbox/config.h'
-        }
-        exec {
-            commandLine System.getenv('NDK_PATH') + '/ndk-build', '-C', 'src/main/jni/'
-        }
-        exec {
-            commandLine 'rm', 'src/main/jni/Application.mk'
-        }
-        exec {
-            commandLine 'rm', 'src/main/jni/dosbox/config.h'
-        }
+            exec {
+                commandLine 'cp', 'src/main/jni/Application_armeabi_v7a.mk', 'src/main/jni/Application.mk'
+            }
+            exec {
+                commandLine 'cp', 'src/main/jni/dosbox/config_armeabi_v7a.h', 'src/main/jni/dosbox/config.h'
+            }
+            exec {
+                commandLine System.getenv('NDK_PATH') + '/ndk-build', '-C', 'src/main/jni/'
+            }
+            exec {
+                commandLine 'rm', 'src/main/jni/Application.mk'
+            }
+            exec {
+                commandLine 'rm', 'src/main/jni/dosbox/config.h'
+            }
 
-        exec {
-            commandLine 'mv', 'src/main/libs/armeabi-v7a', 'src/main/tempLibs/armeabi-v7a'
-        }
-
-
-        exec {
-            commandLine 'cp', 'src/main/jni/Application_x86.mk', 'src/main/jni/Application.mk'
-        }
-        exec {
-            commandLine 'cp', 'src/main/jni/dosbox/config_x86.h', 'src/main/jni/dosbox/config.h'
-        }
-        exec {
-            commandLine System.getenv('NDK_PATH') + '/ndk-build', '-C', 'src/main/jni/'
-        }
-        exec {
-            commandLine 'rm', 'src/main/jni/Application.mk'
-        }
-        exec {
-            commandLine 'rm', 'src/main/jni/dosbox/config.h'
-        }
+            exec {
+                commandLine 'mv', 'src/main/libs/armeabi-v7a', 'src/main/tempLibs/armeabi-v7a'
+            }
 
 
-        exec {
-            commandLine 'mv', 'src/main/tempLibs/armeabi-v7a', 'src/main/libs/armeabi-v7a'
-        }        
+            exec {
+                commandLine 'cp', 'src/main/jni/Application_x86.mk', 'src/main/jni/Application.mk'
+            }
+            exec {
+                commandLine 'cp', 'src/main/jni/dosbox/config_x86.h', 'src/main/jni/dosbox/config.h'
+            }
+            exec {
+                commandLine System.getenv('NDK_PATH') + '/ndk-build', '-C', 'src/main/jni/'
+            }
+            exec {
+                commandLine 'rm', 'src/main/jni/Application.mk'
+            }
+            exec {
+                commandLine 'rm', 'src/main/jni/dosbox/config.h'
+            }
+
+
+            exec {
+                commandLine 'mv', 'src/main/tempLibs/armeabi-v7a', 'src/main/libs/armeabi-v7a'
+            }
+        }
     }
 
     sourceSets {
