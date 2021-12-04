@@ -20,6 +20,18 @@ android {
     lintOptions {
         abortOnError false
     }
+
+    preBuild.doFirst {
+        exec {
+            commandLine System.getenv('NDK_PATH') + '/ndk-build', '-C', 'src/main/jni/'
+        }
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['src/main/libs']
+        }
+    }
 }
 
 repositories {
