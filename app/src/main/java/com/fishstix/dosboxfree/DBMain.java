@@ -897,9 +897,12 @@ public class DBMain extends SlidingActivity implements OnClickListener, OnChecke
 	}
 	
 	private void createMugenDirectory() {
-		AssetManager assetManager = getAssets();
 		String dataDirectory = getApplication().getApplicationInfo().dataDir;
-		copyAssetsToDataDirectory(assetManager, dataDirectory, MUGEN_DIRECTORY);
+		
+		if (!(new File(dataDirectory, MUGEN_DIRECTORY)).exists()) {
+			AssetManager assetManager = getAssets();
+			copyAssetsToDataDirectory(assetManager, dataDirectory, MUGEN_DIRECTORY);
+		}
 	}
 	
 	private void copyAssetsToDataDirectory(
