@@ -177,7 +177,7 @@ public class DBMain extends SlidingActivity implements OnClickListener, OnChecke
 				Log.i("DosBoxTurbo","Config file not found: "+f.getAbsolutePath());
 			}
 		} 
-		mSurfaceView.mGPURendering = prefs.getBoolean("confgpu", false);
+		mSurfaceView.mGPURendering = true;
 		createMugenDirectory();
 		DBMenuSystem.loadPreference(this,prefs);
 		

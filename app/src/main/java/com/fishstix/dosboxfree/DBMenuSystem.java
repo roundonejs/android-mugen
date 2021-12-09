@@ -31,13 +31,6 @@ import java.io.PrintStream;
 import java.util.Locale;
 import java.util.Scanner;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.fishstix.dosboxfree.dosboxprefs.DosBoxPreferences;
-import com.fishstix.dosboxfree.dosboxprefs.preference.GamePreference;
-import com.fishstix.dosboxfree.touchevent.TouchEventWrapper;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
-
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -56,12 +49,19 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.fishstix.dosboxfree.dosboxprefs.DosBoxPreferences;
+import com.fishstix.dosboxfree.dosboxprefs.preference.GamePreference;
+import com.fishstix.dosboxfree.touchevent.TouchEventWrapper;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 public class DBMenuSystem {
 	private static final String mPrefCycleString = "max";	// default slow system
 	private static final Uri CONTENT_URI=Uri.parse("content://com.fishstix.dosboxlauncher.files/");
 	private final static int JOYSTICK_CENTER_X = 0;
 	private final static int JOYSTICK_CENTER_Y = 0;
+	private static final int MAX_MEMORY = 128;
 
 	public static final int KEYCODE_F1 = 131;
 	//public static final int KEYCODE_F12 = 142;
@@ -147,16 +147,16 @@ public class DBMenuSystem {
 				out = new PrintStream(new FileOutputStream(context.mConfPath+context.mConfFile));
 				// Write text to file
 				out.println("[dosbox]");
-				if (Integer.valueOf(prefs.getString("dosmemsize", "8")) < maxMem) { 
-					out.println("memsize="+prefs.getString("dosmemsize", "8"));
+				if (MAX_MEMORY < maxMem) { 
+					out.println("memsize="+MAX_MEMORY);
 				} else {
 					out.println("memsize="+maxMem);
 				}
-				out.println("vmemsize=4");
+				out.println("vmemsize=16");
 				out.println("machine="+prefs.getString("dosmachine", "svga_s3"));
 				out.println();
 				out.println("[render]");
-				out.println("frameskip="+prefs.getString("dosframeskip","2"));
+				out.println("frameskip=0");
 				out.println();
 				out.println("[cpu]");
 				//if (DBMain.nativeGetCPUFamily() == 3) { // mips cpu - disable dynamic core
