@@ -129,7 +129,7 @@ public class DBMain extends SlidingActivity implements OnClickListener,
     private TableRow rowSpecialKey, rowSettings;                                                                // ,rowMapMouse,rowMapJoy;
     private TextView iGovernor, iCPUFamily, iCPUNeon, iDOSMem, iDBManager,
         iVersion, iRenderMode;
-    public CompoundButton bKeyboard, bJoystick, bScaling, bButtons;
+    public CompoundButton bJoystick, bScaling, bButtons;
     private ImageView imgGovWarning;
     public Button bButtonA, bButtonB, bButtonC, bButtonD;
 
@@ -237,22 +237,17 @@ public class DBMain extends SlidingActivity implements OnClickListener,
                 Rect r = new Rect();
                 // r will be populated with the coordinates of your view that area still visible.
                 mSurfaceView.getWindowVisibleDisplayFrame(r);
-                bKeyboard.setOnCheckedChangeListener(null);
 
                 if (
                     mSurfaceView.getRootView().getHeight() -
                     (r.bottom - r.top) > 100
                 ) {                                                                          // if more than 100 pixels, its probably a keyboard...
                     Log.i("DosBoxTurbo", "Keyboard on");
-                    bKeyboard.setChecked(true);
                     mSurfaceView.mKeyboardVisible = true;
                 } else {
                     Log.i("DosBoxTurbo", "Keyboard off");
-                    bKeyboard.setChecked(false);
                     mSurfaceView.mKeyboardVisible = false;
                 }
-
-                bKeyboard.setOnCheckedChangeListener(mDosBoxLauncher);
             }
         }
         );
@@ -272,8 +267,6 @@ public class DBMain extends SlidingActivity implements OnClickListener,
         // getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#99000000")));
 
         // resources
-        bKeyboard = (CompoundButton) findViewById(R.id.info_kbdoption);
-        bKeyboard.setOnCheckedChangeListener(this);
         bJoystick = (CompoundButton) findViewById(R.id.info_joyoption);
         bJoystick.setOnCheckedChangeListener(this);
         bScaling = (CompoundButton) findViewById(R.id.info_scaleoption);
@@ -1025,22 +1018,6 @@ public class DBMain extends SlidingActivity implements OnClickListener,
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         switch (buttonView.getId()) {
-            case R.id.info_kbdoption:
-
-                if (isChecked) {
-                    if (!mSurfaceView.mKeyboardVisible) {
-                        bKeyboard.setOnCheckedChangeListener(null);
-                        bKeyboard.setChecked(false);
-                        DBMenuSystem.doShowKeyboard(this);
-                        bKeyboard.setOnCheckedChangeListener(this);
-                    }
-                } else {
-                    if (mSurfaceView.mKeyboardVisible) {
-                        DBMenuSystem.doHideKeyboard(this);
-                    }
-                }
-
-                break;
             case R.id.info_joyoption:
 
                 if (isChecked) {

@@ -24,12 +24,6 @@
         <View style="@style/Row.Line" />
         <View style="@style/Row.Line" />
         <View style="@style/Row.Line" />
-        <!-- Virtual Keyboard -->
-        <TableRow
-            style="@style/Row.Click">
-        	<include
-        	    layout="@layout/kbdswitch" />
-        </TableRow>
         <View style="@style/Row.Line" />
         <!-- Virtual Joystick -->
         <TableRow
