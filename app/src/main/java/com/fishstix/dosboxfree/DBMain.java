@@ -129,7 +129,7 @@ public class DBMain extends SlidingActivity implements OnClickListener,
     private TableRow rowSpecialKey, rowSettings;                                                                // ,rowMapMouse,rowMapJoy;
     private TextView iGovernor, iCPUFamily, iCPUNeon, iDOSMem, iDBManager,
         iVersion, iRenderMode;
-    public CompoundButton bJoystick, bScaling, bButtons;
+    public CompoundButton bScaling, bButtons;
     private ImageView imgGovWarning;
     public Button bButtonA, bButtonB, bButtonC, bButtonD;
 
@@ -267,8 +267,6 @@ public class DBMain extends SlidingActivity implements OnClickListener,
         // getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#99000000")));
 
         // resources
-        bJoystick = (CompoundButton) findViewById(R.id.info_joyoption);
-        bJoystick.setOnCheckedChangeListener(this);
         bScaling = (CompoundButton) findViewById(R.id.info_scaleoption);
         bScaling.setOnCheckedChangeListener(this);
         bButtons = (CompoundButton) findViewById(R.id.info_buttonsoption);
@@ -501,12 +499,6 @@ public class DBMain extends SlidingActivity implements OnClickListener,
 
         iGovernor.setText(ReadCPUgovernor());
 
-        bJoystick.setChecked(
-            DBMenuSystem.getBooleanPreference(
-                mContext,
-                "confjoyoverlay"
-            )
-        );
         bScaling.setChecked(
             DBMenuSystem.getBooleanPreference(
                 mContext,
@@ -881,10 +873,6 @@ public class DBMain extends SlidingActivity implements OnClickListener,
                     );
                     mJoystickView.setVisibility(View.VISIBLE);
 
-                    if (!bJoystick.isChecked()) {
-                        bJoystick.setChecked(true);
-                    }
-
                     DBMenuSystem.saveBooleanPreference(
                         mContext,
                         "confjoyoverlay",
@@ -896,10 +884,6 @@ public class DBMain extends SlidingActivity implements OnClickListener,
                     mJoystickView.setOnJostickMovedListener(null);
                     mJoystickView.setOnJostickClickedListener(null);
                     mJoystickView.setVisibility(View.GONE);
-
-                    if (bJoystick.isChecked()) {
-                        bJoystick.setChecked(false);
-                    }
 
                     DBMenuSystem.saveBooleanPreference(
                         mContext,
@@ -1018,29 +1002,6 @@ public class DBMain extends SlidingActivity implements OnClickListener,
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         switch (buttonView.getId()) {
-            case R.id.info_joyoption:
-
-                if (isChecked) {
-                    mHandler.sendMessage(
-                        mHandler.obtainMessage(
-                            DBMain.
-                            HANDLER_ADD_JOYSTICK,
-                            0,
-                            0
-                        )
-                    );
-                } else {
-                    mHandler.sendMessage(
-                        mHandler.obtainMessage(
-                            DBMain.
-                            HANDLER_REMOVE_JOYSTICK,
-                            0,
-                            0
-                        )
-                    );
-                }
-
-                break;
             case R.id.info_scaleoption:
 
                 if (isChecked != mSurfaceView.mScale) {

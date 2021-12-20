@@ -25,11 +25,6 @@
         <View style="@style/Row.Line" />
         <View style="@style/Row.Line" />
         <View style="@style/Row.Line" />
-        <!-- Virtual Joystick -->
-        <TableRow
-            style="@style/Row.Click">
-        	<include layout="@layout/joyswitch" />
-        </TableRow>
         <View style="@style/Row.Line" />
         <!-- Virtual Keys -->
         <TableRow
