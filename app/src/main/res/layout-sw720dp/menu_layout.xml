@@ -30,13 +30,6 @@
         <View style="@style/Row.Line" />
         <View style="@style/Row.Line" />
         <View style="@style/Row.Line" />
-        <TableRow
-            style="@style/Row"
-            android:layout_marginTop="20dp">
-        	<TextView
-        	    style="@style/MenuText.Title"
-            	android:text="@string/info_dbinfo" />
-        </TableRow>
         <View style="@style/Row.Line" />
         <!-- Current Governor -->
         <TableRow
