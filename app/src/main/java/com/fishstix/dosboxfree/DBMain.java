@@ -27,7 +27,6 @@ import java.io.OutputStream;
 import java.nio.Buffer;
 import java.util.Locale;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -59,7 +58,6 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.TableRow;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
@@ -122,8 +120,6 @@ public class DBMain extends SlidingActivity {
     public String mPID = null;
     public int mPrefScaleFactor = 100;
     private Context mContext;
-    private TextView
-        iVersion;
     public Button bButtonA, bButtonB, bButtonC, bButtonD;
 
     // Private Views
@@ -260,7 +256,6 @@ public class DBMain extends SlidingActivity {
         // getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#99000000")));
 
         // resources
-        iVersion = (TextView) findViewById(R.id.info_version);
         bButtonA = (Button) findViewById(R.id.ButtonA);
         bButtonB = (Button) findViewById(R.id.ButtonB);
         bButtonC = (Button) findViewById(R.id.ButtonC);
@@ -394,25 +389,8 @@ public class DBMain extends SlidingActivity {
             mButtonsView.setLayoutParams(params);
         }
 
-        // fill quickmenu
-        quickmenu();
         mSurfaceView.mDirty.set(true);
         Log.i("DosBoxTurbo", "onResume");
-    }
-
-    @SuppressLint("NewApi")
-    private void quickmenu() {
-        try {
-            iVersion.setText(
-                getPackageManager().getPackageInfo(
-                    getPackageName(),
-                    0
-                ).versionName
-            );
-        } catch (NameNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
     }
 
     private String ReadCPUgovernor() {

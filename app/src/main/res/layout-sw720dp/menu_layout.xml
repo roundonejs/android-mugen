@@ -37,20 +37,6 @@
         <View style="@style/Row.Line" />
         <View style="@style/Row.Line" />
         <View style="@style/Row.Line" />
-        <!-- Dosbox Turbo -->
-        <TableRow
-            style="@style/Row.Click">
-        	<TextView
-            	style="@style/MenuText.Row"
-            	android:text="@string/info_version"
-            	android:layout_weight="0.5"
-            	android:drawableLeft="@drawable/dbturbo"  />
-        	<TextView
-        	    android:id="@+id/info_version"
-            	style="@style/MenuText.Row"
-            	android:text="2.0.0"
-            	android:layout_weight="0.5" />
-        </TableRow>
         <View style="@style/Row.Line" />
         </TableLayout>
     </ScrollView>
