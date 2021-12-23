@@ -27,11 +27,6 @@
         <View style="@style/Row.Line" />
         <View style="@style/Row.Line" />
         <View style="@style/Row.Line" />
-        <!-- Screen Scaling -->
-        <TableRow
-            style="@style/Row">
-        	<include layout="@layout/scaleswitch" />
-        </TableRow>
         <View style="@style/Row.Line" />
         <!-- Special Keys -->
         <TableRow

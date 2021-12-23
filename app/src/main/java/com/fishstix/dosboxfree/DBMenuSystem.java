@@ -982,7 +982,6 @@ public class DBMenuSystem {
                     "confscale",
                     context.mSurfaceView.mScale
                 );
-                context.bScaling.setChecked(context.mSurfaceView.mScale);
                 context.mSurfaceView.forceRedraw();
                 break;
             case R.id.menu_settings:

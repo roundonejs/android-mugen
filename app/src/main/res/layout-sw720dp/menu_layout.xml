@@ -27,48 +27,7 @@
         <View style="@style/Row.Line" />
         <View style="@style/Row.Line" />
         <View style="@style/Row.Line" />
-        <!-- Screen Scaling -->
-        <TableRow
-            style="@style/Row">
-        	<include layout="@layout/scaleswitch" />
-        </TableRow>
         <View style="@style/Row.Line" />
-        <!-- Physical Mouse -->
-    <!--     <TableRow
-            android:id="@+id/tableRow_Mouse"
-            style="@style/Row.Click">
-        	<TextView
-            	style="@style/MenuText.Row"
-            	android:text="@string/info_mapmouse"
-            	android:layout_weight="0.5"
-            	android:drawableLeft="@drawable/mouse_01" />
-        	<TextView
-        	    android:id="@+id/info_tracking"
-            	style="@style/MenuText.Row"
-            	android:text="None"
-            	android:layout_weight="0.5"
-            	android:drawableRight="@drawable/onebit_21"
-            	android:layout_marginRight="15dp" />
-        </TableRow>
-        <View style="@style/Row.Line" />  -->
-        <!-- Physical Joy -->
-     <!--    <TableRow
-            android:id="@+id/tableRow_Joy"
-            style="@style/Row.Click">
-        	<TextView
-            	style="@style/MenuText.Row"
-            	android:text="@string/info_mapjoy"
-            	android:layout_weight="0.5"
-            	android:drawableLeft="@drawable/joystick" />
-        	<TextView
-        	    android:id="@+id/info_tracking"
-            	style="@style/MenuText.Row"
-            	android:text="None"
-            	android:layout_weight="0.5"
-            	android:drawableRight="@drawable/onebit_21"
-            	android:layout_marginRight="15dp" />
-        </TableRow>
-        <View style="@style/Row.Line" />  -->
         <!-- Special Keys -->
         <TableRow
             android:id="@+id/tableRow_SpecialKeys"

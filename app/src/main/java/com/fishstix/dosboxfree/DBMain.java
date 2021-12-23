@@ -129,7 +129,6 @@ public class DBMain extends SlidingActivity implements OnClickListener,
     private TableRow rowSpecialKey, rowSettings;                                                                // ,rowMapMouse,rowMapJoy;
     private TextView iGovernor, iCPUFamily, iCPUNeon, iDOSMem, iDBManager,
         iVersion, iRenderMode;
-    public CompoundButton bScaling;
     private ImageView imgGovWarning;
     public Button bButtonA, bButtonB, bButtonC, bButtonD;
 
@@ -267,8 +266,6 @@ public class DBMain extends SlidingActivity implements OnClickListener,
         // getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#99000000")));
 
         // resources
-        bScaling = (CompoundButton) findViewById(R.id.info_scaleoption);
-        bScaling.setOnCheckedChangeListener(this);
         rowSpecialKey = (TableRow) findViewById(R.id.tableRow_SpecialKeys);
         rowSpecialKey.setOnClickListener(this);
         rowSettings = (TableRow) findViewById(R.id.tableRow_Settings);
@@ -496,13 +493,6 @@ public class DBMain extends SlidingActivity implements OnClickListener,
         );
 
         iGovernor.setText(ReadCPUgovernor());
-
-        bScaling.setChecked(
-            DBMenuSystem.getBooleanPreference(
-                mContext,
-                "confscale"
-            )
-        );
     }
 
     private String ReadCPUgovernor() {
@@ -983,23 +973,10 @@ public class DBMain extends SlidingActivity implements OnClickListener,
     }
 
     @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        switch (buttonView.getId()) {
-            case R.id.info_scaleoption:
-
-                if (isChecked != mSurfaceView.mScale) {
-                    mSurfaceView.mScale = isChecked;
-                    DBMenuSystem.saveBooleanPreference(
-                        getApplicationContext(),
-                        "confscale",
-                        mSurfaceView.mScale
-                    );
-                    mSurfaceView.forceRedraw();
-                }
-
-                break;
-        }
-    }
+    public void onCheckedChanged(
+        CompoundButton buttonView,
+        boolean isChecked
+    ) { }
 
     public boolean getMIDIRoms() {
         File ctrlrom = new File(getFilesDir().toString() + "/MT32_CONTROL.ROM");
