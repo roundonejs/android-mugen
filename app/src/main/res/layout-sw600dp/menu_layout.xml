@@ -33,20 +33,6 @@
         <View style="@style/Row.Line" />
         <View style="@style/Row.Line" />
         <View style="@style/Row.Line" />
-        <!-- CPU NEON -->
-        <TableRow
-            style="@style/Row.Click">
-        	<TextView
-            	style="@style/MenuText.Row"
-            	android:text="@string/info_neon"
-            	android:layout_weight="0.5"
-            	android:drawableLeft="@drawable/cpu"  />
-        	<TextView
-        	    android:id="@+id/info_neon"
-            	style="@style/MenuText.Row"
-            	android:text="Yes"
-            	android:layout_weight="0.5" />
-        </TableRow>
         <View style="@style/Row.Line" />
         <!-- Render Mode -->
         <TableRow

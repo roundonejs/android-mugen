@@ -122,7 +122,7 @@ public class DBMain extends SlidingActivity {
     public String mPID = null;
     public int mPrefScaleFactor = 100;
     private Context mContext;
-    private TextView iCPUNeon, iDOSMem, iDBManager,
+    private TextView iDOSMem, iDBManager,
         iVersion, iRenderMode;
     public Button bButtonA, bButtonB, bButtonC, bButtonD;
 
@@ -260,7 +260,6 @@ public class DBMain extends SlidingActivity {
         // getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#99000000")));
 
         // resources
-        iCPUNeon = (TextView) findViewById(R.id.info_neon);
         iRenderMode = (TextView) findViewById(R.id.info_rendermode);
         iDOSMem = (TextView) findViewById(R.id.info_dosmem);
         iDBManager = (TextView) findViewById(R.id.info_manager);
@@ -406,31 +405,6 @@ public class DBMain extends SlidingActivity {
 
     @SuppressLint("NewApi")
     private void quickmenu() {
-        // DosBox Cycles
-
-        iCPUNeon.setText(R.string.no);
-
-        switch (nativeGetCPUFamily()) {
-            case 2:     // X86 CPU detected
-                break;
-            case 3:     // MIPS CPU detected
-                break;
-            case 0:     // Unknown -- try ARM
-            default:            // ARM Family
-
-                if (
-                    nativeHasNEON(mDosBoxLauncher) &&
-                    (Integer.valueOf(
-                        prefs.getString(
-                            "confoptimization",
-                            "2"
-                        )
-                    ) >= 2)
-                ) {
-                    iCPUNeon.setText(R.string.yes);
-                }
-        }
-
         if (mSurfaceView.mGPURendering) {
             iRenderMode.setText("OpenGL");
         } else {
