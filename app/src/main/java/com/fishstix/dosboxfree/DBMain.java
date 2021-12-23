@@ -58,7 +58,6 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TableRow;
@@ -74,8 +73,7 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingActivity;
 
 
-public class DBMain extends SlidingActivity implements OnClickListener,
-    OnCheckedChangeListener {
+public class DBMain extends SlidingActivity implements OnClickListener {
     public static final int SPLASH_TIMEOUT_MESSAGE = -1;
     public static final String START_COMMAND_ID = "start_command";
     private static final String MUGEN_DIRECTORY = "mugen";
@@ -971,12 +969,6 @@ public class DBMain extends SlidingActivity implements OnClickListener,
                 break;
         }
     }
-
-    @Override
-    public void onCheckedChanged(
-        CompoundButton buttonView,
-        boolean isChecked
-    ) { }
 
     public boolean getMIDIRoms() {
         File ctrlrom = new File(getFilesDir().toString() + "/MT32_CONTROL.ROM");
