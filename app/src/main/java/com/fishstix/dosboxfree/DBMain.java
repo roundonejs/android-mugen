@@ -129,7 +129,7 @@ public class DBMain extends SlidingActivity implements OnClickListener,
     private TableRow rowSpecialKey, rowSettings;                                                                // ,rowMapMouse,rowMapJoy;
     private TextView iGovernor, iCPUFamily, iCPUNeon, iDOSMem, iDBManager,
         iVersion, iRenderMode;
-    public CompoundButton bScaling, bButtons;
+    public CompoundButton bScaling;
     private ImageView imgGovWarning;
     public Button bButtonA, bButtonB, bButtonC, bButtonD;
 
@@ -269,8 +269,6 @@ public class DBMain extends SlidingActivity implements OnClickListener,
         // resources
         bScaling = (CompoundButton) findViewById(R.id.info_scaleoption);
         bScaling.setOnCheckedChangeListener(this);
-        bButtons = (CompoundButton) findViewById(R.id.info_buttonsoption);
-        bButtons.setOnCheckedChangeListener(this);
         rowSpecialKey = (TableRow) findViewById(R.id.tableRow_SpecialKeys);
         rowSpecialKey.setOnClickListener(this);
         rowSettings = (TableRow) findViewById(R.id.tableRow_Settings);
@@ -505,13 +503,6 @@ public class DBMain extends SlidingActivity implements OnClickListener,
                 "confscale"
             )
         );
-        bButtons.setChecked(
-            DBMenuSystem.getBooleanPreference(
-                mContext,
-                "confbuttonoverlay"
-            )
-        );
-
     }
 
     private String ReadCPUgovernor() {
@@ -927,10 +918,6 @@ public class DBMain extends SlidingActivity implements OnClickListener,
                     mButtonsView.setLayoutParams(params);
                     mButtonsView.setVisibility(View.VISIBLE);
 
-                    if (!bButtons.isChecked()) {
-                        bButtons.setChecked(true);
-                    }
-
                     DBMenuSystem.saveBooleanPreference(
                         mContext,
                         "confbuttonoverlay",
@@ -940,10 +927,6 @@ public class DBMain extends SlidingActivity implements OnClickListener,
                 case HANDLER_REMOVE_BUTTONS:
                     mButtonsView.setVisibility(View.GONE);
                     mButtonsView.setOnTouchListener(null);
-
-                    if (bButtons.isChecked()) {
-                        bButtons.setChecked(false);
-                    }
 
                     DBMenuSystem.saveBooleanPreference(
                         mContext,
@@ -1012,29 +995,6 @@ public class DBMain extends SlidingActivity implements OnClickListener,
                         mSurfaceView.mScale
                     );
                     mSurfaceView.forceRedraw();
-                }
-
-                break;
-            case R.id.info_buttonsoption:
-
-                if (isChecked) {
-                    mHandler.sendMessage(
-                        mHandler.obtainMessage(
-                            DBMain.
-                            HANDLER_ADD_BUTTONS,
-                            0,
-                            0
-                        )
-                    );
-                } else {
-                    mHandler.sendMessage(
-                        mHandler.obtainMessage(
-                            DBMain.
-                            HANDLER_REMOVE_BUTTONS,
-                            0,
-                            0
-                        )
-                    );
                 }
 
                 break;

@@ -26,11 +26,6 @@
         <View style="@style/Row.Line" />
         <View style="@style/Row.Line" />
         <View style="@style/Row.Line" />
-        <!-- Virtual Keys -->
-        <TableRow
-            style="@style/Row.Click">
-        	<include layout="@layout/buttonswitch" />
-        </TableRow>
         <View style="@style/Row.Line" />
         <!-- Screen Scaling -->
         <TableRow
