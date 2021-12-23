@@ -35,19 +35,6 @@
         <View style="@style/Row.Line" />
         <View style="@style/Row.Line" />
         <View style="@style/Row.Line" />
-        <TableRow
-            style="@style/Row.Click">
-        	<TextView
-            	style="@style/MenuText.Row"
-            	android:text="@string/info_dosmem"
-            	android:layout_weight="0.5"
-            	android:drawableLeft="@drawable/onebit_22" />
-        	<TextView
-        	    android:id="@+id/info_dosmem"
-            	style="@style/MenuText.Row"
-            	android:text="8 MB"
-            	android:layout_weight="0.5" />
-        </TableRow>
         <View style="@style/Row.Line" />
         <!-- DB Manager -->
         <TableRow

@@ -122,7 +122,7 @@ public class DBMain extends SlidingActivity {
     public String mPID = null;
     public int mPrefScaleFactor = 100;
     private Context mContext;
-    private TextView iDOSMem, iDBManager,
+    private TextView iDBManager,
         iVersion;
     public Button bButtonA, bButtonB, bButtonC, bButtonD;
 
@@ -260,7 +260,6 @@ public class DBMain extends SlidingActivity {
         // getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#99000000")));
 
         // resources
-        iDOSMem = (TextView) findViewById(R.id.info_dosmem);
         iDBManager = (TextView) findViewById(R.id.info_manager);
         iVersion = (TextView) findViewById(R.id.info_version);
         bButtonA = (Button) findViewById(R.id.ButtonA);
@@ -425,10 +424,6 @@ public class DBMain extends SlidingActivity {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        iDOSMem.setText(
-            String.valueOf(DosBoxControl.nativeGetMemSize()) +
-            "MB"
-        );
     }
 
     private String ReadCPUgovernor() {
