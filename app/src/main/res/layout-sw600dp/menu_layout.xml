@@ -34,20 +34,6 @@
         <View style="@style/Row.Line" />
         <View style="@style/Row.Line" />
         <View style="@style/Row.Line" />
-        <!-- Render Mode -->
-        <TableRow
-            style="@style/Row.Click">
-        	<TextView
-            	style="@style/MenuText.Row"
-            	android:text="@string/info_rendermode"
-            	android:layout_weight="0.5"
-            	android:drawableLeft="@drawable/onebit_23" />
-        	<TextView
-        	    android:id="@+id/info_rendermode"
-            	style="@style/MenuText.Row"
-            	android:text="Canvas"
-            	android:layout_weight="0.5" />
-        </TableRow>
         <View style="@style/Row.Line" />
         <TableRow
             style="@style/Row.Click">

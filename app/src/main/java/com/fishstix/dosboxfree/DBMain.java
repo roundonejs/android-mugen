@@ -123,7 +123,7 @@ public class DBMain extends SlidingActivity {
     public int mPrefScaleFactor = 100;
     private Context mContext;
     private TextView iDOSMem, iDBManager,
-        iVersion, iRenderMode;
+        iVersion;
     public Button bButtonA, bButtonB, bButtonC, bButtonD;
 
     // Private Views
@@ -260,7 +260,6 @@ public class DBMain extends SlidingActivity {
         // getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#99000000")));
 
         // resources
-        iRenderMode = (TextView) findViewById(R.id.info_rendermode);
         iDOSMem = (TextView) findViewById(R.id.info_dosmem);
         iDBManager = (TextView) findViewById(R.id.info_manager);
         iVersion = (TextView) findViewById(R.id.info_version);
@@ -405,12 +404,6 @@ public class DBMain extends SlidingActivity {
 
     @SuppressLint("NewApi")
     private void quickmenu() {
-        if (mSurfaceView.mGPURendering) {
-            iRenderMode.setText("OpenGL");
-        } else {
-            iRenderMode.setText("Canvas");
-        }
-
         try {
             iDBManager.setText(
                 getPackageManager().getPackageInfo(
