@@ -36,20 +36,6 @@
         <View style="@style/Row.Line" />
         <View style="@style/Row.Line" />
         <View style="@style/Row.Line" />
-        <!-- DB Manager -->
-        <TableRow
-            style="@style/Row.Click">
-        	<TextView
-            	style="@style/MenuText.Row"
-            	android:text="@string/info_manager"
-            	android:layout_weight="0.5"
-            	android:drawableLeft="@drawable/dbturbo" />
-        	<TextView
-        	    android:id="@+id/info_manager"
-            	style="@style/MenuText.Row"
-            	android:text="1.0.23"
-            	android:layout_weight="0.5" />
-        </TableRow>
         <View style="@style/Row.Line" />
         <!-- Dosbox Turbo -->
         <TableRow

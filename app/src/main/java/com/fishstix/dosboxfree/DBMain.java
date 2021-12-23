@@ -122,7 +122,7 @@ public class DBMain extends SlidingActivity {
     public String mPID = null;
     public int mPrefScaleFactor = 100;
     private Context mContext;
-    private TextView iDBManager,
+    private TextView
         iVersion;
     public Button bButtonA, bButtonB, bButtonC, bButtonD;
 
@@ -260,7 +260,6 @@ public class DBMain extends SlidingActivity {
         // getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#99000000")));
 
         // resources
-        iDBManager = (TextView) findViewById(R.id.info_manager);
         iVersion = (TextView) findViewById(R.id.info_version);
         bButtonA = (Button) findViewById(R.id.ButtonA);
         bButtonB = (Button) findViewById(R.id.ButtonB);
@@ -403,16 +402,6 @@ public class DBMain extends SlidingActivity {
 
     @SuppressLint("NewApi")
     private void quickmenu() {
-        try {
-            iDBManager.setText(
-                getPackageManager().getPackageInfo(
-                    "com.fishstix.dosboxlauncher",
-                    0
-                ).versionName
-            );
-        } catch (NameNotFoundException e1) {
-            iDBManager.setText(R.string.notinstalled);
-        }
         try {
             iVersion.setText(
                 getPackageManager().getPackageInfo(
