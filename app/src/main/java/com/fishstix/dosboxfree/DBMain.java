@@ -58,7 +58,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -123,9 +122,8 @@ public class DBMain extends SlidingActivity {
     public String mPID = null;
     public int mPrefScaleFactor = 100;
     private Context mContext;
-    private TextView iGovernor, iCPUFamily, iCPUNeon, iDOSMem, iDBManager,
+    private TextView iCPUFamily, iCPUNeon, iDOSMem, iDBManager,
         iVersion, iRenderMode;
-    private ImageView imgGovWarning;
     public Button bButtonA, bButtonB, bButtonC, bButtonD;
 
     // Private Views
@@ -262,8 +260,6 @@ public class DBMain extends SlidingActivity {
         // getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#99000000")));
 
         // resources
-        iGovernor = (TextView) findViewById(R.id.info_governor);
-        imgGovWarning = (ImageView) findViewById(R.id.info_governor_warning);
         iCPUFamily = (TextView) findViewById(R.id.info_cputype);
         iCPUNeon = (TextView) findViewById(R.id.info_neon);
         iRenderMode = (TextView) findViewById(R.id.info_rendermode);
@@ -482,8 +478,6 @@ public class DBMain extends SlidingActivity {
             String.valueOf(DosBoxControl.nativeGetMemSize()) +
             "MB"
         );
-
-        iGovernor.setText(ReadCPUgovernor());
     }
 
     private String ReadCPUgovernor() {
@@ -513,15 +507,6 @@ public class DBMain extends SlidingActivity {
 
         if (result.length() == 0) {
             result = "unknown";
-        }
-
-        if (
-            result.toLowerCase(Locale.ENGLISH).contains("performance") ||
-            result.toLowerCase(Locale.ENGLISH).contains("interactive")
-        ) {
-            imgGovWarning.setVisibility(View.INVISIBLE);
-        } else {
-            imgGovWarning.setVisibility(View.VISIBLE);
         }
 
         return result;

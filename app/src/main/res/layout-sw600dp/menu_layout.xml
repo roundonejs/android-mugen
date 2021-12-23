@@ -31,25 +31,6 @@
         <View style="@style/Row.Line" />
         <View style="@style/Row.Line" />
         <View style="@style/Row.Line" />
-        <!-- Current Governor -->
-        <TableRow
-            style="@style/Row.Click">
-        	<TextView
-            	style="@style/MenuText.Row"
-            	android:text="@string/info_governor"
-            	android:layout_weight="0.5"
-            	android:drawableLeft="@drawable/onebit_15" />
-        	<TextView
-        	    android:id="@+id/info_governor"
-            	style="@style/MenuText.Row"
-            	android:text="OnDemand"
-            	android:layout_weight="0.4" />
-            <ImageView
-                android:id="@+id/info_governor_warning"
-                style="@style/Row.Image"
-                android:layout_marginRight="15dp"
-                android:src="@drawable/onebit_36" />
-        </TableRow>
         <View style="@style/Row.Line" />
         <!-- CPU Type -->
         <TableRow
