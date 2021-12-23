@@ -32,20 +32,6 @@
         <View style="@style/Row.Line" />
         <View style="@style/Row.Line" />
         <View style="@style/Row.Line" />
-        <!-- CPU Type -->
-        <TableRow
-            style="@style/Row.Click">
-        	<TextView
-            	style="@style/MenuText.Row"
-            	android:text="@string/info_cputype"
-            	android:layout_weight="0.5"
-            	android:drawableLeft="@drawable/cpu" />
-        	<TextView
-        	    android:id="@+id/info_cputype"
-            	style="@style/MenuText.Row"
-            	android:text="ARMv7"
-            	android:layout_weight="0.5" />
-        </TableRow>
         <View style="@style/Row.Line" />
         <!-- CPU NEON -->
         <TableRow

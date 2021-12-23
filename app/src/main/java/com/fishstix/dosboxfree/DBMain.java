@@ -122,7 +122,7 @@ public class DBMain extends SlidingActivity {
     public String mPID = null;
     public int mPrefScaleFactor = 100;
     private Context mContext;
-    private TextView iCPUFamily, iCPUNeon, iDOSMem, iDBManager,
+    private TextView iCPUNeon, iDOSMem, iDBManager,
         iVersion, iRenderMode;
     public Button bButtonA, bButtonB, bButtonC, bButtonD;
 
@@ -260,7 +260,6 @@ public class DBMain extends SlidingActivity {
         // getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#99000000")));
 
         // resources
-        iCPUFamily = (TextView) findViewById(R.id.info_cputype);
         iCPUNeon = (TextView) findViewById(R.id.info_neon);
         iRenderMode = (TextView) findViewById(R.id.info_rendermode);
         iDOSMem = (TextView) findViewById(R.id.info_dosmem);
@@ -413,10 +412,8 @@ public class DBMain extends SlidingActivity {
 
         switch (nativeGetCPUFamily()) {
             case 2:     // X86 CPU detected
-                iCPUFamily.setText("x86");
                 break;
             case 3:     // MIPS CPU detected
-                iCPUFamily.setText("MIPS");
                 break;
             case 0:     // Unknown -- try ARM
             default:            // ARM Family
@@ -431,19 +428,6 @@ public class DBMain extends SlidingActivity {
                     ) >= 2)
                 ) {
                     iCPUNeon.setText(R.string.yes);
-                    iCPUFamily.setText("ARMv7a");
-                } else if (
-                    nativeIsARMv7(mDosBoxLauncher) &&
-                    (Integer.valueOf(
-                        prefs.getString(
-                            "confoptimization",
-                            "2"
-                        )
-                    ) >= 1)
-                ) {
-                    iCPUFamily.setText("ARMv7a");
-                } else {
-                    iCPUFamily.setText("ARMv5");
                 }
         }
 
