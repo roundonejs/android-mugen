@@ -50,7 +50,6 @@ import android.view.Display;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
@@ -73,7 +72,7 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingActivity;
 
 
-public class DBMain extends SlidingActivity implements OnClickListener {
+public class DBMain extends SlidingActivity {
     public static final int SPLASH_TIMEOUT_MESSAGE = -1;
     public static final String START_COMMAND_ID = "start_command";
     private static final String MUGEN_DIRECTORY = "mugen";
@@ -124,7 +123,6 @@ public class DBMain extends SlidingActivity implements OnClickListener {
     public String mPID = null;
     public int mPrefScaleFactor = 100;
     private Context mContext;
-    private TableRow rowSettings;                                                                // ,rowMapMouse,rowMapJoy;
     private TextView iGovernor, iCPUFamily, iCPUNeon, iDOSMem, iDBManager,
         iVersion, iRenderMode;
     private ImageView imgGovWarning;
@@ -264,9 +262,6 @@ public class DBMain extends SlidingActivity implements OnClickListener {
         // getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#99000000")));
 
         // resources
-        rowSettings = (TableRow) findViewById(R.id.tableRow_Settings);
-        rowSettings.setOnClickListener(this);
-
         iGovernor = (TextView) findViewById(R.id.info_governor);
         imgGovWarning = (ImageView) findViewById(R.id.info_governor_warning);
         iCPUFamily = (TextView) findViewById(R.id.info_cputype);
@@ -951,17 +946,6 @@ public class DBMain extends SlidingActivity implements OnClickListener {
             }
         }
     };
-
-    @Override
-    public void onClick(View v) {
-        // Handle info/quickMenu
-        switch (v.getId()) {
-            case R.id.tableRow_Settings:
-                Intent i = new Intent(mContext, DosBoxPreferences.class);
-                startActivity(i);
-                break;
-        }
-    }
 
     public boolean getMIDIRoms() {
         File ctrlrom = new File(getFilesDir().toString() + "/MT32_CONTROL.ROM");

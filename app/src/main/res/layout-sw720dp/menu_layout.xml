@@ -29,20 +29,6 @@
         <View style="@style/Row.Line" />
         <View style="@style/Row.Line" />
         <View style="@style/Row.Line" />
-        <!-- Settings Menu -->
-	    <TableRow
-            android:id="@+id/tableRow_Settings"
-            style="@style/Row.Click">
-        	<TextView
-            	style="@style/MenuText.Row"
-            	android:text="@string/info_settings"
-            	android:layout_weight="0.8"
-            	android:drawableLeft="@drawable/onebit_09" />
-            <ImageView
-                style="@style/Row.Image"
-                android:layout_marginRight="15dp"
-                android:src="@drawable/onebit_21" />
-        </TableRow>
         <View style="@style/Row.Line" />
         <TableRow
             style="@style/Row"
