@@ -28,20 +28,6 @@
         <View style="@style/Row.Line" />
         <View style="@style/Row.Line" />
         <View style="@style/Row.Line" />
-        <!-- Special Keys -->
-        <TableRow
-            android:id="@+id/tableRow_SpecialKeys"
-            style="@style/Row.Click">
-        	<TextView
-            	style="@style/MenuText.Row"
-            	android:text="@string/info_specialkeys"
-            	android:layout_weight="0.8"
-            	android:drawableLeft="@drawable/lightning" />
-            <ImageView
-                style="@style/Row.Image"
-                android:layout_marginRight="15dp"
-                android:src="@drawable/onebit_21" />
-        </TableRow>
         <View style="@style/Row.Line" />
         <!-- Settings Menu -->
 	    <TableRow

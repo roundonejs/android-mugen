@@ -124,7 +124,7 @@ public class DBMain extends SlidingActivity implements OnClickListener {
     public String mPID = null;
     public int mPrefScaleFactor = 100;
     private Context mContext;
-    private TableRow rowSpecialKey, rowSettings;                                                                // ,rowMapMouse,rowMapJoy;
+    private TableRow rowSettings;                                                                // ,rowMapMouse,rowMapJoy;
     private TextView iGovernor, iCPUFamily, iCPUNeon, iDOSMem, iDBManager,
         iVersion, iRenderMode;
     private ImageView imgGovWarning;
@@ -264,8 +264,6 @@ public class DBMain extends SlidingActivity implements OnClickListener {
         // getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#99000000")));
 
         // resources
-        rowSpecialKey = (TableRow) findViewById(R.id.tableRow_SpecialKeys);
-        rowSpecialKey.setOnClickListener(this);
         rowSettings = (TableRow) findViewById(R.id.tableRow_Settings);
         rowSettings.setOnClickListener(this);
 
@@ -958,11 +956,6 @@ public class DBMain extends SlidingActivity implements OnClickListener {
     public void onClick(View v) {
         // Handle info/quickMenu
         switch (v.getId()) {
-            case R.id.tableRow_SpecialKeys:
-                mSurfaceView.mContextMenu =
-                    DBMenuSystem.CONTEXT_MENU_SPECIAL_KEYS;
-                openContextMenu(mSurfaceView);
-                break;
             case R.id.tableRow_Settings:
                 Intent i = new Intent(mContext, DosBoxPreferences.class);
                 startActivity(i);
