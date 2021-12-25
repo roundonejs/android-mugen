@@ -27,6 +27,7 @@ import java.io.OutputStream;
 import java.nio.Buffer;
 import java.util.Locale;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -65,11 +66,9 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 import com.fishstix.dosboxfree.dosboxprefs.DosBoxPreferences;
 import com.fishstix.dosboxfree.joystick.JoystickView;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
-import com.jeremyfeinstein.slidingmenu.lib.app.SlidingActivity;
 
 
-public class DBMain extends SlidingActivity {
+public class DBMain extends Activity {
     public static final int SPLASH_TIMEOUT_MESSAGE = -1;
     public static final String START_COMMAND_ID = "start_command";
     private static final String MUGEN_DIRECTORY = "mugen";
@@ -137,7 +136,6 @@ public class DBMain extends SlidingActivity {
         requestWindowFeature((int) Window.FEATURE_ACTION_BAR_OVERLAY);
 
         setContentView(R.layout.main);
-        setBehindContentView(R.layout.menu_layout);
         mContext = this;
 
 
@@ -240,28 +238,12 @@ public class DBMain extends SlidingActivity {
             }
         }
         );
-        setSlidingActionBarEnabled(true);
-        getSlidingMenu().setMode(SlidingMenu.LEFT);
-        // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
-
-        Display display =
-            ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).
-            getDefaultDisplay();
-        getSlidingMenu().setBehindOffset((int) (display.getWidth() / 4.0d));
-        getSlidingMenu().setShadowWidthRes(R.dimen.shadow_width);
-        getSlidingMenu().setShadowDrawable(R.drawable.shadow);
-        getSlidingMenu().setFadeDegree(0.35f);
-
-        // getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#99000000")));
 
         // resources
         bButtonA = (Button) findViewById(R.id.ButtonA);
         bButtonB = (Button) findViewById(R.id.ButtonB);
         bButtonC = (Button) findViewById(R.id.ButtonC);
         bButtonD = (Button) findViewById(R.id.ButtonD);
-
-
     }
 
     @Override
@@ -429,21 +411,6 @@ public class DBMain extends SlidingActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         Log.i("DosBoxTurbo", "Config Change");
-        Display display =
-            ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).
-            getDefaultDisplay();
-
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE)     // To fullscreen
-        {
-            // getSupportActionBar().hide();
-        }
-        else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT)
-        {
-            // getSupportActionBar().show();
-        }
-
-        getSlidingMenu().setBehindOffset((int) (display.getWidth() / 4.0d));
-        getSlidingMenu().requestLayout();
     }
 
     // @Override
@@ -463,8 +430,6 @@ public class DBMain extends SlidingActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                toggle();
-
                 return true;
         }
 

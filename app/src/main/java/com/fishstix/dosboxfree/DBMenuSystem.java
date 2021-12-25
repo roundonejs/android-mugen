@@ -55,7 +55,6 @@ import com.actionbarsherlock.view.MenuItem;
 import com.fishstix.dosboxfree.dosboxprefs.DosBoxPreferences;
 import com.fishstix.dosboxfree.dosboxprefs.preference.GamePreference;
 import com.fishstix.dosboxfree.touchevent.TouchEventWrapper;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 public class DBMenuSystem {
     private static final String mPrefCycleString = "max";       // default slow system
@@ -694,17 +693,6 @@ public class DBMenuSystem {
             "Found " + context.mSurfaceView.customMap.size() +
             " custom mappings."
         );
-
-        // Sliding Menu Style
-        if (prefs.getString("confslidingmenu", "0").contains("0")) {
-            context.getSlidingMenu().setTouchModeAbove(
-                SlidingMenu.TOUCHMODE_MARGIN
-            );
-        } else {
-            context.getSlidingMenu().setTouchModeAbove(
-                SlidingMenu.TOUCHMODE_NONE
-            );
-        }
 
         // GESTURES
         context.mSurfaceView.mGestureUp =
