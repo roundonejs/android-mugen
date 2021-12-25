@@ -413,34 +413,6 @@ public class DBMain extends Activity {
         Log.i("DosBoxTurbo", "Config Change");
     }
 
-    // @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // return DBMenuSystem.doCreateOptionsMenu(menu);
-        // getSupportMenuInflater().inflate(R.menu.options,  menu);
-        return true;
-    }
-
-    // @Override
-    public boolean onPrepareOptionsMenu (Menu menu) {
-        // super.onPrepareOptionsMenu(menu);
-        return DBMenuSystem.doPrepareOptionsMenu(this, menu);
-    }
-
-    // @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                return true;
-        }
-
-        if (DBMenuSystem.doOptionsItemSelected(this, item)) {
-            return true;
-        }
-
-        // return super.onOptionsItemSelected(item);
-        return true;
-    }
-
     @Override
     public void onCreateContextMenu(
         ContextMenu menu,

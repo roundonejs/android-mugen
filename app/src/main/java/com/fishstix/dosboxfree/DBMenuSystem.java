@@ -823,26 +823,6 @@ public class DBMenuSystem {
         return sharedPrefs.getBoolean(key, false);
     }
 
-    /*
-       static public boolean doCreateOptionsMenu(Menu menu) {
-            menu.add(Menu.NONE, MENU_KEYBOARD, 0, "Keyboard").setIcon(R.drawable.ic_menu_keyboard);
-            menu.add(Menu.NONE, MENU_INPUT_INPUT_METHOD, 0, "Input Method").setIcon(R.drawable.ic_menu_flag);
-            menu.add(Menu.NONE, MENU_KEYBOARD_SPECIAL, 0, "Special Keys").setIcon(R.drawable.ic_menu_flash);
-            menu.add(Menu.NONE, MENU_SETTINGS_SCALE, 0, "Scale: Off").setIcon(R.drawable.ic_menu_resize);
-            menu.add(Menu.NONE, MENU_PREFS,Menu.NONE,"Config").setIcon(R.drawable.ic_menu_settings);
-            menu.add(Menu.NONE, MENU_QUIT, 0, "Exit").setIcon(R.drawable.ic_menu_close_clear_cancel);
-            return true;
-       }*/
-
-    static public boolean doPrepareOptionsMenu(DBMain context, Menu menu) {
-        // menu.findItem(MENU_SETTINGS_SCALE).setTitle((context.mSurfaceView.mScale)?"Scale: On":"Scale: Off");
-        menu.findItem(R.id.menu_scale).setTitle(
-            (context.mSurfaceView.mScale) ? "Scale: On" : "Scale: Off"
-        );
-
-        return true;
-    }
-
     static public void doShowMenu(DBMain context) {
         context.openOptionsMenu();
     }
@@ -903,101 +883,6 @@ public class DBMenuSystem {
         builder.setPositiveButton("OK", null);
 
         builder.create().show();
-    }
-    /*
-       static public void doShowHideInfo(DBMain context, boolean show) {
-            context.mSurfaceView.mInfoHide = show;
-            context.mSurfaceView.forceRedraw();
-       }*/
-
-    static public boolean doOptionsItemSelected(DBMain context, MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_exit:
-                doConfirmQuit(context);
-                break;
-            case R.id.menu_inputmethod:
-            {
-                InputMethodManager imm =
-                    (InputMethodManager) context.getSystemService(
-                    Context.INPUT_METHOD_SERVICE
-                    );
-
-                if (imm != null) {
-                    imm.showInputMethodPicker();
-                }
-            }
-            break;
-
-            case R.id.menu_specialkeys:
-                context.mSurfaceView.mContextMenu = CONTEXT_MENU_SPECIAL_KEYS;
-                context.openContextMenu(context.mSurfaceView);
-                break;
-            case R.id.menu_keyboard:
-
-                if (context.mSurfaceView.mKeyboardVisible) {
-                    doHideKeyboard(context);
-                }
-                else {
-                    doShowKeyboard(context);
-                }
-
-                break;
-            case R.id.menu_joystick:
-
-                if (!getBooleanPreference(context, "confjoyoverlay")) {
-                    context.mHandler.sendMessage(
-                        context.mHandler.obtainMessage(
-                            DBMain.HANDLER_ADD_JOYSTICK,
-                            0,
-                            0
-                        )
-                    );
-                } else {
-                    context.mHandler.sendMessage(
-                        context.mHandler.obtainMessage(
-                            DBMain.HANDLER_REMOVE_JOYSTICK,
-                            0,
-                            0
-                        )
-                    );
-                }
-
-                break;
-            case R.id.menu_scale:
-                context.mSurfaceView.mScale = !context.mSurfaceView.mScale;
-                saveBooleanPreference(
-                    context,
-                    "confscale",
-                    context.mSurfaceView.mScale
-                );
-                context.mSurfaceView.forceRedraw();
-                break;
-            case R.id.menu_settings:
-
-                if (context.mPID != null) {
-                    Intent i = new Intent(context, DosBoxPreferences.class);
-                    Bundle b = new Bundle();
-                    b.putString(
-                        "com.fishstix.dosboxlauncher.pid",
-                        context.mPID
-                    );
-                    b.putBoolean("com.fishstix.dosboxlauncher.mlic", true);
-                    i.putExtras(b);
-                    context.startActivity(i);
-                } else {
-                    Intent i = new Intent(context, DosBoxPreferences.class);
-                    Bundle b = new Bundle();
-                    b.putBoolean("com.fishstix.dosboxlauncher.mlic", true);
-                    i.putExtras(b);
-                    context.startActivity(i);
-                }
-
-                break;
-            default:
-                break;
-        }
-
-        return true;
     }
 
     static public void doCreateContextMenu(
