@@ -86,6 +86,5 @@ android {
 }
 
 dependencies {
-    compile project(':actionbarsherlock')
     compile 'com.android.support:support-v4:18.0.+'
 }

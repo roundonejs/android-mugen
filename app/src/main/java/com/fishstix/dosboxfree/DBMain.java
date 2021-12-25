@@ -49,6 +49,7 @@ import android.view.ContextMenu;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewTreeObserver;
@@ -61,9 +62,6 @@ import android.widget.FrameLayout;
 import android.widget.TableRow;
 import android.widget.Toast;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.Window;
 import com.fishstix.dosboxfree.dosboxprefs.DosBoxPreferences;
 import com.fishstix.dosboxfree.joystick.JoystickView;
 
@@ -133,7 +131,6 @@ public class DBMain extends Activity {
         super.onCreate(savedInstanceState);
         Log.i("DosBoxTurbo", "onCreate()");
         mDosBoxLauncher = this;
-        requestWindowFeature((int) Window.FEATURE_ACTION_BAR_OVERLAY);
 
         setContentView(R.layout.main);
         mContext = this;
@@ -424,7 +421,7 @@ public class DBMain extends Activity {
     }
 
     @Override
-    public boolean onContextItemSelected(android.view.MenuItem item) {
+    public boolean onContextItemSelected(MenuItem item) {
         if (DBMenuSystem.doContextItemSelected(this, item)) {
             return true;
         }

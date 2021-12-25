@@ -45,13 +45,12 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.fishstix.dosboxfree.dosboxprefs.DosBoxPreferences;
 import com.fishstix.dosboxfree.dosboxprefs.preference.GamePreference;
 import com.fishstix.dosboxfree.touchevent.TouchEventWrapper;
@@ -894,7 +893,7 @@ public class DBMenuSystem {
         switch (context.mSurfaceView.mContextMenu) {
             case CONTEXT_MENU_SPECIAL_KEYS:
             {
-                android.view.MenuItem item;
+                MenuItem item;
                 item = menu.add(0, MENU_KEYBOARD_CTRL, 0, "Ctrl");
                 item.setCheckable(true);
                 item.setChecked(context.mSurfaceView.mModifierCtrl);
@@ -929,12 +928,7 @@ public class DBMenuSystem {
             case CONTEXT_MENU_CYCLES:
             {
 
-                android.view.MenuItem item = menu.add(
-                    1,
-                    MENU_CYCLE_AUTO,
-                    0,
-                    "Auto"
-                );
+                MenuItem item = menu.add(1, MENU_CYCLE_AUTO, 0, "Auto");
 
                 if (DosBoxControl.nativeGetAutoAdjust()) {
                     item.setChecked(true);
@@ -959,7 +953,7 @@ public class DBMenuSystem {
             {
                 for (int i = MENU_FRAMESKIP_0; i <= MENU_FRAMESKIP_10; i++) {
                     int value = (i - MENU_FRAMESKIP_0);
-                    android.view.MenuItem item = menu.add(2, i, 0, "" + value);
+                    MenuItem item = menu.add(2, i, 0, "" + value);
 
                     if (value == DosBoxControl.nativeGetFrameSkipCount()) {
                         item.setChecked(true);
@@ -971,18 +965,8 @@ public class DBMenuSystem {
             break;
             case CONTEXT_MENU_TRACKING:
             {
-                android.view.MenuItem item = menu.add(
-                    3,
-                    MENU_TRACKING_ABS,
-                    0,
-                    "Absolute"
-                );
-                android.view.MenuItem item2 = menu.add(
-                    3,
-                    MENU_TRACKING_REL,
-                    0,
-                    "Relative"
-                );
+                MenuItem item = menu.add(3, MENU_TRACKING_ABS, 0, "Absolute");
+                MenuItem item2 = menu.add(3, MENU_TRACKING_REL, 0, "Relative");
 
                 if (context.mSurfaceView.mAbsolute) {
                     item.setChecked(true);
@@ -996,7 +980,7 @@ public class DBMenuSystem {
             case CONTEXT_MENU_INPUTMODE:
             {
                 for (int i = INPUT_MOUSE; i <= INPUT_SCROLL; i++) {
-                    android.view.MenuItem item;
+                    MenuItem item;
 
                     switch (i) {
                         case INPUT_MOUSE:
@@ -1104,10 +1088,7 @@ public class DBMenuSystem {
         context.mSurfaceView.mModifierShift = false;
     }
 
-    static public boolean doContextItemSelected(
-        DBMain context,
-        android.view.MenuItem item
-    ) {
+    static public boolean doContextItemSelected(DBMain context, MenuItem item) {
         int itemID = item.getItemId();
 
         switch (itemID) {
