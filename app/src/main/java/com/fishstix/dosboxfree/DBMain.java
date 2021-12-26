@@ -54,6 +54,7 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -131,18 +132,17 @@ public class DBMain extends Activity {
         super.onCreate(savedInstanceState);
         Log.i("DosBoxTurbo", "onCreate()");
         mDosBoxLauncher = this;
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(R.layout.main);
         mContext = this;
 
 
         mConfPath = DosBoxPreferences.getExternalDosBoxDir(mContext);
-        this.getWindow().setFlags(
+        getWindow().setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         );
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -163,8 +163,6 @@ public class DBMain extends Activity {
         mButtonsView.setVisibility(View.GONE);
         mButtonsView.mDBLauncher = this;
         registerForContextMenu(mSurfaceView);
-
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         if (prefs.getBoolean("dosmanualconf", false)) {
             File f;
