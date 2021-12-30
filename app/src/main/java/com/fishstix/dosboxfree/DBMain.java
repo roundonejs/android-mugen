@@ -56,7 +56,6 @@ import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
@@ -72,7 +71,6 @@ public class DBMain extends Activity {
     public static final String START_COMMAND_ID = "start_command";
     private static final String MUGEN_DIRECTORY = "mugen";
     public String mConfFile = DosBoxPreferences.CONFIG_FILE;
-    // public String mConfPath = DosBoxPreferences.CONFIG_PATH;
     public String mConfPath;
     public static final int HANDLER_ADD_JOYSTICK = 20;
     public static final int HANDLER_REMOVE_JOYSTICK = 21;
@@ -616,49 +614,6 @@ public class DBMain extends Activity {
         }
         else {
             return null;
-        }
-    }
-
-    class DosBoxThread extends Thread {
-        DBMain mParent;
-        public boolean mDosBoxRunning = false;
-
-        DosBoxThread(DBMain parent) {
-            mParent = parent;
-        }
-
-        public void run() {
-            mDosBoxRunning = true;
-            Log.i(
-                "DosBoxTurbo",
-                "Using DosBox Config: " + mConfPath + mConfFile
-            );
-            nativeStart(
-                mDosBoxLauncher,
-                mSurfaceView.mBitmap,
-                mSurfaceView.mBitmap.getWidth(),
-                mSurfaceView.mBitmap.getHeight(),
-                mConfPath + mConfFile
-            );
-            // will never return to here;
-        }
-
-        public void doExit() {
-            if (mSurfaceView != null) {
-                InputMethodManager imm = (InputMethodManager) getSystemService(
-                    Context.INPUT_METHOD_SERVICE
-                );
-
-                if (imm != null) {
-                    imm.hideSoftInputFromWindow(
-                        mSurfaceView.getWindowToken(),
-                        0
-                    );
-                }
-            }
-
-            mDosBoxRunning = false;
-            mParent.finish();
         }
     }
 
