@@ -19,7 +19,6 @@ package com.fishstix.dosboxfree.joystick;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -35,13 +34,13 @@ public class JoystickView extends View {
     private Paint bgPaint;
     private Paint handlePaint;
 
-    private Paint butPaintA;
-    private Paint butPaintB;
-    private Paint butPaintC;
-    private Paint butPaintX;
-    private Paint butPaintY;
-    private Paint butPaintZ;
-    private Paint butPaintStart;
+    private JoystickButton buttonA;
+    private JoystickButton buttonB;
+    private JoystickButton buttonC;
+    private JoystickButton buttonX;
+    private JoystickButton buttonY;
+    private JoystickButton buttonZ;
+    private JoystickButton buttonStart;
     private Paint butClickPaint;
 
     private int innerPadding;
@@ -141,16 +140,16 @@ public class JoystickView extends View {
     private void initJoystickView() {
         setFocusable(true);
 
-        bgPaint = createPaint(0xA0888888);
-        handlePaint = createPaint(0xB0444444);
-        butPaintA = createPaint(0xA0FF8888);
-        butPaintB = createPaint(0xA08888FF);
-        butPaintC = createPaint(0xA0FF8888);
-        butPaintX = createPaint(0xA0FF8888);
-        butPaintY = createPaint(0xA0FF8888);
-        butPaintZ = createPaint(0xA0FF8888);
-        butPaintStart = createPaint(0xA0FF8888);
-        butClickPaint = createPaint(0xA066FF66);
+        bgPaint = JoystickHelper.createPaint(0xA0888888);
+        handlePaint = JoystickHelper.createPaint(0xB0444444);
+        buttonA = new JoystickButton(0xA0FF8888);
+        buttonB = new JoystickButton(0xA08888FF);
+        buttonC = new JoystickButton(0xA0FF8888);
+        buttonX = new JoystickButton(0xA0FF8888);
+        buttonY = new JoystickButton(0xA0FF8888);
+        buttonZ = new JoystickButton(0xA0FF8888);
+        buttonStart = new JoystickButton(0xA0FF8888);
+        butClickPaint = JoystickHelper.createPaint(0xA066FF66);
 
         innerPadding = 10;
 
@@ -160,15 +159,6 @@ public class JoystickView extends View {
         setYAxisInverted(true);
         setUserCoordinateSystem(COORDINATE_CARTESIAN);
         setAutoReturnToCenter(true);
-    }
-
-    private Paint createPaint(final int color) {
-        Paint button = new Paint(Paint.ANTI_ALIAS_FLAG);
-        button.setColor(color);
-        button.setStrokeWidth(1);
-        button.setStyle(Paint.Style.FILL_AND_STROKE);
-
-        return button;
     }
 
     public void setAutoReturnToCenter(boolean autoReturnToCenter) {
@@ -252,8 +242,13 @@ public class JoystickView extends View {
     public void setTransparency(int val) {
         bgPaint.setAlpha(255 - val);
         handlePaint.setAlpha(255 - val);
-        butPaintA.setAlpha(255 - val);
-        butPaintB.setAlpha(255 - val);
+        buttonA.setAlpha(255 - val);
+        buttonB.setAlpha(255 - val);
+        buttonC.setAlpha(255 - val);
+        buttonX.setAlpha(255 - val);
+        buttonY.setAlpha(255 - val);
+        buttonZ.setAlpha(255 - val);
+        buttonStart.setAlpha(255 - val);
         butClickPaint.setAlpha(255 - val);
     }
 
@@ -353,7 +348,7 @@ public class JoystickView extends View {
                 centerXButtons1,
                 centerYButtons1,
                 buttonRadius,
-                butPaintA
+                buttonA.getPaint()
             );
         }
 
@@ -370,7 +365,7 @@ public class JoystickView extends View {
                 centerXButtons2,
                 centerYButtons1,
                 buttonRadius,
-                butPaintB
+                buttonB.getPaint()
             );
         }
 
@@ -378,31 +373,31 @@ public class JoystickView extends View {
             centerXButtons3,
             centerYButtons1,
             buttonRadius,
-            butPaintC
+            buttonC.getPaint()
         );
         canvas.drawCircle(
             centerXButtons1,
             centerYButtons2,
             buttonRadius,
-            butPaintX
+            buttonX.getPaint()
         );
         canvas.drawCircle(
             centerXButtons2,
             centerYButtons2,
             buttonRadius,
-            butPaintY
+            buttonY.getPaint()
         );
         canvas.drawCircle(
             centerXButtons3,
             centerYButtons2,
             buttonRadius,
-            butPaintZ
+            buttonZ.getPaint()
         );
         canvas.drawCircle(
             centerXStart,
             centerYStart,
             buttonRadius,
-            butPaintStart
+            buttonStart.getPaint()
         );
 
         canvas.restore();
