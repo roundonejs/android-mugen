@@ -23,13 +23,15 @@ public class JoystickButton {
     private static final int CLICKED_COLOR = 0xA066FF66;
     private final Paint paint;
     private final Paint clickedPaint;
+    private final int key;
     private int x;
     private int y;
     private int pointerId;
 
-    public JoystickButton(final int color) {
+    public JoystickButton(final int color, final int buttonKey) {
         paint = JoystickHelper.createPaint(color);
         clickedPaint = JoystickHelper.createPaint(CLICKED_COLOR);
+        key = buttonKey;
         pointerId = JoystickHelper.INVALID_POINTER_ID;
     }
 
@@ -39,6 +41,10 @@ public class JoystickButton {
         }
 
         return paint;
+    }
+
+    public int getKey() {
+        return key;
     }
 
     public void setAlpha(final int alpha) {

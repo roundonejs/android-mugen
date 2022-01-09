@@ -130,13 +130,13 @@ public class JoystickView extends View {
 
         bgPaint = JoystickHelper.createPaint(0xA0888888);
         handlePaint = JoystickHelper.createPaint(0xB0444444);
-        buttonA = new JoystickButton(0xA0FF8888);
-        buttonB = new JoystickButton(0xA08888FF);
-        buttonC = new JoystickButton(0xA0FF8888);
-        buttonX = new JoystickButton(0xA0FF8888);
-        buttonY = new JoystickButton(0xA0FF8888);
-        buttonZ = new JoystickButton(0xA0FF8888);
-        buttonStart = new JoystickButton(0xA0FF8888);
+        buttonA = new JoystickButton(0xA0FF8888, 0);
+        buttonB = new JoystickButton(0xA08888FF, 0);
+        buttonC = new JoystickButton(0xA0FF8888, 0);
+        buttonX = new JoystickButton(0xA0FF8888, 0);
+        buttonY = new JoystickButton(0xA0FF8888, 0);
+        buttonZ = new JoystickButton(0xA0FF8888, 0);
+        buttonStart = new JoystickButton(0xA0FF8888, 0);
 
         innerPadding = 10;
 
@@ -417,33 +417,17 @@ public class JoystickView extends View {
 
                         return true;
                     }
-                } else if (
-                    (pId == buttonA.getPointerId())
-                    && buttonA.isClicked()
-                ) {
-                    buttonA.release();
-                    invalidate();
-
-                    if (clickListener != null) {
-                        clickListener.onReleased(0);
-                    }
-
-                    return true;
-                } else if (
-                    (pId == buttonB.getPointerId())
-                    && buttonB.isClicked()
-                ) {
-                    buttonB.release();
-                    invalidate();
-
-                    if (clickListener != null) {
-                        clickListener.onReleased(1);
-                    }
-
-                    return true;
                 }
 
-                break;
+                return (
+                    releaseButton(buttonA, pId)
+                    || releaseButton(buttonB, pId)
+                    || releaseButton(buttonC, pId)
+                    || releaseButton(buttonX, pId)
+                    || releaseButton(buttonY, pId)
+                    || releaseButton(buttonZ, pId)
+                    || releaseButton(buttonStart, pId)
+                );
             }
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_POINTER_DOWN: {
@@ -458,28 +442,49 @@ public class JoystickView extends View {
 
                         return true;
                     }
-                } else if (inButton(buttonA, x, y) && !buttonA.isClicked()) {
-                    buttonA.click(pId);
-                    invalidate();
-
-                    if (clickListener != null) {
-                        clickListener.onClicked(0);
-                    }
-
-                    return true;
-                } else if (inButton(buttonB, x, y) && !buttonB.isClicked()) {
-                    buttonB.click(pId);
-                    invalidate();
-
-                    if (clickListener != null) {
-                        clickListener.onClicked(1);
-                    }
-
-                    return true;
                 }
 
-                break;
+                return (
+                    clickButton(buttonA, pId, x, y)
+                    || clickButton(buttonB, pId, x, y)
+                    || clickButton(buttonC, pId, x, y)
+                    || clickButton(buttonX, pId, x, y)
+                    || clickButton(buttonY, pId, x, y)
+                    || clickButton(buttonZ, pId, x, y)
+                    || clickButton(buttonStart, pId, x, y)
+                );
             }
+        }
+
+        return false;
+    }
+
+    private boolean releaseButton(final JoystickButton button, final int pId) {
+        if ((pId == button.getPointerId()) && button.isClicked()) {
+            button.release();
+            invalidate();
+
+            clickListener.onReleased(button.getKey());
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean clickButton(
+        final JoystickButton button,
+        final int pId,
+        final int x,
+        final int y
+    ) {
+        if (inButton(button, x, y) && !button.isClicked()) {
+            button.click(pId);
+            invalidate();
+
+            clickListener.onClicked(button.getKey());
+
+            return true;
         }
 
         return false;
