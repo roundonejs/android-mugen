@@ -48,7 +48,6 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.fishstix.dosboxfree.dosboxprefs.DosBoxPreferences;
@@ -315,17 +314,17 @@ public class DBMenuSystem {
                 // handle autoexec
                 if (prefs.getString("dosautoexec", "-1").contains("-1")) {
                     out.println(
-                        "mount c: " +
-                        context.mugenDirectoryCreator.getMugenDataPath() +
-                        " \nc:"
+                        "mount c: "
+                        + context.mugenDirectoryCreator.getMugenDataPath()
+                        + " \nc:"
                     );
                 } else {
                     out.println(
                         prefs.getString(
                             "dosautoexec",
-                            "mount c: " +
-                            context.mugenDirectoryCreator.getMugenDataPath() +
-                            " \nc:"
+                            "mount c: "
+                            + context.mugenDirectoryCreator.getMugenDataPath()
+                            + " \nc:"
                         )
                     );
                 }
@@ -830,33 +829,6 @@ public class DBMenuSystem {
 
     static public void doHideMenu(DBMain context) {
         context.closeOptionsMenu();
-    }
-
-    static public void doShowKeyboard(DBMain context) {
-        InputMethodManager imm = (InputMethodManager) context.getSystemService(
-            Context.INPUT_METHOD_SERVICE
-        );
-
-        if (imm != null) {
-            if (!context.mSurfaceView.hasFocus()) {
-                context.mSurfaceView.requestFocus();
-            }
-
-            imm.showSoftInput(context.mSurfaceView, 0);
-        }
-    }
-
-    static public void doHideKeyboard(DBMain context) {
-        InputMethodManager imm = (InputMethodManager) context.getSystemService(
-            Context.INPUT_METHOD_SERVICE
-        );
-
-        if (imm != null) {
-            imm.hideSoftInputFromWindow(
-                context.mSurfaceView.getWindowToken(),
-                0
-            );
-        }
     }
 
     static public void doConfirmQuit(final DBMain context) {

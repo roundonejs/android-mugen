@@ -218,17 +218,6 @@ public class DBMain extends Activity {
                 Rect r = new Rect();
                 // r will be populated with the coordinates of your view that area still visible.
                 mSurfaceView.getWindowVisibleDisplayFrame(r);
-
-                if (
-                    mSurfaceView.getRootView().getHeight() -
-                    (r.bottom - r.top) > 100
-                ) {                                                                          // if more than 100 pixels, its probably a keyboard...
-                    Log.i("DosBoxTurbo", "Keyboard on");
-                    mSurfaceView.mKeyboardVisible = true;
-                } else {
-                    Log.i("DosBoxTurbo", "Keyboard off");
-                    mSurfaceView.mKeyboardVisible = false;
-                }
             }
         }
         );
