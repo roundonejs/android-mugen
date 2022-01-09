@@ -20,17 +20,34 @@ package com.fishstix.dosboxfree.joystick;
 import android.graphics.Paint;
 
 public class JoystickButton {
+    private static final int CLICKED_COLOR = 0xA066FF66;
     private final Paint paint;
+    private final Paint clickedPaint;
+    private boolean clicked;
 
     public JoystickButton(final int color) {
         paint = JoystickHelper.createPaint(color);
+        clickedPaint = JoystickHelper.createPaint(CLICKED_COLOR);
     }
 
     public Paint getPaint() {
+        if (clicked) {
+            return clickedPaint;
+        }
+
         return paint;
     }
 
     public void setAlpha(final int alpha) {
         paint.setAlpha(alpha);
+        clickedPaint.setAlpha(alpha);
+    }
+
+    public boolean isClicked() {
+        return clicked;
+    }
+
+    public void setClicked(final boolean buttonClicked) {
+        clicked = buttonClicked;
     }
 }

@@ -41,7 +41,6 @@ public class JoystickView extends View {
     private JoystickButton buttonY;
     private JoystickButton buttonZ;
     private JoystickButton buttonStart;
-    private Paint butClickPaint;
 
     private int innerPadding;
     private int bgRadius;
@@ -74,7 +73,7 @@ public class JoystickView extends View {
     private int userCoordinateSystem;
 
     // Records touch pressure for click handling
-    private boolean clickedJoy = false, clickedA = false, clickedB = false;
+    private boolean clickedJoy = false;
     private float clickThreshold;
 
     // Last touch point in view coordinates
@@ -149,7 +148,6 @@ public class JoystickView extends View {
         buttonY = new JoystickButton(0xA0FF8888);
         buttonZ = new JoystickButton(0xA0FF8888);
         buttonStart = new JoystickButton(0xA0FF8888);
-        butClickPaint = JoystickHelper.createPaint(0xA066FF66);
 
         innerPadding = 10;
 
@@ -249,7 +247,6 @@ public class JoystickView extends View {
         buttonY.setAlpha(255 - val);
         buttonZ.setAlpha(255 - val);
         buttonStart.setAlpha(255 - val);
-        butClickPaint.setAlpha(255 - val);
     }
 
     public void setSize(int val) {
@@ -335,40 +332,18 @@ public class JoystickView extends View {
         handleY = touchY + cY;
         canvas.drawCircle(handleX, handleY, handleRadius, handlePaint);
 
-        // Draw the buttons
-        if (clickedA) {
-            canvas.drawCircle(
-                centerXButtons1,
-                centerYButtons1,
-                buttonRadius,
-                butClickPaint
-            );
-        } else {
-            canvas.drawCircle(
-                centerXButtons1,
-                centerYButtons1,
-                buttonRadius,
-                buttonA.getPaint()
-            );
-        }
-
-        // Draw the buttons
-        if (clickedB) {
-            canvas.drawCircle(
-                centerXButtons2,
-                centerYButtons1,
-                buttonRadius,
-                butClickPaint
-            );
-        } else {
-            canvas.drawCircle(
-                centerXButtons2,
-                centerYButtons1,
-                buttonRadius,
-                buttonB.getPaint()
-            );
-        }
-
+        canvas.drawCircle(
+            centerXButtons1,
+            centerYButtons1,
+            buttonRadius,
+            buttonA.getPaint()
+        );
+        canvas.drawCircle(
+            centerXButtons2,
+            centerYButtons1,
+            buttonRadius,
+            buttonB.getPaint()
+        );
         canvas.drawCircle(
             centerXButtons3,
             centerYButtons1,
@@ -493,8 +468,11 @@ public class JoystickView extends View {
                         return true;
                     }
                 } else if (pId == this.pointerId_butA) {
-                    if ((pointerId_butA != INVALID_POINTER_ID) && clickedA) {
-                        clickedA = false;
+                    if (
+                        (pointerId_butA != INVALID_POINTER_ID)
+                        && buttonA.isClicked()
+                    ) {
+                        buttonA.setClicked(false);
                         setPointerIdButtonA(INVALID_POINTER_ID);
                         invalidate();
 
@@ -505,8 +483,11 @@ public class JoystickView extends View {
                         return true;
                     }
                 } else if (pId == this.pointerId_butB) {
-                    if ((pointerId_butB != INVALID_POINTER_ID) && clickedB) {
-                        clickedB = false;
+                    if (
+                        (pointerId_butB != INVALID_POINTER_ID)
+                        && buttonB.isClicked()
+                    ) {
+                        buttonB.setClicked(false);
                         setPointerIdButtonB(INVALID_POINTER_ID);
                         invalidate();
 
@@ -533,11 +514,11 @@ public class JoystickView extends View {
 
                         return true;
                     }
-                } else if (inButtonA(x, y) && !clickedA) {
+                } else if (inButtonA(x, y) && !buttonA.isClicked()) {
                     if (pointerId_butA == INVALID_POINTER_ID) {
                         // pointer within A button
                         setPointerIdButtonA(pId);
-                        clickedA = true;
+                        buttonA.setClicked(true);
                         invalidate();
 
                         if (clickListener != null) {
@@ -546,10 +527,10 @@ public class JoystickView extends View {
 
                         return true;
                     }
-                } else if (inButtonB(x, y) && !clickedB) {
+                } else if (inButtonB(x, y) && !buttonB.isClicked()) {
                     if (pointerId_butB == INVALID_POINTER_ID) {
                         setPointerIdButtonB(pId);
-                        clickedB = true;
+                        buttonB.setClicked(true);
                         invalidate();
 
                         if (clickListener != null) {
