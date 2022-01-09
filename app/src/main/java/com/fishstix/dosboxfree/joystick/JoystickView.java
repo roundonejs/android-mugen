@@ -32,11 +32,6 @@ public class JoystickView extends View {
     private static final String TAG = "JoystickView";
     public static final int INVALID_POINTER_ID = -1;
 
-    private final boolean D = false;
-
-    private Paint dbgPaint1;
-    private Paint dbgPaint2;
-
     private Paint bgPaint;
     private Paint handlePaint;
 
@@ -114,7 +109,6 @@ public class JoystickView extends View {
 
     // Polar coordinates of the touch point from joystick center
     private double radial;
-    private double angle;
 
     // User coordinates of last touch point
     private int userX, userY;
@@ -144,16 +138,6 @@ public class JoystickView extends View {
 
     private void initJoystickView() {
         setFocusable(true);
-
-        dbgPaint1 = new Paint(Paint.ANTI_ALIAS_FLAG);
-        dbgPaint1.setColor(Color.RED);
-        dbgPaint1.setStrokeWidth(1);
-        dbgPaint1.setStyle(Paint.Style.STROKE);
-
-        dbgPaint2 = new Paint(Paint.ANTI_ALIAS_FLAG);
-        dbgPaint2.setColor(Color.GREEN);
-        dbgPaint2.setStrokeWidth(1);
-        dbgPaint2.setStyle(Paint.Style.STROKE);
 
         bgPaint = createPaint(0xA0888888);
         handlePaint = createPaint(0xB0444444);
@@ -423,59 +407,6 @@ public class JoystickView extends View {
             butPaintStart
         );
 
-        if (D) {
-            canvas.drawRect(
-                1,
-                1,
-                getMeasuredWidth() - 1,
-                getMeasuredHeight() - 1,
-                dbgPaint1
-            );
-
-            canvas.drawCircle(handleX, handleY, 3, dbgPaint1);
-
-            if (movementConstraint == CONSTRAIN_CIRCLE) {
-                canvas.drawCircle(cX, cY, this.movementRadius, dbgPaint1);
-            } else {
-                canvas.drawRect(
-                    cX - movementRadius,
-                    cY - movementRadius,
-                    cX + movementRadius,
-                    cY + movementRadius,
-                    dbgPaint1
-                );
-            }
-
-            // Origin to touch point
-            canvas.drawLine(cX, cY, handleX, handleY, dbgPaint2);
-
-            int baseY = (int) (
-                touchY < 0 ? cY + handleRadius : cY - handleRadius
-            );
-            canvas.drawText(
-                String.format(
-                    "%s (%.0f,%.0f)",
-                    TAG,
-                    touchX,
-                    touchY
-                ),
-                handleX - 20,
-                baseY - 7,
-                dbgPaint2
-            );
-            canvas.drawText(
-                "(" +
-                String.format(
-                    "%.0f, %.1f",
-                    radial,
-                    angle * 57.2957795
-                ) + (char) 0x00B0 + ")",
-                handleX - 20,
-                baseY + 15,
-                dbgPaint2
-            );
-        }
-
         canvas.restore();
     }
 
@@ -691,7 +622,6 @@ public class JoystickView extends View {
         cartY = (int) (touchY / movementRadius * movementRange);
 
         radial = Math.sqrt((cartX * cartX) + (cartY * cartY));
-        angle = Math.atan2(cartY, cartX);
 
         // Invert Y axis if requested
         if (!yAxisInverted) {
