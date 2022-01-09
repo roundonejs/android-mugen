@@ -60,7 +60,6 @@ import android.widget.TableRow;
 import android.widget.Toast;
 
 import com.fishstix.dosboxfree.dosboxprefs.DosBoxPreferences;
-import com.fishstix.dosboxfree.joystick.JoystickClickedListener;
 import com.fishstix.dosboxfree.joystick.JoystickView;
 
 
@@ -616,9 +615,6 @@ public class DBMain extends Activity {
                     mJoystickView.setOnJostickMovedListener(
                         mSurfaceView._listener
                     );
-                    mJoystickView.setOnJostickClickedListener(
-                        new JoystickClickedListener()
-                    );
                     mJoystickView.setVisibility(View.VISIBLE);
 
                     DBMenuSystem.saveBooleanPreference(
@@ -630,7 +626,6 @@ public class DBMain extends Activity {
                     break;
                 case HANDLER_REMOVE_JOYSTICK:
                     mJoystickView.setOnJostickMovedListener(null);
-                    mJoystickView.setOnJostickClickedListener(null);
                     mJoystickView.setVisibility(View.GONE);
 
                     DBMenuSystem.saveBooleanPreference(

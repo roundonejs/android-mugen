@@ -52,7 +52,9 @@ public class JoystickView extends View {
     private int handleInnerBoundaries;
 
     private JoystickMovedListener moveListener;
-    private JoystickClickedListener clickListener;
+    private final JoystickClickedListener clickListener = (
+        new JoystickClickedListener()
+    );
 
     // # of pixels movement required between reporting to the listener
     private float moveResolution;
@@ -261,10 +263,6 @@ public class JoystickView extends View {
 
     public void setOnJostickMovedListener(JoystickMovedListener listener) {
         this.moveListener = listener;
-    }
-
-    public void setOnJostickClickedListener(JoystickClickedListener listener) {
-        this.clickListener = listener;
     }
 
     @Override
