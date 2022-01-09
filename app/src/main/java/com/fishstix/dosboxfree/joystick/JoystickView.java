@@ -493,7 +493,6 @@ public class JoystickView extends View {
             case MotionEvent.ACTION_POINTER_UP: {
                 if (pId == this.pointerId) {
                     if ((pointerId != INVALID_POINTER_ID) && clickedJoy) {
-// Log.d(TAG, "ACTION_UP");
                         returnHandleToCenter();
                         clickedJoy = false;
                         setPointerId(INVALID_POINTER_ID);
@@ -507,7 +506,7 @@ public class JoystickView extends View {
                         invalidate();
 
                         if (clickListener != null) {
-                            clickListener.OnReleased(0);
+                            clickListener.onReleased(0);
                         }
 
                         return true;
@@ -519,7 +518,7 @@ public class JoystickView extends View {
                         invalidate();
 
                         if (clickListener != null) {
-                            clickListener.OnReleased(1);
+                            clickListener.onReleased(1);
                         }
 
                         return true;
@@ -549,7 +548,7 @@ public class JoystickView extends View {
                         invalidate();
 
                         if (clickListener != null) {
-                            clickListener.OnClicked(0);
+                            clickListener.onClicked(0);
                         }
 
                         return true;
@@ -561,7 +560,7 @@ public class JoystickView extends View {
                         invalidate();
 
                         if (clickListener != null) {
-                            clickListener.OnClicked(1);
+                            clickListener.onClicked(1);
                         }
 
                         return true;

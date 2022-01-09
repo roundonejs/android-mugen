@@ -60,6 +60,7 @@ import android.widget.TableRow;
 import android.widget.Toast;
 
 import com.fishstix.dosboxfree.dosboxprefs.DosBoxPreferences;
+import com.fishstix.dosboxfree.joystick.JoystickClickedListener;
 import com.fishstix.dosboxfree.joystick.JoystickView;
 
 
@@ -616,7 +617,7 @@ public class DBMain extends Activity {
                         mSurfaceView._listener
                     );
                     mJoystickView.setOnJostickClickedListener(
-                        mSurfaceView._buttonlistener
+                        new JoystickClickedListener()
                     );
                     mJoystickView.setVisibility(View.VISIBLE);
 

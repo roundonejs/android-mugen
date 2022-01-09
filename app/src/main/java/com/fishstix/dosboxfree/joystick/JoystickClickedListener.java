@@ -1,6 +1,6 @@
 /*
  *  Copyright (C) 2012 Fishstix (Gene Ruebsamen - ruebsamen.gene@gmail.com)
- *  
+ *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
@@ -17,7 +17,18 @@
  */
 package com.fishstix.dosboxfree.joystick;
 
-public interface JoystickClickedListener {
-        public void OnClicked(int id);
-        public void OnReleased(int id);
+import com.fishstix.dosboxfree.DBMenuSystem;
+import com.fishstix.dosboxfree.DosBoxControl;
+
+public class JoystickClickedListener {
+    private static final int ACTION_DOWN = 0;
+    private static final int ACTION_UP = 1;
+
+    public void onClicked(final int id) {
+        DosBoxControl.nativeJoystick(0, 0, ACTION_DOWN, id);
+    }
+
+    public void onReleased(final int id) {
+        DosBoxControl.nativeJoystick(0, 0, ACTION_UP, id);
+    }
 }

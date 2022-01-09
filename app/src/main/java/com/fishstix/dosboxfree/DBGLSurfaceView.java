@@ -56,7 +56,6 @@ import android.view.inputmethod.InputConnection;
 import android.widget.Toast;
 
 import com.fishstix.dosboxfree.dosboxprefs.DosBoxPreferences;
-import com.fishstix.dosboxfree.joystick.JoystickClickedListener;
 import com.fishstix.dosboxfree.joystick.JoystickMovedListener;
 import com.fishstix.dosboxfree.touchevent.TouchEventWrapper;
 
@@ -155,19 +154,18 @@ class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
 
             if (msg.what == DBMain.SPLASH_TIMEOUT_MESSAGE) {
                 surf.setBackgroundResource(0);
-            }
-            else {
-                if (DosBoxControl.sendNativeKey(
-                        msg.what,
-                        false,
-                        surf.mModifierCtrl,
-                        surf.mModifierAlt,
-                        surf.mModifierShift
-                    )) {
-                    surf.mModifierCtrl = false;
-                    surf.mModifierAlt = false;
-                    surf.mModifierShift = false;
-                }
+            } else if (
+                DosBoxControl.sendNativeKey(
+                    msg.what,
+                    false,
+                    surf.mModifierCtrl,
+                    surf.mModifierAlt,
+                    surf.mModifierShift
+                )
+            ) {
+                surf.mModifierCtrl = false;
+                surf.mModifierAlt = false;
+                surf.mModifierShift = false;
             }
         }
     }
@@ -233,8 +231,7 @@ class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
                         sleepTime = nextUpdateTime - System.currentTimeMillis();
                         Thread.sleep(Math.max(sleepTime, UPDATE_INTERVAL_MIN));
                     } catch (InterruptedException e) { }
-                }
-                else {
+                } else {
                     try {
                         frameCount = 0;
                         Thread.sleep(1000);
@@ -414,27 +411,6 @@ class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
         };
     };
 
-    public JoystickClickedListener _buttonlistener =
-        new JoystickClickedListener() {
-        @Override
-        public void OnClicked(int id) {
-            if (!mJoyEmuMouse) {
-                DosBoxControl.nativeJoystick(0, 0, ACTION_DOWN, id);
-            } else {
-                DosBoxControl.nativeMouse(0, 0, 0, 0, ACTION_DOWN, id);
-            }
-        }
-
-        @Override
-        public void OnReleased(int id) {
-            if (!mJoyEmuMouse) {
-                DosBoxControl.nativeJoystick(0, 0, ACTION_UP, id);
-            } else {
-                DosBoxControl.nativeMouse(0, 0, 0, 0, ACTION_UP, id);
-            }
-        }
-    };
-
     class DosBoxMouseThread extends Thread {
         private static final int UPDATE_INTERVAL = 35;
         private boolean mMouseRunning = false;
@@ -528,8 +504,7 @@ class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
 
                 if (mRenderer.x < mRenderer.width) {
                     mRenderer.width = mRenderer.x;
-                }
-                else if (mRenderer.x > mRenderer.width) {
+                } else if (mRenderer.x > mRenderer.width) {
                     mRenderer.height = src_height * mRenderer.width / src_width;
                 }
 
@@ -543,8 +518,7 @@ class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
 
                 if (!mScreenTop) {
                     mRenderer.y = (getHeight() - mRenderer.height) / 2;
-                }
-                else {
+                } else {
                     mRenderer.y = 0;
                 }
             } else {
@@ -710,8 +684,10 @@ class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
         int startLine,
         int endLine
     ) {
-        if (!mSurfaceViewRunning || (bitmap == null) || (src_width <= 0) ||
-            (src_height <= 0)) {
+        if (
+            !mSurfaceViewRunning || (bitmap == null) || (src_width <= 0) ||
+            (src_height <= 0)
+        ) {
             return;
         }
 
@@ -1141,8 +1117,10 @@ class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
     @Override
     public boolean onGenericMotionEvent(MotionEvent event) {
-        if (event.getEventTime() + EVENT_THRESHOLD_DECAY <
-            SystemClock.uptimeMillis()) {
+        if (
+            event.getEventTime() + EVENT_THRESHOLD_DECAY <
+            SystemClock.uptimeMillis()
+        ) {
             // Log.i("DosBoxTurbo","eventtime: "+event.getEventTime() + " systemtime: "+SystemClock.uptimeMillis());
             return true;                // get rid of old events
         }
@@ -1151,12 +1129,16 @@ class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
         final int pointerId =
             MotionEventCompat.getPointerId(event, pointerIndex);
 
-        if ((MotionEventCompat.getActionMasked(event) ==
+        if (
+            (MotionEventCompat.getActionMasked(event) ==
             MotionEvent.ACTION_MOVE) &&
             ((mWrap.getSource(event) & TouchEventWrapper.SOURCE_CLASS_MASK) ==
-            TouchEventWrapper.SOURCE_CLASS_JOYSTICK)) {
-            if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) &&
-                (mAnalogStickPref < 3)) {
+            TouchEventWrapper.SOURCE_CLASS_JOYSTICK)
+        ) {
+            if (
+                (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) &&
+                (mAnalogStickPref < 3)
+            ) {
                 // use new 3.1 API to handle joystick movements
                 int historySize = event.getHistorySize();
 
@@ -1183,10 +1165,12 @@ class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
                     return true;
                 }
             }
-        } else if ((MotionEventCompat.getActionMasked(event) ==
+        } else if (
+            (MotionEventCompat.getActionMasked(event) ==
             MotionEventCompat.ACTION_HOVER_MOVE) &&
             ((mWrap.getSource(event) & TouchEventWrapper.SOURCE_CLASS_MASK) ==
-            TouchEventWrapper.SOURCE_CLASS_POINTER)) {
+            TouchEventWrapper.SOURCE_CLASS_POINTER)
+        ) {
             if (mInputMode == INPUT_MODE_REAL_MOUSE) {
                 x_last[pointerId] = x[pointerId];
                 y_last[pointerId] = y[pointerId];
@@ -1216,13 +1200,17 @@ class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
 
                 int buttonState = mWrap.getButtonState(event);
 
-                if (((buttonState & TouchEventWrapper.BUTTON_SECONDARY) != 0) &&
-                    !mSPenButton) {
+                if (
+                    ((buttonState & TouchEventWrapper.BUTTON_SECONDARY) != 0) &&
+                    !mSPenButton
+                ) {
                     // Handle Samsung SPen Button (RMB) - DOWN
                     DosBoxControl.nativeMouse(0, 0, 0, 0, ACTION_DOWN, BTN_B);
                     mSPenButton = true;
-                } else if (((buttonState &
-                    TouchEventWrapper.BUTTON_SECONDARY) == 0) && mSPenButton) {
+                } else if (
+                    ((buttonState &
+                    TouchEventWrapper.BUTTON_SECONDARY) == 0) && mSPenButton
+                ) {
                     // Handle Samsung SPen Button (RMB) - UP
                     DosBoxControl.nativeMouse(0, 0, 0, 0, ACTION_UP, BTN_B);
                     mSPenButton = false;
@@ -1240,22 +1228,25 @@ class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
                 try {
                     if (!mInputLowLatency) {
                         Thread.sleep(95);
-                    }
-                    else {
+                    } else {
                         Thread.sleep(65);
                     }
                 } catch (InterruptedException e) { }
 
                 return true;
             }
-        } else if (MotionEventCompat.getActionMasked(event) ==
-            MotionEventCompat.ACTION_HOVER_EXIT) {
+        } else if (
+            MotionEventCompat.getActionMasked(event) ==
+            MotionEventCompat.ACTION_HOVER_EXIT
+        ) {
             if (mInputMode == INPUT_MODE_REAL_MOUSE) {
                 // hover exit
                 int buttonState = mWrap.getButtonState(event);
 
-                if (((buttonState & TouchEventWrapper.BUTTON_SECONDARY) == 0) &&
-                    mSPenButton) {
+                if (
+                    ((buttonState & TouchEventWrapper.BUTTON_SECONDARY) == 0) &&
+                    mSPenButton
+                ) {
                     // Handle Samsung SPen Button (RMB) - UP
                     DosBoxControl.nativeMouse(0, 0, 0, 0, ACTION_UP, BTN_B);
                     mSPenButton = false;
@@ -1300,17 +1291,24 @@ class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
                         int button = -1;
 
                         // Save the ID of this pointer
-                        if (mInputMode ==
-                            INPUT_MODE_MOUSE) { } else if (mInputMode ==
-                            INPUT_MODE_REAL_JOYSTICK) {
+                        if (
+                            mInputMode ==
+                            INPUT_MODE_MOUSE
+                        ) { } else if (
+                            mInputMode ==
+                            INPUT_MODE_REAL_JOYSTICK
+                        ) {
                             int buttonState = mWrap.getButtonState(event);
 
-                            if ((buttonState &
-                                TouchEventWrapper.BUTTON_PRIMARY) != 0) {
+                            if (
+                                (buttonState &
+                                TouchEventWrapper.BUTTON_PRIMARY) != 0
+                            ) {
                                 button = BTN_A;
-                            } else
-                            if ((buttonState &
-                                TouchEventWrapper.BUTTON_SECONDARY) != 0) {
+                            } else if (
+                                (buttonState &
+                                TouchEventWrapper.BUTTON_SECONDARY) != 0
+                            ) {
                                 button = BTN_B;
                             }
 
@@ -1323,15 +1321,17 @@ class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
                         } else if (mInputMode == INPUT_MODE_REAL_MOUSE) {
                             int buttonState = mWrap.getButtonState(event);
 
-                            if ((buttonState &
-                                TouchEventWrapper.BUTTON_PRIMARY) != 0) {
+                            if (
+                                (buttonState &
+                                TouchEventWrapper.BUTTON_PRIMARY) != 0
+                            ) {
                                 button = BTN_A;
-                            } else
-                            if ((buttonState &
-                                TouchEventWrapper.BUTTON_SECONDARY) != 0) {
+                            } else if (
+                                (buttonState &
+                                TouchEventWrapper.BUTTON_SECONDARY) != 0
+                            ) {
                                 button = BTN_B;
-                            } else
-                            if (buttonState == 0) {
+                            } else if (buttonState == 0) {
                                 // handle trackpad presses as button clicks
                                 button = BTN_A;
                             }
@@ -1466,8 +1466,7 @@ class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
                                 mTwoFingerAction = false;
                                 // return true;
                             }
-                        }
-                        else if (mInputMode == INPUT_MODE_REAL_MOUSE) {
+                        } else if (mInputMode == INPUT_MODE_REAL_MOUSE) {
                             // Log.v("Mouse","BUTTON UP: " + (mButtonDown[pointerId]));
                             DosBoxControl.nativeMouse(
                                 0,
@@ -1481,8 +1480,7 @@ class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
                             if (mWrap.getButtonState(event) > 0) {
                                 return true;                            // capture button touches, pass screen touches through to gesture detetor
                             }
-                        }
-                        else if (mInputMode == INPUT_MODE_REAL_JOYSTICK) {
+                        } else if (mInputMode == INPUT_MODE_REAL_JOYSTICK) {
                             DosBoxControl.nativeJoystick(
                                 0,
                                 0,
@@ -1510,9 +1508,11 @@ class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
                             case INPUT_MODE_MOUSE:
                             case INPUT_MODE_REAL_MOUSE:
 
-                                if (event.getEventTime() +
+                                if (
+                                    event.getEventTime() +
                                     EVENT_THRESHOLD_DECAY <
-                                    SystemClock.uptimeMillis()) {
+                                    SystemClock.uptimeMillis()
+                                ) {
                                     Log.i(
                                         "DosBoxTurbo",
                                         "eventtime: " + event.getEventTime() + " systemtime: " +
@@ -1558,8 +1558,7 @@ class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
                                 try {
                                     if (!mInputLowLatency) {
                                         Thread.sleep(95);
-                                    }
-                                    else {
+                                    } else {
                                         Thread.sleep(65);
                                     }
                                 } catch (InterruptedException e) { }
@@ -1787,8 +1786,10 @@ class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
             switch (keyCode) {
                 case KeyEvent.KEYCODE_DPAD_UP:
 
-                    if ((mInputMode == INPUT_MODE_MOUSE) ||
-                        (mInputMode == INPUT_MODE_REAL_MOUSE)) {
+                    if (
+                        (mInputMode == INPUT_MODE_MOUSE) ||
+                        (mInputMode == INPUT_MODE_REAL_MOUSE)
+                    ) {
                         y[0] -= mDpadRate;
                         DosBoxControl.nativeMouse(
                             (int) x[0],
@@ -1800,8 +1801,10 @@ class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
                         );
 
                         return true;
-                    } else if ((mInputMode == INPUT_MODE_JOYSTICK) ||
-                        (mInputMode == INPUT_MODE_REAL_JOYSTICK)) {
+                    } else if (
+                        (mInputMode == INPUT_MODE_JOYSTICK) ||
+                        (mInputMode == INPUT_MODE_REAL_JOYSTICK)
+                    ) {
                         DosBoxControl.nativeJoystick(0, -1024, 2, -1);
 
                         return true;
@@ -1810,8 +1813,10 @@ class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
                     break;
                 case KeyEvent.KEYCODE_DPAD_DOWN:
 
-                    if ((mInputMode == INPUT_MODE_MOUSE) ||
-                        (mInputMode == INPUT_MODE_REAL_MOUSE)) {
+                    if (
+                        (mInputMode == INPUT_MODE_MOUSE) ||
+                        (mInputMode == INPUT_MODE_REAL_MOUSE)
+                    ) {
                         y[0] += mDpadRate;
                         DosBoxControl.nativeMouse(
                             (int) x[0],
@@ -1823,8 +1828,10 @@ class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
                         );
 
                         return true;
-                    } else if ((mInputMode == INPUT_MODE_JOYSTICK) ||
-                        (mInputMode == INPUT_MODE_REAL_JOYSTICK)) {
+                    } else if (
+                        (mInputMode == INPUT_MODE_JOYSTICK) ||
+                        (mInputMode == INPUT_MODE_REAL_JOYSTICK)
+                    ) {
                         DosBoxControl.nativeJoystick(0, 1024, 2, -1);
 
                         return true;
@@ -1833,8 +1840,10 @@ class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
                     break;
                 case KeyEvent.KEYCODE_DPAD_LEFT:
 
-                    if ((mInputMode == INPUT_MODE_MOUSE) ||
-                        (mInputMode == INPUT_MODE_REAL_MOUSE)) {
+                    if (
+                        (mInputMode == INPUT_MODE_MOUSE) ||
+                        (mInputMode == INPUT_MODE_REAL_MOUSE)
+                    ) {
                         x[0] -= mDpadRate;
                         DosBoxControl.nativeMouse(
                             (int) x[0],
@@ -1846,8 +1855,10 @@ class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
                         );
 
                         return true;
-                    } else if ((mInputMode == INPUT_MODE_JOYSTICK) ||
-                        (mInputMode == INPUT_MODE_REAL_JOYSTICK)) {
+                    } else if (
+                        (mInputMode == INPUT_MODE_JOYSTICK) ||
+                        (mInputMode == INPUT_MODE_REAL_JOYSTICK)
+                    ) {
                         DosBoxControl.nativeJoystick(-1024, 0, 2, -1);
 
                         return true;
@@ -1856,8 +1867,10 @@ class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
                     break;
                 case KeyEvent.KEYCODE_DPAD_RIGHT:
 
-                    if ((mInputMode == INPUT_MODE_MOUSE) ||
-                        (mInputMode == INPUT_MODE_REAL_MOUSE)) {
+                    if (
+                        (mInputMode == INPUT_MODE_MOUSE) ||
+                        (mInputMode == INPUT_MODE_REAL_MOUSE)
+                    ) {
                         x[0] += mDpadRate;
                         DosBoxControl.nativeMouse(
                             (int) x[0],
@@ -1869,8 +1882,10 @@ class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
                         );
 
                         return true;
-                    } else if ((mInputMode == INPUT_MODE_JOYSTICK) ||
-                        (mInputMode == INPUT_MODE_REAL_JOYSTICK)) {
+                    } else if (
+                        (mInputMode == INPUT_MODE_JOYSTICK) ||
+                        (mInputMode == INPUT_MODE_REAL_JOYSTICK)
+                    ) {
                         DosBoxControl.nativeJoystick(1024, 0, 2, -1);
 
                         return true;
@@ -1879,13 +1894,17 @@ class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
                     break;
                 case KeyEvent.KEYCODE_DPAD_CENTER:              // button
 
-                    if ((mInputMode == INPUT_MODE_MOUSE) ||
-                        (mInputMode == INPUT_MODE_REAL_MOUSE)) {
+                    if (
+                        (mInputMode == INPUT_MODE_MOUSE) ||
+                        (mInputMode == INPUT_MODE_REAL_MOUSE)
+                    ) {
                         DosBoxControl.nativeMouse(0, 0, 0, 0, 0, BTN_A);
 
                         return true;
-                    } else if ((mInputMode == INPUT_MODE_JOYSTICK) ||
-                        (mInputMode == INPUT_MODE_REAL_JOYSTICK)) {
+                    } else if (
+                        (mInputMode == INPUT_MODE_JOYSTICK) ||
+                        (mInputMode == INPUT_MODE_REAL_JOYSTICK)
+                    ) {
                         DosBoxControl.nativeJoystick(0, 0, 0, BTN_A);
 
                         return true;
@@ -1912,19 +1931,25 @@ class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
                 case KeyEvent.KEYCODE_DPAD_LEFT:
                 case KeyEvent.KEYCODE_DPAD_RIGHT:
 
-                    if ((mInputMode == INPUT_MODE_JOYSTICK) ||
-                        (mInputMode == INPUT_MODE_REAL_JOYSTICK)) {
+                    if (
+                        (mInputMode == INPUT_MODE_JOYSTICK) ||
+                        (mInputMode == INPUT_MODE_REAL_JOYSTICK)
+                    ) {
                         DosBoxControl.nativeJoystick(0, 0, 2, -1);
                     }
 
                     return true;
                 case KeyEvent.KEYCODE_DPAD_CENTER:                      // button
 
-                    if ((mInputMode == INPUT_MODE_MOUSE) ||
-                        (mInputMode == INPUT_MODE_REAL_MOUSE)) {
+                    if (
+                        (mInputMode == INPUT_MODE_MOUSE) ||
+                        (mInputMode == INPUT_MODE_REAL_MOUSE)
+                    ) {
                         DosBoxControl.nativeMouse(0, 0, 0, 0, 1, BTN_A);
-                    } else if ((mInputMode == INPUT_MODE_JOYSTICK) ||
-                        (mInputMode == INPUT_MODE_REAL_JOYSTICK)) {
+                    } else if (
+                        (mInputMode == INPUT_MODE_JOYSTICK) ||
+                        (mInputMode == INPUT_MODE_REAL_JOYSTICK)
+                    ) {
                         DosBoxControl.nativeJoystick(0, 0, 1, BTN_A);
                     }
 
@@ -1950,8 +1975,10 @@ class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
                 // Special Sony XPeria Play case
                 if (mEnableDpad) {
                     // FIRE2
-                    if ((mInputMode == INPUT_MODE_MOUSE) ||
-                        (mInputMode == INPUT_MODE_REAL_MOUSE)) {
+                    if (
+                        (mInputMode == INPUT_MODE_MOUSE) ||
+                        (mInputMode == INPUT_MODE_REAL_MOUSE)
+                    ) {
                         DosBoxControl.nativeMouse(
                             0,
                             0,
@@ -1960,8 +1987,10 @@ class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
                             (event.getAction() == KeyEvent.ACTION_DOWN) ? 0 : 1,
                             BTN_B
                         );
-                    } else if ((mInputMode == INPUT_MODE_JOYSTICK) ||
-                        (mInputMode == INPUT_MODE_REAL_JOYSTICK)) {
+                    } else if (
+                        (mInputMode == INPUT_MODE_JOYSTICK) ||
+                        (mInputMode == INPUT_MODE_REAL_JOYSTICK)
+                    ) {
                         DosBoxControl.nativeJoystick(
                             0,
                             0,
@@ -2037,20 +2066,26 @@ class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
                     int unicode = event.getUnicodeChar();
 
                     // filter system generated keys, but not hardware keypresses
-                    if ((event.isAltPressed() || event.isShiftPressed()) &&
+                    if (
+                        (event.isAltPressed() || event.isShiftPressed()) &&
                         (unicode == 0) &&
-                        ((event.getFlags() & KeyEvent.FLAG_FROM_SYSTEM) == 0)) {
+                        ((event.getFlags() & KeyEvent.FLAG_FROM_SYSTEM) == 0)
+                    ) {
                         break;
                     }
 
                     // fixed alt key problem for physical keyboard with only left alt
-                    if ((!mUseLeftAltOn) &&
-                        (keyCode == KeyEvent.KEYCODE_ALT_LEFT)) {
+                    if (
+                        (!mUseLeftAltOn) &&
+                        (keyCode == KeyEvent.KEYCODE_ALT_LEFT)
+                    ) {
                         break;
                     }
 
-                    if ((!mUseLeftAltOn) &&
-                        (keyCode == KeyEvent.KEYCODE_SHIFT_RIGHT)) {
+                    if (
+                        (!mUseLeftAltOn) &&
+                        (keyCode == KeyEvent.KEYCODE_SHIFT_RIGHT)
+                    ) {
                         break;
                     }
 
@@ -2079,8 +2114,7 @@ class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
                             BUTTON_REPEAT_DELAY -
                             diff
                         );
-                    }
-                    else if (down && mKeyHandler.hasMessages(keyCode)) {
+                    } else if (down && mKeyHandler.hasMessages(keyCode)) {
                         if (mDebug) {
                             Log.d(
                                 "DosBoxTurbo",
@@ -2263,8 +2297,10 @@ class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
             final float density = getResources().getDisplayMetrics().density;
             int mMarginTouch = (int) (100 * density + 0.5f);                    // 100dp top margin
 
-            if (getResources().getConfiguration().orientation ==
-                Configuration.ORIENTATION_PORTRAIT) {
+            if (
+                getResources().getConfiguration().orientation ==
+                Configuration.ORIENTATION_PORTRAIT
+            ) {
                 return false;
             }
 
@@ -2338,8 +2374,10 @@ class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
             Log.i("DosBoxTurbo", "onSingleTapConfirmed()");
 
             if (mInputMode == INPUT_MODE_MOUSE) {
-                if ((mGestureSingleClick != GESTURE_NONE) &&
-                    (mGestureDoubleClick != GESTURE_NONE)) {
+                if (
+                    (mGestureSingleClick != GESTURE_NONE) &&
+                    (mGestureDoubleClick != GESTURE_NONE)
+                ) {
                     mouseClick(mGestureSingleClick - GESTURE_LEFT_CLICK);
 
                     return true;
@@ -2354,8 +2392,10 @@ class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
             Log.i("DosBoxTurbo", "onSingleTapUp()");
 
             if (mInputMode == INPUT_MODE_MOUSE) {
-                if ((mGestureDoubleClick == GESTURE_NONE) &&
-                    (mGestureSingleClick != GESTURE_NONE)) {                                                    // fishstix,fire only when doubleclick gesture is disabled
+                if (
+                    (mGestureDoubleClick == GESTURE_NONE) &&
+                    (mGestureSingleClick != GESTURE_NONE)
+                ) {                                                                                             // fishstix,fire only when doubleclick gesture is disabled
                     mouseClick(mGestureSingleClick - GESTURE_LEFT_CLICK);
 
                     return true;
@@ -2369,8 +2409,10 @@ class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
         public void onLongPress(MotionEvent event) {
             // Log.i("DosBoxTurbo","onLongPress()");
             if (mInputMode == INPUT_MODE_MOUSE) {
-                if (!mFilterLongClick && mLongPress && !mDoubleLong &&
-                    !mTwoFingerAction) {
+                if (
+                    !mFilterLongClick && mLongPress && !mDoubleLong &&
+                    !mTwoFingerAction
+                ) {
                     mLongClick = true;
 
                     if (mGestureSingleClick != GESTURE_NONE) {
@@ -2404,8 +2446,10 @@ class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
             int numAxes = 0;
 
             for (MotionRange range : device.getMotionRanges()) {
-                if ((range.getSource() & InputDevice.SOURCE_CLASS_JOYSTICK) !=
-                    0) {
+                if (
+                    (range.getSource() & InputDevice.SOURCE_CLASS_JOYSTICK) !=
+                    0
+                ) {
                     numAxes += 1;
                 }
             }
@@ -2417,8 +2461,10 @@ class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
             int i = 0;
 
             for (MotionRange range : device.getMotionRanges()) {
-                if ((range.getSource() & InputDevice.SOURCE_CLASS_JOYSTICK) !=
-                    0) {
+                if (
+                    (range.getSource() & InputDevice.SOURCE_CLASS_JOYSTICK) !=
+                    0
+                ) {
                     mAxes[i++] = range.getAxis();
                 }
             }
