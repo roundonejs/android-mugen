@@ -315,14 +315,16 @@ public class DBMenuSystem {
                 // handle autoexec
                 if (prefs.getString("dosautoexec", "-1").contains("-1")) {
                     out.println(
-                        "mount c: " + context.getMugenDataDirectory() +
+                        "mount c: " +
+                        context.mugenDirectoryCreator.getMugenDataPath() +
                         " \nc:"
                     );
                 } else {
                     out.println(
                         prefs.getString(
                             "dosautoexec",
-                            "mount c: " + context.getMugenDataDirectory() +
+                            "mount c: " +
+                            context.mugenDirectoryCreator.getMugenDataPath() +
                             " \nc:"
                         )
                     );

@@ -20,12 +20,9 @@
 package com.fishstix.dosboxfree;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.Buffer;
-import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Context;
@@ -69,7 +66,6 @@ import com.fishstix.dosboxfree.joystick.JoystickView;
 public class DBMain extends Activity {
     public static final int SPLASH_TIMEOUT_MESSAGE = -1;
     public static final String START_COMMAND_ID = "start_command";
-    private static final String MUGEN_DIRECTORY = "mugen";
     public String mConfFile = DosBoxPreferences.CONFIG_FILE;
     public String mConfPath;
     public static final int HANDLER_ADD_JOYSTICK = 20;
@@ -108,6 +104,7 @@ public class DBMain extends Activity {
     public SharedPreferences prefs;
     private static DBMain mDosBoxLauncher = null;
     public FrameLayout mFrameLayout = null;
+    public MugenDirectoryCreator mugenDirectoryCreator;
 
     public boolean mPrefScaleFilterOn = false;
     public boolean mPrefSoundModuleOn = true;
@@ -129,6 +126,10 @@ public class DBMain extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i("DosBoxTurbo", "onCreate()");
+        mugenDirectoryCreator = new MugenDirectoryCreator(
+            getAssets(),
+            getApplication().getApplicationInfo().dataDir
+        );
         mDosBoxLauncher = this;
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
@@ -185,7 +186,7 @@ public class DBMain extends Activity {
         }
 
         mSurfaceView.mGPURendering = true;
-        createMugenDirectory();
+        mugenDirectoryCreator.createMugenDirectory();
         DBMenuSystem.loadPreference(this, prefs);
 
         initDosBox();
@@ -791,102 +792,5 @@ public class DBMain extends Activity {
         }
 
         return false;
-    }
-
-    private void createMugenDirectory() {
-        String dataDirectory = getApplication().getApplicationInfo().dataDir;
-
-        if (!(new File(dataDirectory, MUGEN_DIRECTORY)).exists()) {
-            AssetManager assetManager = getAssets();
-            copyAssetsToDataDirectory(
-                assetManager,
-                dataDirectory,
-                MUGEN_DIRECTORY
-            );
-        }
-    }
-
-    private void copyAssetsToDataDirectory(
-        final AssetManager assetManager,
-        final String dataDirectory,
-        final String directoryName
-    ) {
-        createDataDirectory(dataDirectory, directoryName);
-
-        String[] files = getFilesFromAssets(assetManager, directoryName);
-
-        for (String filename : files) {
-            try {
-                copyFileFromAssetsToDataDirectory(
-                    assetManager,
-                    dataDirectory,
-                    directoryName,
-                    filename
-                );
-            } catch (IOException exception) {
-                copyAssetsToDataDirectory(
-                    assetManager,
-                    dataDirectory,
-                    directoryName + "/" + filename
-                );
-            }
-        }
-    }
-
-    private void createDataDirectory(
-        final String dataDirectory,
-        final String directoryName
-    ) {
-        File directory = new File(dataDirectory + "/" + directoryName);
-        directory.mkdir();
-    }
-
-    private String[] getFilesFromAssets(
-        final AssetManager assetManager,
-        final String directoryName
-    ) {
-        try {
-            return assetManager.list(directoryName);
-        } catch (IOException e) {
-            Log.e("DosBoxTurbo", "Failed to get asset file list.", e);
-
-            return null;
-        }
-    }
-
-    private void copyFileFromAssetsToDataDirectory(
-        final AssetManager assetManager,
-        final String dataDirectory,
-        final String directoryName,
-        final String filename
-    ) throws IOException {
-        InputStream in = assetManager.open(directoryName + "/" + filename);
-        OutputStream out = new FileOutputStream(
-            dataDirectory + "/" + directoryName + "/" + filename
-        );
-        copyFile(in, out);
-        in.close();
-        out.flush();
-        out.close();
-    }
-
-    private void copyFile(
-        final InputStream in,
-        final OutputStream out
-    ) throws IOException {
-        byte[] buffer = new byte[1024];
-        int read;
-
-        while ((read = in.read(buffer)) != -1) {
-            out.write(buffer, 0, read);
-        }
-    }
-
-    public String getMugenDataDirectory() {
-        return (
-            getApplication().getApplicationInfo().dataDir
-            + "/"
-            + MUGEN_DIRECTORY
-        );
     }
 }
