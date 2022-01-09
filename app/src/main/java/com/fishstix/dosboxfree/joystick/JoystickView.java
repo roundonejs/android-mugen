@@ -91,14 +91,6 @@ public class JoystickView extends View {
     // Center of the view in view coordinates
     private int cX, cY;
 
-    private int centerXButtons1;
-    private int centerXButtons2;
-    private int centerXButtons3;
-    private int centerYButtons1;
-    private int centerYButtons2;
-    private int centerXStart;
-    private int centerYStart;
-
     // Size of the view in view coordinates
     private int dimX, dimY;
 
@@ -287,17 +279,25 @@ public class JoystickView extends View {
 
         buttonRadius = (int) ((d * 0.15) * sizefactor);
 
-        centerXButtons1 = fulldimX - (int) (buttonRadius * 7.3);
-        centerXButtons2 = centerXButtons1 + (int) (buttonRadius * 3);
-        centerXButtons3 = centerXButtons2 + (int) (buttonRadius * 3);
+        int centerXButtons1 = fulldimX - (int) (buttonRadius * 7.3);
+        int centerXButtons2 = centerXButtons1 + (buttonRadius * 3);
+        int centerXButtons3 = centerXButtons2 + (buttonRadius * 3);
 
-        centerYButtons1 = cY - (int) (buttonRadius * 1.5);
-        centerYButtons2 = cY + (int) (buttonRadius * 1.5);
+        int centerYButtons1 = cY - (int) (buttonRadius * 1.5);
+        int centerYButtons2 = cY + (int) (buttonRadius * 1.5);
 
-        centerXStart = fulldimX / 2;
-        centerYStart = cY - (int) (buttonRadius * 2.5);
+        int centerXStart = fulldimX / 2;
+        int centerYStart = cY - (int) (buttonRadius * 2.5);
 
-        bgRadius = (int) (dimX / 2 - innerPadding);
+        buttonA.setPosition(centerXButtons1, centerYButtons1);
+        buttonB.setPosition(centerXButtons2, centerYButtons1);
+        buttonC.setPosition(centerXButtons3, centerYButtons1);
+        buttonX.setPosition(centerXButtons1, centerYButtons2);
+        buttonY.setPosition(centerXButtons2, centerYButtons2);
+        buttonZ.setPosition(centerXButtons3, centerYButtons2);
+        buttonStart.setPosition(centerXStart, centerYStart);
+
+        bgRadius = (dimX / 2) - innerPadding;
         handleRadius = (int) (d * 0.25);
         handleInnerBoundaries = handleRadius;
         movementRadius = Math.min(cX, cY) - handleInnerBoundaries;
@@ -322,7 +322,7 @@ public class JoystickView extends View {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(final Canvas canvas) {
         canvas.save();
         // Draw the background
         canvas.drawCircle(cX, cY, bgRadius, bgPaint);
@@ -332,50 +332,24 @@ public class JoystickView extends View {
         handleY = touchY + cY;
         canvas.drawCircle(handleX, handleY, handleRadius, handlePaint);
 
-        canvas.drawCircle(
-            centerXButtons1,
-            centerYButtons1,
-            buttonRadius,
-            buttonA.getPaint()
-        );
-        canvas.drawCircle(
-            centerXButtons2,
-            centerYButtons1,
-            buttonRadius,
-            buttonB.getPaint()
-        );
-        canvas.drawCircle(
-            centerXButtons3,
-            centerYButtons1,
-            buttonRadius,
-            buttonC.getPaint()
-        );
-        canvas.drawCircle(
-            centerXButtons1,
-            centerYButtons2,
-            buttonRadius,
-            buttonX.getPaint()
-        );
-        canvas.drawCircle(
-            centerXButtons2,
-            centerYButtons2,
-            buttonRadius,
-            buttonY.getPaint()
-        );
-        canvas.drawCircle(
-            centerXButtons3,
-            centerYButtons2,
-            buttonRadius,
-            buttonZ.getPaint()
-        );
-        canvas.drawCircle(
-            centerXStart,
-            centerYStart,
-            buttonRadius,
-            buttonStart.getPaint()
-        );
+        drawButton(canvas, buttonA);
+        drawButton(canvas, buttonB);
+        drawButton(canvas, buttonC);
+        drawButton(canvas, buttonX);
+        drawButton(canvas, buttonY);
+        drawButton(canvas, buttonZ);
+        drawButton(canvas, buttonStart);
 
         canvas.restore();
+    }
+
+    private void drawButton(final Canvas canvas, final JoystickButton button) {
+        canvas.drawCircle(
+            button.getX(),
+            button.getY(),
+            buttonRadius,
+            button.getPaint()
+        );
     }
 
     // Constrain touch within a box
@@ -412,36 +386,20 @@ public class JoystickView extends View {
         return pointerId;
     }
 
-    private boolean inButtonA(int x, int y) {
-        if (
-            (x <= centerXButtons1 + buttonRadius) &&
-            (x >= centerXButtons1 - buttonRadius)
-        ) {
-            if (
-                (y <= centerYButtons1 + buttonRadius) &&
-                (y >= centerYButtons1 - buttonRadius)
-            ) {
-                return true;
-            }
-        }
+    private boolean inButton(
+        final JoystickButton button,
+        final int x,
+        final int y
+    ) {
+        int buttonPositionX = button.getX();
+        int buttonPositionY = button.getY();
 
-        return false;
-    }
-
-    private boolean inButtonB(int x, int y) {
-        if (
-            (x <= centerXButtons2 + buttonRadius) &&
-            (x >= centerXButtons2 - buttonRadius)
-        ) {
-            if (
-                (y <= centerYButtons1 + buttonRadius) &&
-                (y >= centerYButtons1 - buttonRadius)
-            ) {
-                return true;
-            }
-        }
-
-        return false;
+        return (
+            (x <= buttonPositionX + buttonRadius) &&
+            (x >= buttonPositionX - buttonRadius) &&
+            (y <= buttonPositionY + buttonRadius) &&
+            (y >= buttonPositionY - buttonRadius)
+        );
     }
 
     @Override
@@ -514,7 +472,7 @@ public class JoystickView extends View {
 
                         return true;
                     }
-                } else if (inButtonA(x, y) && !buttonA.isClicked()) {
+                } else if (inButton(buttonA, x, y) && !buttonA.isClicked()) {
                     if (pointerId_butA == INVALID_POINTER_ID) {
                         // pointer within A button
                         setPointerIdButtonA(pId);
@@ -527,7 +485,7 @@ public class JoystickView extends View {
 
                         return true;
                     }
-                } else if (inButtonB(x, y) && !buttonB.isClicked()) {
+                } else if (inButton(buttonB, x, y) && !buttonB.isClicked()) {
                     if (pointerId_butB == INVALID_POINTER_ID) {
                         setPointerIdButtonB(pId);
                         buttonB.setClicked(true);

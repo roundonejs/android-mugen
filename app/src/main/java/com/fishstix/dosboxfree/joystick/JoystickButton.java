@@ -24,6 +24,8 @@ public class JoystickButton {
     private final Paint paint;
     private final Paint clickedPaint;
     private boolean clicked;
+    private int x;
+    private int y;
 
     public JoystickButton(final int color) {
         paint = JoystickHelper.createPaint(color);
@@ -49,5 +51,18 @@ public class JoystickButton {
 
     public void setClicked(final boolean buttonClicked) {
         clicked = buttonClicked;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setPosition(final int positionX, final int positionY) {
+        x = positionX;
+        y = positionY;
     }
 }
