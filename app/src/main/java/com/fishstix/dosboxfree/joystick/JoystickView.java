@@ -29,7 +29,6 @@ import com.fishstix.dosboxfree.touchevent.TouchEventWrapper;
 
 public class JoystickView extends View {
     private static final String TAG = "JoystickView";
-    public static final int INVALID_POINTER_ID = -1;
 
     private Paint bgPaint;
     private Paint handlePaint;
@@ -77,9 +76,7 @@ public class JoystickView extends View {
     private float clickThreshold;
 
     // Last touch point in view coordinates
-    private int pointerId = INVALID_POINTER_ID;
-    private int pointerId_butA = INVALID_POINTER_ID;
-    private int pointerId_butB = INVALID_POINTER_ID;
+    private int pointerId = JoystickHelper.INVALID_POINTER_ID;
     private float touchX, touchY;
 
     // Last reported position in view coordinates (allows different reporting sensitivities)
@@ -374,14 +371,6 @@ public class JoystickView extends View {
         this.pointerId = id;
     }
 
-    private void setPointerIdButtonA(int id) {
-        this.pointerId_butA = id;
-    }
-
-    private void setPointerIdButtonB(int id) {
-        this.pointerId_butB = id;
-    }
-
     public int getPointerId() {
         return pointerId;
     }
@@ -418,43 +407,40 @@ public class JoystickView extends View {
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_POINTER_UP: {
                 if (pId == this.pointerId) {
-                    if ((pointerId != INVALID_POINTER_ID) && clickedJoy) {
+                    if (
+                        (pointerId != JoystickHelper.INVALID_POINTER_ID) &&
+                        clickedJoy
+                    ) {
                         returnHandleToCenter();
                         clickedJoy = false;
-                        setPointerId(INVALID_POINTER_ID);
+                        setPointerId(JoystickHelper.INVALID_POINTER_ID);
 
                         return true;
                     }
-                } else if (pId == this.pointerId_butA) {
-                    if (
-                        (pointerId_butA != INVALID_POINTER_ID)
-                        && buttonA.isClicked()
-                    ) {
-                        buttonA.setClicked(false);
-                        setPointerIdButtonA(INVALID_POINTER_ID);
-                        invalidate();
+                } else if (
+                    (pId == buttonA.getPointerId())
+                    && buttonA.isClicked()
+                ) {
+                    buttonA.release();
+                    invalidate();
 
-                        if (clickListener != null) {
-                            clickListener.onReleased(0);
-                        }
-
-                        return true;
+                    if (clickListener != null) {
+                        clickListener.onReleased(0);
                     }
-                } else if (pId == this.pointerId_butB) {
-                    if (
-                        (pointerId_butB != INVALID_POINTER_ID)
-                        && buttonB.isClicked()
-                    ) {
-                        buttonB.setClicked(false);
-                        setPointerIdButtonB(INVALID_POINTER_ID);
-                        invalidate();
 
-                        if (clickListener != null) {
-                            clickListener.onReleased(1);
-                        }
+                    return true;
+                } else if (
+                    (pId == buttonB.getPointerId())
+                    && buttonB.isClicked()
+                ) {
+                    buttonB.release();
+                    invalidate();
 
-                        return true;
+                    if (clickListener != null) {
+                        clickListener.onReleased(1);
                     }
+
+                    return true;
                 }
 
                 break;
@@ -465,7 +451,7 @@ public class JoystickView extends View {
                 int y = (int) mWrap.getY(ev, pointerIndex);
 
                 if (((x >= offsetX) && (x < offsetX + dimX)) && !clickedJoy) {
-                    if (pointerId == INVALID_POINTER_ID) {
+                    if (pointerId == JoystickHelper.INVALID_POINTER_ID) {
                         // pointer within joystick
                         setPointerId(pId);
                         clickedJoy = true;
@@ -473,30 +459,23 @@ public class JoystickView extends View {
                         return true;
                     }
                 } else if (inButton(buttonA, x, y) && !buttonA.isClicked()) {
-                    if (pointerId_butA == INVALID_POINTER_ID) {
-                        // pointer within A button
-                        setPointerIdButtonA(pId);
-                        buttonA.setClicked(true);
-                        invalidate();
+                    buttonA.click(pId);
+                    invalidate();
 
-                        if (clickListener != null) {
-                            clickListener.onClicked(0);
-                        }
-
-                        return true;
+                    if (clickListener != null) {
+                        clickListener.onClicked(0);
                     }
+
+                    return true;
                 } else if (inButton(buttonB, x, y) && !buttonB.isClicked()) {
-                    if (pointerId_butB == INVALID_POINTER_ID) {
-                        setPointerIdButtonB(pId);
-                        buttonB.setClicked(true);
-                        invalidate();
+                    buttonB.click(pId);
+                    invalidate();
 
-                        if (clickListener != null) {
-                            clickListener.onClicked(1);
-                        }
-
-                        return true;
+                    if (clickListener != null) {
+                        clickListener.onClicked(1);
                     }
+
+                    return true;
                 }
 
                 break;
@@ -507,7 +486,7 @@ public class JoystickView extends View {
     }
 
     private boolean processMoveEvent(MotionEvent ev) {
-        if (pointerId != INVALID_POINTER_ID) {
+        if (pointerId != JoystickHelper.INVALID_POINTER_ID) {
             final int pointerIndex = mWrap.findPointerIndex(ev, pointerId);
 
             // Translate touch position to center of view

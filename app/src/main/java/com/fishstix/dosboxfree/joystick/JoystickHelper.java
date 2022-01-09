@@ -20,6 +20,8 @@ package com.fishstix.dosboxfree.joystick;
 import android.graphics.Paint;
 
 public class JoystickHelper {
+    public static final int INVALID_POINTER_ID = -1;
+
     public static Paint createPaint(final int color) {
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(color);

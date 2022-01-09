@@ -23,17 +23,18 @@ public class JoystickButton {
     private static final int CLICKED_COLOR = 0xA066FF66;
     private final Paint paint;
     private final Paint clickedPaint;
-    private boolean clicked;
     private int x;
     private int y;
+    private int pointerId;
 
     public JoystickButton(final int color) {
         paint = JoystickHelper.createPaint(color);
         clickedPaint = JoystickHelper.createPaint(CLICKED_COLOR);
+        pointerId = JoystickHelper.INVALID_POINTER_ID;
     }
 
     public Paint getPaint() {
-        if (clicked) {
+        if (isClicked()) {
             return clickedPaint;
         }
 
@@ -46,11 +47,15 @@ public class JoystickButton {
     }
 
     public boolean isClicked() {
-        return clicked;
+        return pointerId != JoystickHelper.INVALID_POINTER_ID;
     }
 
-    public void setClicked(final boolean buttonClicked) {
-        clicked = buttonClicked;
+    public void release() {
+        pointerId = JoystickHelper.INVALID_POINTER_ID;
+    }
+
+    public void click(final int newPointerId) {
+        pointerId = newPointerId;
     }
 
     public int getX() {
@@ -64,5 +69,9 @@ public class JoystickButton {
     public void setPosition(final int positionX, final int positionY) {
         x = positionX;
         y = positionY;
+    }
+
+    public int getPointerId() {
+        return pointerId;
     }
 }
