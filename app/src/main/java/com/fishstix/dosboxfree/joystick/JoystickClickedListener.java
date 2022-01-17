@@ -17,7 +17,6 @@
  */
 package com.fishstix.dosboxfree.joystick;
 
-import com.fishstix.dosboxfree.DBMenuSystem;
 import com.fishstix.dosboxfree.DosBoxControl;
 
 public class JoystickClickedListener {
@@ -25,10 +24,10 @@ public class JoystickClickedListener {
     private static final int ACTION_UP = 1;
 
     public void onClicked(final int id) {
-        DosBoxControl.nativeJoystick(0, 0, ACTION_DOWN, id);
+        DosBoxControl.sendNativeKey(id, true, false, false, false);
     }
 
     public void onReleased(final int id) {
-        DosBoxControl.nativeJoystick(0, 0, ACTION_UP, id);
+        DosBoxControl.sendNativeKey(id, false, false, false, false);
     }
 }

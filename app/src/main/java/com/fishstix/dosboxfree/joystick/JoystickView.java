@@ -29,6 +29,13 @@ import com.fishstix.dosboxfree.touchevent.TouchEventWrapper;
 
 public class JoystickView extends View {
     private static final String TAG = "JoystickView";
+    private static final int KEYCODE_A_BUTTON = 38;
+    private static final int KEYCODE_B_BUTTON = 39;
+    private static final int KEYCODE_C_BUTTON = 40;
+    private static final int KEYCODE_X_BUTTON = 49;
+    private static final int KEYCODE_Y_BUTTON = 37;
+    private static final int KEYCODE_Z_BUTTON = 43;
+    private static final int KEYCODE_START_BUTTON = 66;
 
     private Paint bgPaint;
     private Paint handlePaint;
@@ -130,13 +137,13 @@ public class JoystickView extends View {
 
         bgPaint = JoystickHelper.createPaint(0xA0888888);
         handlePaint = JoystickHelper.createPaint(0xB0444444);
-        buttonA = new JoystickButton(0xA0FF8888, 0);
-        buttonB = new JoystickButton(0xA08888FF, 0);
-        buttonC = new JoystickButton(0xA0FF8888, 0);
-        buttonX = new JoystickButton(0xA0FF8888, 0);
-        buttonY = new JoystickButton(0xA0FF8888, 0);
-        buttonZ = new JoystickButton(0xA0FF8888, 0);
-        buttonStart = new JoystickButton(0xA0FF8888, 0);
+        buttonA = new JoystickButton(0xA0FF8888, KEYCODE_A_BUTTON);
+        buttonB = new JoystickButton(0xA08888FF, KEYCODE_B_BUTTON);
+        buttonC = new JoystickButton(0xA0FF8888, KEYCODE_C_BUTTON);
+        buttonX = new JoystickButton(0xA0FF8888, KEYCODE_X_BUTTON);
+        buttonY = new JoystickButton(0xA0FF8888, KEYCODE_Y_BUTTON);
+        buttonZ = new JoystickButton(0xA0FF8888, KEYCODE_Z_BUTTON);
+        buttonStart = new JoystickButton(0xA0FF8888, KEYCODE_START_BUTTON);
 
         innerPadding = 10;
 
