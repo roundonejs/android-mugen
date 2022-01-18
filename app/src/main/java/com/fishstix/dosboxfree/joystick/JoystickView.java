@@ -166,14 +166,14 @@ public class JoystickView extends View {
         );
 
         buttons = new JoystickButton[] {
-            buttonF1,
-            buttonA,
-            buttonB,
-            buttonC,
             buttonStart,
             buttonX,
             buttonY,
-            buttonZ
+            buttonZ,
+            buttonF1,
+            buttonA,
+            buttonB,
+            buttonC
         };
 
 
