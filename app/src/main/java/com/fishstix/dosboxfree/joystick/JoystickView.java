@@ -25,6 +25,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.fishstix.dosboxfree.DosBoxControl;
 import com.fishstix.dosboxfree.touchevent.TouchEventWrapper;
 
 public class JoystickView extends View {
@@ -51,9 +52,6 @@ public class JoystickView extends View {
     private int handleInnerBoundaries;
 
     private JoystickMovedListener moveListener;
-    private final JoystickClickedListener clickListener = (
-        new JoystickClickedListener()
-    );
 
     // # of pixels movement required between reporting to the listener
     private float moveResolution;
@@ -488,7 +486,13 @@ public class JoystickView extends View {
             button.release();
             invalidate();
 
-            clickListener.onReleased(button.getKey());
+            DosBoxControl.sendNativeKey(
+                button.getKey(),
+                false,
+                false,
+                false,
+                false
+            );
 
             return true;
         }
@@ -506,7 +510,13 @@ public class JoystickView extends View {
             button.click(pId);
             invalidate();
 
-            clickListener.onClicked(button.getKey());
+            DosBoxControl.sendNativeKey(
+                button.getKey(),
+                true,
+                false,
+                false,
+                false
+            );
 
             return true;
         }
