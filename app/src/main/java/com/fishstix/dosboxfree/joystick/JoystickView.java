@@ -36,6 +36,7 @@ public class JoystickView extends View {
     private static final int KEYCODE_Y_BUTTON = 37;
     private static final int KEYCODE_Z_BUTTON = 43;
     private static final int KEYCODE_START_BUTTON = 66;
+    private static final int KEYCODE_F1_BUTTON = 131;
 
     private Paint bgPaint;
     private Paint handlePaint;
@@ -159,9 +160,20 @@ public class JoystickView extends View {
             0xA0FF8888,
             KEYCODE_START_BUTTON
         );
+        JoystickButton buttonF1 = new JoystickButton(
+            0xA0FF8888,
+            KEYCODE_F1_BUTTON
+        );
 
         buttons = new JoystickButton[] {
-            buttonA, buttonB, buttonC, buttonX, buttonY, buttonZ, buttonStart
+            buttonF1,
+            buttonA,
+            buttonB,
+            buttonC,
+            buttonStart,
+            buttonX,
+            buttonY,
+            buttonZ
         };
 
 
@@ -298,27 +310,21 @@ public class JoystickView extends View {
         cX = d / 2;
         cY = d / 2;
 
-        buttonRadius = (int) ((d * 0.15) * sizefactor);
+        buttonRadius = (int) ((d * 0.125) * sizefactor);
 
-        int centerXButton = fulldimX - (int) (buttonRadius * 7.3);
+        int centerXButton = fulldimX - (int) (buttonRadius * 9.3);
         int[] centerYButtons = new int[2];
         centerYButtons[0] = cY - (int) (buttonRadius * 1.5);
         centerYButtons[1] = cY + (int) (buttonRadius * 1.5);
 
         for (int i = 0, length = buttons.length / 2; i < length; i++) {
             for (int j = 0; j < 2; j++) {
-                JoystickButton button = buttons[j * 3 + i];
+                JoystickButton button = buttons[(j * length) + i];
                 button.setPosition(centerXButton, centerYButtons[j]);
             }
 
-            centerXButton += buttonRadius * 3;
+            centerXButton += (int) (buttonRadius * 2.75);
         }
-
-        int centerXStart = fulldimX / 2;
-        int centerYStart = cY - (int) (buttonRadius * 2.5);
-
-        JoystickButton buttonStart = buttons[buttons.length - 1];
-        buttonStart.setPosition(centerXStart, centerYStart);
 
         bgRadius = (dimX / 2) - innerPadding;
         handleRadius = (int) (d * 0.25);
