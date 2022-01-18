@@ -40,13 +40,7 @@ public class JoystickView extends View {
     private Paint bgPaint;
     private Paint handlePaint;
 
-    private JoystickButton buttonA;
-    private JoystickButton buttonB;
-    private JoystickButton buttonC;
-    private JoystickButton buttonX;
-    private JoystickButton buttonY;
-    private JoystickButton buttonZ;
-    private JoystickButton buttonStart;
+    private JoystickButton[] buttons;
 
     private int innerPadding;
     private int bgRadius;
@@ -137,13 +131,39 @@ public class JoystickView extends View {
 
         bgPaint = JoystickHelper.createPaint(0xA0888888);
         handlePaint = JoystickHelper.createPaint(0xB0444444);
-        buttonA = new JoystickButton(0xA0FF8888, KEYCODE_A_BUTTON);
-        buttonB = new JoystickButton(0xA08888FF, KEYCODE_B_BUTTON);
-        buttonC = new JoystickButton(0xA0FF8888, KEYCODE_C_BUTTON);
-        buttonX = new JoystickButton(0xA0FF8888, KEYCODE_X_BUTTON);
-        buttonY = new JoystickButton(0xA0FF8888, KEYCODE_Y_BUTTON);
-        buttonZ = new JoystickButton(0xA0FF8888, KEYCODE_Z_BUTTON);
-        buttonStart = new JoystickButton(0xA0FF8888, KEYCODE_START_BUTTON);
+        JoystickButton buttonA = new JoystickButton(
+            0xA0FF8888,
+            KEYCODE_A_BUTTON
+        );
+        JoystickButton buttonB = new JoystickButton(
+            0xA08888FF,
+            KEYCODE_B_BUTTON
+        );
+        JoystickButton buttonC = new JoystickButton(
+            0xA0FF8888,
+            KEYCODE_C_BUTTON
+        );
+        JoystickButton buttonX = new JoystickButton(
+            0xA0FF8888,
+            KEYCODE_X_BUTTON
+        );
+        JoystickButton buttonY = new JoystickButton(
+            0xA0FF8888,
+            KEYCODE_Y_BUTTON
+        );
+        JoystickButton buttonZ = new JoystickButton(
+            0xA0FF8888,
+            KEYCODE_Z_BUTTON
+        );
+        JoystickButton buttonStart = new JoystickButton(
+            0xA0FF8888,
+            KEYCODE_START_BUTTON
+        );
+
+        buttons = new JoystickButton[] {
+            buttonA, buttonB, buttonC, buttonX, buttonY, buttonZ, buttonStart
+        };
+
 
         innerPadding = 10;
 
@@ -236,13 +256,10 @@ public class JoystickView extends View {
     public void setTransparency(int val) {
         bgPaint.setAlpha(255 - val);
         handlePaint.setAlpha(255 - val);
-        buttonA.setAlpha(255 - val);
-        buttonB.setAlpha(255 - val);
-        buttonC.setAlpha(255 - val);
-        buttonX.setAlpha(255 - val);
-        buttonY.setAlpha(255 - val);
-        buttonZ.setAlpha(255 - val);
-        buttonStart.setAlpha(255 - val);
+
+        for (JoystickButton button : buttons) {
+            button.setAlpha(255 - val);
+        }
     }
 
     public void setSize(int val) {
@@ -283,22 +300,24 @@ public class JoystickView extends View {
 
         buttonRadius = (int) ((d * 0.15) * sizefactor);
 
-        int centerXButtons1 = fulldimX - (int) (buttonRadius * 7.3);
-        int centerXButtons2 = centerXButtons1 + (buttonRadius * 3);
-        int centerXButtons3 = centerXButtons2 + (buttonRadius * 3);
+        int centerXButton = fulldimX - (int) (buttonRadius * 7.3);
+        int[] centerYButtons = new int[2];
+        centerYButtons[0] = cY - (int) (buttonRadius * 1.5);
+        centerYButtons[1] = cY + (int) (buttonRadius * 1.5);
 
-        int centerYButtons1 = cY - (int) (buttonRadius * 1.5);
-        int centerYButtons2 = cY + (int) (buttonRadius * 1.5);
+        for (int i = 0, length = buttons.length / 2; i < length; i++) {
+            for (int j = 0; j < 2; j++) {
+                JoystickButton button = buttons[j * 3 + i];
+                button.setPosition(centerXButton, centerYButtons[j]);
+            }
+
+            centerXButton += buttonRadius * 3;
+        }
 
         int centerXStart = fulldimX / 2;
         int centerYStart = cY - (int) (buttonRadius * 2.5);
 
-        buttonA.setPosition(centerXButtons1, centerYButtons1);
-        buttonB.setPosition(centerXButtons2, centerYButtons1);
-        buttonC.setPosition(centerXButtons3, centerYButtons1);
-        buttonX.setPosition(centerXButtons1, centerYButtons2);
-        buttonY.setPosition(centerXButtons2, centerYButtons2);
-        buttonZ.setPosition(centerXButtons3, centerYButtons2);
+        JoystickButton buttonStart = buttons[buttons.length - 1];
         buttonStart.setPosition(centerXStart, centerYStart);
 
         bgRadius = (dimX / 2) - innerPadding;
@@ -336,13 +355,9 @@ public class JoystickView extends View {
         handleY = touchY + cY;
         canvas.drawCircle(handleX, handleY, handleRadius, handlePaint);
 
-        drawButton(canvas, buttonA);
-        drawButton(canvas, buttonB);
-        drawButton(canvas, buttonC);
-        drawButton(canvas, buttonX);
-        drawButton(canvas, buttonY);
-        drawButton(canvas, buttonZ);
-        drawButton(canvas, buttonStart);
+        for (JoystickButton button : buttons) {
+            drawButton(canvas, button);
+        }
 
         canvas.restore();
     }
@@ -426,15 +441,13 @@ public class JoystickView extends View {
                     }
                 }
 
-                return (
-                    releaseButton(buttonA, pId)
-                    || releaseButton(buttonB, pId)
-                    || releaseButton(buttonC, pId)
-                    || releaseButton(buttonX, pId)
-                    || releaseButton(buttonY, pId)
-                    || releaseButton(buttonZ, pId)
-                    || releaseButton(buttonStart, pId)
-                );
+                for (JoystickButton button : buttons) {
+                    if (releaseButton(button, pId)) {
+                        return true;
+                    }
+                }
+
+                return false;
             }
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_POINTER_DOWN: {
@@ -451,15 +464,13 @@ public class JoystickView extends View {
                     }
                 }
 
-                return (
-                    clickButton(buttonA, pId, x, y)
-                    || clickButton(buttonB, pId, x, y)
-                    || clickButton(buttonC, pId, x, y)
-                    || clickButton(buttonX, pId, x, y)
-                    || clickButton(buttonY, pId, x, y)
-                    || clickButton(buttonZ, pId, x, y)
-                    || clickButton(buttonStart, pId, x, y)
-                );
+                for (JoystickButton button : buttons) {
+                    if (clickButton(button, pId, x, y)) {
+                        return true;
+                    }
+                }
+
+                return false;
             }
         }
 
