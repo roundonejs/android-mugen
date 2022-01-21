@@ -41,12 +41,7 @@ public class JoystickView extends View {
     private JoystickDirectional directional;
     private JoystickButton[] buttons;
 
-    private int innerPadding;
-    private int bgRadius;
-    private int handleRadius;
     private int buttonRadius;
-    private int movementRadius;
-    private int handleInnerBoundaries;
 
     private JoystickMovedListener moveListener;
 
@@ -163,9 +158,6 @@ public class JoystickView extends View {
             buttonB,
             buttonC
         };
-
-
-        innerPadding = 10;
 
         setMovementRange(256);
         setMoveResolution(1.0f);
@@ -312,11 +304,6 @@ public class JoystickView extends View {
 
             centerXButton += (int) (buttonRadius * 2.75);
         }
-
-        bgRadius = (dimX / 2) - innerPadding;
-        handleRadius = (int) (d * 0.25);
-        handleInnerBoundaries = handleRadius;
-        movementRadius = centerViewPosition - handleInnerBoundaries;
     }
 
     private int measure(int measureSpec) {
@@ -356,7 +343,7 @@ public class JoystickView extends View {
         canvas.drawCircle(
             backgroundPosition,
             backgroundPosition,
-            bgRadius,
+            directional.getBackgroundRadius(),
             directional.getBackground()
         );
 
@@ -366,7 +353,7 @@ public class JoystickView extends View {
         canvas.drawCircle(
             handleX,
             handleY,
-            handleRadius,
+            directional.getHandleRadius(),
             directional.getHandle()
         );
     }
@@ -382,6 +369,7 @@ public class JoystickView extends View {
 
     // Constrain touch within a box
     private void constrainBox() {
+        int movementRadius = directional.getHandleRadius();
         touchX = Math.max(Math.min(touchX, movementRadius), -movementRadius);
         touchY = Math.max(Math.min(touchY, movementRadius), -movementRadius);
     }
@@ -391,6 +379,7 @@ public class JoystickView extends View {
         float diffX = touchX;
         float diffY = touchY;
         double radial = Math.sqrt((diffX * diffX) + (diffY * diffY));
+        int movementRadius = directional.getHandleRadius();
 
         if (radial > movementRadius) {
             touchX = (int) ((diffX / radial) * movementRadius);
@@ -573,6 +562,7 @@ public class JoystickView extends View {
 
     private void calcUserCoordinates() {
         // First convert to cartesian coordinates
+        int movementRadius = directional.getHandleRadius();
         cartX = (int) (touchX / movementRadius * movementRange);
         cartY = (int) (touchY / movementRadius * movementRange);
 

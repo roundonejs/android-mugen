@@ -3,6 +3,7 @@ package com.fishstix.dosboxfree.joystick;
 import android.graphics.Paint;
 
 public class JoystickDirectional {
+    private static final int INNER_PADDING = 10;
     private final Paint backgroudPaint;
     private final Paint handlePaint;
     private int backgroundPosition;
@@ -31,5 +32,13 @@ public class JoystickDirectional {
 
     public int getBackgroundPosition() {
         return backgroundPosition;
+    }
+
+    public int getBackgroundRadius() {
+        return backgroundPosition - INNER_PADDING;
+    }
+
+    public int getHandleRadius() {
+        return backgroundPosition / 2;
     }
 }
