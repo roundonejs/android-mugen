@@ -19,7 +19,6 @@ package com.fishstix.dosboxfree.joystick;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -39,9 +38,7 @@ public class JoystickView extends View {
     private static final int KEYCODE_START_BUTTON = 66;
     private static final int KEYCODE_F1_BUTTON = 131;
 
-    private Paint bgPaint;
-    private Paint handlePaint;
-
+    private JoystickDirectional directional;
     private JoystickButton[] buttons;
 
     private int innerPadding;
@@ -128,8 +125,7 @@ public class JoystickView extends View {
     private void initJoystickView() {
         setFocusable(true);
 
-        bgPaint = JoystickHelper.createPaint(0xA0888888);
-        handlePaint = JoystickHelper.createPaint(0xB0444444);
+        directional = new JoystickDirectional();
         JoystickButton buttonA = new JoystickButton(
             0xA0FF8888,
             KEYCODE_A_BUTTON
@@ -264,8 +260,7 @@ public class JoystickView extends View {
     }
 
     public void setTransparency(int val) {
-        bgPaint.setAlpha(255 - val);
-        handlePaint.setAlpha(255 - val);
+        directional.setAlpha(255 - val);
 
         for (JoystickButton button : buttons) {
             button.setAlpha(255 - val);
@@ -352,12 +347,17 @@ public class JoystickView extends View {
     protected void onDraw(final Canvas canvas) {
         canvas.save();
         // Draw the background
-        canvas.drawCircle(cX, cY, bgRadius, bgPaint);
+        canvas.drawCircle(cX, cY, bgRadius, directional.getBackground());
 
         // Draw the handle
         handleX = touchX + cX;
         handleY = touchY + cY;
-        canvas.drawCircle(handleX, handleY, handleRadius, handlePaint);
+        canvas.drawCircle(
+            handleX,
+            handleY,
+            handleRadius,
+            directional.getHandle()
+        );
 
         for (JoystickButton button : buttons) {
             drawButton(canvas, button);
