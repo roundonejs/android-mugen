@@ -79,12 +79,6 @@ public class JoystickView extends View {
     // Last reported position in view coordinates (allows different reporting sensitivities)
     private float reportX, reportY;
 
-    // Handle center in view coordinates
-    private float handleX, handleY;
-
-    // Center of the view in view coordinates
-    private int cX, cY;
-
     // Size of the view in view coordinates
     private int dimX, dimY;
 
@@ -300,15 +294,15 @@ public class JoystickView extends View {
         dimX = d;
         dimY = d;
 
-        cX = d / 2;
-        cY = d / 2;
+        int centerViewPosition = d / 2;
+        directional.setBackgroundPosition(centerViewPosition);
 
         buttonRadius = (int) ((d * 0.125) * sizefactor);
 
         int centerXButton = fulldimX - (int) (buttonRadius * 9.3);
         int[] centerYButtons = new int[2];
-        centerYButtons[0] = cY - (int) (buttonRadius * 1.5);
-        centerYButtons[1] = cY + (int) (buttonRadius * 1.5);
+        centerYButtons[0] = centerViewPosition - (int) (buttonRadius * 1.5);
+        centerYButtons[1] = centerViewPosition + (int) (buttonRadius * 1.5);
 
         for (int i = 0, length = buttons.length / 2; i < length; i++) {
             for (int j = 0; j < 2; j++) {
@@ -322,7 +316,7 @@ public class JoystickView extends View {
         bgRadius = (dimX / 2) - innerPadding;
         handleRadius = (int) (d * 0.25);
         handleInnerBoundaries = handleRadius;
-        movementRadius = Math.min(cX, cY) - handleInnerBoundaries;
+        movementRadius = centerViewPosition - handleInnerBoundaries;
     }
 
     private int measure(int measureSpec) {
@@ -346,24 +340,35 @@ public class JoystickView extends View {
     @Override
     protected void onDraw(final Canvas canvas) {
         canvas.save();
-        // Draw the background
-        canvas.drawCircle(cX, cY, bgRadius, directional.getBackground());
 
-        // Draw the handle
-        handleX = touchX + cX;
-        handleY = touchY + cY;
-        canvas.drawCircle(
-            handleX,
-            handleY,
-            handleRadius,
-            directional.getHandle()
-        );
+        drawDirectional(canvas);
 
         for (JoystickButton button : buttons) {
             drawButton(canvas, button);
         }
 
         canvas.restore();
+    }
+
+    private void drawDirectional(final Canvas canvas) {
+        int backgroundPosition = directional.getBackgroundPosition();
+        // Draw the background
+        canvas.drawCircle(
+            backgroundPosition,
+            backgroundPosition,
+            bgRadius,
+            directional.getBackground()
+        );
+
+        // Draw the handle
+        float handleX = touchX + backgroundPosition;
+        float handleY = touchY + backgroundPosition;
+        canvas.drawCircle(
+            handleX,
+            handleY,
+            handleRadius,
+            directional.getHandle()
+        );
     }
 
     private void drawButton(final Canvas canvas, final JoystickButton button) {
@@ -526,13 +531,14 @@ public class JoystickView extends View {
 
     private boolean processMoveEvent(MotionEvent ev) {
         if (pointerId != JoystickHelper.INVALID_POINTER_ID) {
+            int backgroundPosition = directional.getBackgroundPosition();
             final int pointerIndex = mWrap.findPointerIndex(ev, pointerId);
 
             // Translate touch position to center of view
             float x = mWrap.getX(ev, pointerIndex);
-            touchX = x - cX - offsetX;
+            touchX = x - backgroundPosition - offsetX;
             float y = mWrap.getY(ev, pointerIndex);
-            touchY = y - cY - offsetY;
+            touchY = y - backgroundPosition - offsetY;
 
             reportOnMoved();
             invalidate();
