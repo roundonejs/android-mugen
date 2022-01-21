@@ -165,6 +165,7 @@ public class JoystickView extends View {
         setYAxisInverted(true);
         setUserCoordinateSystem(COORDINATE_CARTESIAN);
         setAutoReturnToCenter(true);
+        moveListener = new JoystickMovedListener();
     }
 
     public void setAutoReturnToCenter(boolean autoReturnToCenter) {
@@ -255,10 +256,6 @@ public class JoystickView extends View {
 
     public void setSize(int val) {
         sizefactor = (((double) val + 1) / 6d) - ((val - 5) * 0.12);
-    }
-
-    public void setOnJostickMovedListener(JoystickMovedListener listener) {
-        this.moveListener = listener;
     }
 
     @Override
@@ -547,16 +544,14 @@ public class JoystickView extends View {
 
         calcUserCoordinates();
 
-        if (moveListener != null) {
-            boolean rx = Math.abs(touchX - reportX) >= moveResolution;
-            boolean ry = Math.abs(touchY - reportY) >= moveResolution;
+        boolean rx = Math.abs(touchX - reportX) >= moveResolution;
+        boolean ry = Math.abs(touchY - reportY) >= moveResolution;
 
-            if (rx || ry) {
-                this.reportX = touchX;
-                this.reportY = touchY;
+        if (rx || ry) {
+            this.reportX = touchX;
+            this.reportY = touchY;
 
-                moveListener.OnMoved(userX, userY);
-            }
+            moveListener.onMoved(userX, userY);
         }
     }
 
@@ -615,8 +610,8 @@ public class JoystickView extends View {
                         reportOnMoved();
                         invalidate();
 
-                        if ((moveListener != null) && (j == numberOfFrames - 1)) {
-                            moveListener.OnReturnedToCenter();
+                        if (j == (numberOfFrames - 1)) {
+                            moveListener.onReturnedToCenter();
                         }
                     }
                 },
@@ -624,9 +619,7 @@ public class JoystickView extends View {
                 );
             }
 
-            if (moveListener != null) {
-                moveListener.OnReleased();
-            }
+            moveListener.onReleased();
         }
     }
 

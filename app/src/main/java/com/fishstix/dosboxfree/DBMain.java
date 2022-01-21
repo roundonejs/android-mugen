@@ -612,9 +612,6 @@ public class DBMain extends Activity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case HANDLER_ADD_JOYSTICK:
-                    mJoystickView.setOnJostickMovedListener(
-                        mSurfaceView._listener
-                    );
                     mJoystickView.setVisibility(View.VISIBLE);
 
                     DBMenuSystem.saveBooleanPreference(
@@ -625,7 +622,6 @@ public class DBMain extends Activity {
 
                     break;
                 case HANDLER_REMOVE_JOYSTICK:
-                    mJoystickView.setOnJostickMovedListener(null);
                     mJoystickView.setVisibility(View.GONE);
 
                     DBMenuSystem.saveBooleanPreference(

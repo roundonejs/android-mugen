@@ -549,13 +549,6 @@ public class DBMenuSystem {
         context.mSurfaceView.mJoyCenterY =
             (prefs.getInt("confjoyy", 100) - 100) + JOYSTICK_CENTER_Y;
 
-        // Joystick Mouse Emulation
-        if (prefs.getBoolean("confjoymousemode", false)) {
-            context.mSurfaceView.mJoyEmuMouse = true;
-        } else {
-            context.mSurfaceView.mJoyEmuMouse = false;
-        }
-
         // Mouse Tracking Mode
         if (Integer.valueOf(prefs.getString("confmousetracking", "0")) == 0) {
             // absolute tracking

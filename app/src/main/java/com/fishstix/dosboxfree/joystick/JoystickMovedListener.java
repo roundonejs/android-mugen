@@ -1,6 +1,6 @@
 /*
  *  Copyright (C) 2012 Fishstix (Gene Ruebsamen - ruebsamen.gene@gmail.com)
- *  
+ *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
@@ -17,8 +17,22 @@
  */
 package com.fishstix.dosboxfree.joystick;
 
-public interface JoystickMovedListener {
-        public void OnMoved(int pan, int tilt);
-        public void OnReleased();
-        public void OnReturnedToCenter();
+import com.fishstix.dosboxfree.DBGLSurfaceView;
+import com.fishstix.dosboxfree.DosBoxControl;
+
+public class JoystickMovedListener {
+    public void onMoved(final int pan, final int tilt) {
+        DosBoxControl.nativeJoystick(
+            pan,
+            tilt,
+            DBGLSurfaceView.ACTION_MOVE,
+            -1
+        );
+    }
+
+    public void onReleased() { }
+
+    public void onReturnedToCenter() {
+        DosBoxControl.nativeJoystick(0, 0, DBGLSurfaceView.ACTION_MOVE, -1);
+    }
 }

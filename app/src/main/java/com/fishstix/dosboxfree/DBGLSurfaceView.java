@@ -56,11 +56,11 @@ import android.view.inputmethod.InputConnection;
 import android.widget.Toast;
 
 import com.fishstix.dosboxfree.dosboxprefs.DosBoxPreferences;
-import com.fishstix.dosboxfree.joystick.JoystickMovedListener;
 import com.fishstix.dosboxfree.touchevent.TouchEventWrapper;
 
 
-class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
+public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
+    Callback {
     private final static int DEFAULT_WIDTH = 512;    // 800;
     private final static int DEFAULT_HEIGHT = 512;    // 600;
     public int mJoyCenterX = 0;
@@ -94,7 +94,6 @@ class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
     boolean mScale = false;
     int mInputMode = INPUT_MODE_MOUSE;
     boolean mEnableDpad = false;
-    boolean mJoyEmuMouse = false;
     boolean mAbsolute = true;
     boolean mInputLowLatency = false;
     boolean mUseLeftAltOn = false;
@@ -372,44 +371,6 @@ class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback {
         mMouseThread = null;
         mKeyHandler = null;
     }
-
-    public JoystickMovedListener _listener = new JoystickMovedListener() {
-        @Override
-        public void OnMoved(int pan, int tilt) {
-            if (!mJoyEmuMouse) {
-                DosBoxControl.nativeJoystick(
-                    (int) (pan),
-                    (int) (tilt),
-                    ACTION_MOVE,
-                    -1
-                );
-            } else {
-                mMouseThread.setCoord(
-                    (int) ((Math.abs(pan * 0.3) >
-                    DEADZONE) ? (-pan * mMouseSensitivityX * 0.20) : 0),
-                    (int) ((Math.abs(tilt * 0.3) >
-                    DEADZONE) ? (-tilt * mMouseSensitivityY * 0.20) : 0)
-                );
-            }
-        }
-
-        @Override
-        public void OnReleased() { }
-
-        @Override
-        public void OnReturnedToCenter() {
-            if (!mJoyEmuMouse) {
-                DosBoxControl.nativeJoystick(
-                    mJoyCenterX,
-                    mJoyCenterY,
-                    ACTION_MOVE,
-                    -1
-                );
-            } else {
-                mMouseThread.setCoord(0, 0);
-            }
-        };
-    };
 
     class DosBoxMouseThread extends Thread {
         private static final int UPDATE_INTERVAL = 35;
