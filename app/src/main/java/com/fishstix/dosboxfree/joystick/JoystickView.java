@@ -51,7 +51,6 @@ public class JoystickView extends View {
     private boolean clickedJoy = false;
 
     // Last touch point in view coordinates
-    private int pointerId = JoystickHelper.INVALID_POINTER_ID;
     private float touchX, touchY;
 
     // Last reported position in view coordinates (allows different reporting sensitivities)
@@ -257,14 +256,6 @@ public class JoystickView extends View {
         );
     }
 
-    public void setPointerId(int id) {
-        this.pointerId = id;
-    }
-
-    public int getPointerId() {
-        return pointerId;
-    }
-
     private boolean inButton(
         final JoystickButton button,
         final int x,
@@ -385,10 +376,13 @@ public class JoystickView extends View {
         return false;
     }
 
-    private boolean processMoveEvent(MotionEvent ev) {
-        if (pointerId != JoystickHelper.INVALID_POINTER_ID) {
+    private boolean processMoveEvent(final MotionEvent ev) {
+        if (directional.isClicked()) {
             int backgroundPosition = directional.getBackgroundPosition();
-            final int pointerIndex = mWrap.findPointerIndex(ev, pointerId);
+            int pointerIndex = mWrap.findPointerIndex(
+                ev,
+                directional.getPointerId()
+            );
 
             // Translate touch position to center of view
             float x = mWrap.getX(ev, pointerIndex);
