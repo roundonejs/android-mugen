@@ -30,6 +30,7 @@ import com.fishstix.dosboxfree.touchevent.TouchEventWrapper;
 public class JoystickView extends View {
     private static final String TAG = "JoystickView";
     private static final int NUMBER_OF_FRAMES = 5;
+    private static final float MOVEMENT_RANGE = 256;
     private static final int KEYCODE_A_BUTTON = 38;
     private static final int KEYCODE_B_BUTTON = 39;
     private static final int KEYCODE_C_BUTTON = 40;
@@ -53,7 +54,6 @@ public class JoystickView extends View {
     public final static int CONSTRAIN_BOX = 0;
     public final static int CONSTRAIN_CIRCLE = 1;
     private int movementConstraint;
-    private float movementRange;
 
     // Records touch pressure for click handling
     private boolean clickedJoy = false;
@@ -144,7 +144,6 @@ public class JoystickView extends View {
             buttonC
         };
 
-        setMovementRange(256);
         setMoveResolution(1.0f);
         moveListener = new JoystickMovedListener();
     }
@@ -162,14 +161,6 @@ public class JoystickView extends View {
 
     public int getMovementConstraint() {
         return movementConstraint;
-    }
-
-    public void setMovementRange(float movementRange) {
-        this.movementRange = movementRange;
-    }
-
-    public float getMovementRange() {
-        return movementRange;
     }
 
     public void setMoveResolution(float moveResolution) {
@@ -492,8 +483,8 @@ public class JoystickView extends View {
     private void calcUserCoordinates() {
         // First convert to cartesian coordinates
         int movementRadius = directional.getHandleRadius();
-        cartX = (int) (touchX / movementRadius * movementRange);
-        cartY = (int) (-touchY / movementRadius * movementRange);
+        cartX = (int) (touchX / movementRadius * MOVEMENT_RANGE);
+        cartY = (int) (-touchY / movementRadius * MOVEMENT_RANGE);
     }
 
     private void returnHandleToCenter() {
