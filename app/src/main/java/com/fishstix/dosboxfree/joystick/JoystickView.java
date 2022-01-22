@@ -64,10 +64,6 @@ public class JoystickView extends View {
     // Cartesian coordinates of last touch point - joystick center is (0,0)
     private int cartX, cartY;
 
-    // Offset co-ordinates (used when touch events are received from parent's coordinate origin)
-    private int offsetX;
-    private int offsetY;
-
     private double sizefactor = 1.0;
 
     private TouchEventWrapper mWrap = TouchEventWrapper.newInstance();
@@ -310,11 +306,7 @@ public class JoystickView extends View {
                 int x = (int) mWrap.getX(ev, pointerIndex);
                 int y = (int) mWrap.getY(ev, pointerIndex);
 
-                if (
-                    (x >= offsetX)
-                    && (x < offsetX + dimX)
-                    && !directional.isClicked()
-                ) {
+                if ((x >= 0) && (x < dimX) && !directional.isClicked()) {
                     directional.click(pId);
 
                     return true;
@@ -386,9 +378,9 @@ public class JoystickView extends View {
 
             // Translate touch position to center of view
             float x = mWrap.getX(ev, pointerIndex);
-            touchX = x - backgroundPosition - offsetX;
+            touchX = x - backgroundPosition;
             float y = mWrap.getY(ev, pointerIndex);
-            touchY = y - backgroundPosition - offsetY;
+            touchY = y - backgroundPosition;
 
             reportOnMoved();
             invalidate();
@@ -452,10 +444,5 @@ public class JoystickView extends View {
         }
 
         moveListener.onReleased();
-    }
-
-    public void setTouchOffset(int x, int y) {
-        offsetX = x;
-        offsetY = y;
     }
 }
