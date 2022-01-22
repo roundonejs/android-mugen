@@ -20,7 +20,6 @@ package com.fishstix.dosboxfree.joystick;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -47,11 +46,6 @@ public class JoystickView extends View {
     private int buttonRadius;
 
     private JoystickMovedListener moveListener;
-
-    // Max range of movement in user coordinate system
-    public final static int CONSTRAIN_BOX = 0;
-    public final static int CONSTRAIN_CIRCLE = 1;
-    private int movementConstraint;
 
     // Records touch pressure for click handling
     private boolean clickedJoy = false;
@@ -143,21 +137,6 @@ public class JoystickView extends View {
         };
 
         moveListener = new JoystickMovedListener();
-    }
-
-    public void setMovementConstraint(int movementConstraint) {
-        if (
-            (movementConstraint < CONSTRAIN_BOX) ||
-            (movementConstraint > CONSTRAIN_CIRCLE)
-        ) {
-            Log.e(TAG, "invalid value for movementConstraint");
-        } else {
-            this.movementConstraint = movementConstraint;
-        }
-    }
-
-    public int getMovementConstraint() {
-        return movementConstraint;
     }
 
     public void setTransparency(int val) {
@@ -276,26 +255,6 @@ public class JoystickView extends View {
             buttonRadius,
             button.getPaint()
         );
-    }
-
-    // Constrain touch within a box
-    private void constrainBox() {
-        int movementRadius = directional.getHandleRadius();
-        touchX = Math.max(Math.min(touchX, movementRadius), -movementRadius);
-        touchY = Math.max(Math.min(touchY, movementRadius), -movementRadius);
-    }
-
-    // Constrain touch within a circle
-    private void constrainCircle() {
-        float diffX = touchX;
-        float diffY = touchY;
-        double radial = Math.sqrt((diffX * diffX) + (diffY * diffY));
-        int movementRadius = directional.getHandleRadius();
-
-        if (radial > movementRadius) {
-            touchX = (int) ((diffX / radial) * movementRadius);
-            touchY = (int) ((diffY / radial) * movementRadius);
-        }
     }
 
     public void setPointerId(int id) {
@@ -450,12 +409,7 @@ public class JoystickView extends View {
     }
 
     private void reportOnMoved() {
-        if (movementConstraint == CONSTRAIN_CIRCLE) {
-            constrainCircle();
-        } else {
-            constrainBox();
-        }
-
+        constrainBox();
         calcUserCoordinates();
 
         boolean rx = Math.abs(touchX - reportX) >= MOVE_RESOLUTION;
@@ -467,6 +421,12 @@ public class JoystickView extends View {
 
             moveListener.onMoved(cartX, cartY);
         }
+    }
+
+    private void constrainBox() {
+        int movementRadius = directional.getHandleRadius();
+        touchX = Math.max(Math.min(touchX, movementRadius), -movementRadius);
+        touchY = Math.max(Math.min(touchY, movementRadius), -movementRadius);
     }
 
     private void calcUserCoordinates() {
