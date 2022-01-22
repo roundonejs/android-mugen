@@ -48,7 +48,6 @@ public class JoystickView extends View {
     // # of pixels movement required between reporting to the listener
     private float moveResolution;
 
-    private boolean yAxisInverted;
     private boolean autoReturnToCenter;
 
     // Max range of movement in user coordinate system
@@ -56,12 +55,6 @@ public class JoystickView extends View {
     public final static int CONSTRAIN_CIRCLE = 1;
     private int movementConstraint;
     private float movementRange;
-
-    // Regular cartesian coordinates
-    public final static int COORDINATE_CARTESIAN = 0;
-    // Uses polar rotation of 45 degrees to calc differential drive paramaters
-    public final static int COORDINATE_DIFFERENTIAL = 1;
-    private int userCoordinateSystem;
 
     // Records touch pressure for click handling
     private boolean clickedJoy = false;
@@ -81,12 +74,6 @@ public class JoystickView extends View {
 
     // Cartesian coordinates of last touch point - joystick center is (0,0)
     private int cartX, cartY;
-
-    // Polar coordinates of the touch point from joystick center
-    private double radial;
-
-    // User coordinates of last touch point
-    private int userX, userY;
 
     // Offset co-ordinates (used when touch events are received from parent's coordinate origin)
     private int offsetX;
@@ -162,8 +149,6 @@ public class JoystickView extends View {
         setMovementRange(256);
         setMoveResolution(1.0f);
         setClickThreshold(0.4f);
-        setYAxisInverted(true);
-        setUserCoordinateSystem(COORDINATE_CARTESIAN);
         setAutoReturnToCenter(true);
         moveListener = new JoystickMovedListener();
     }
@@ -174,21 +159,6 @@ public class JoystickView extends View {
 
     public boolean isAutoReturnToCenter() {
         return autoReturnToCenter;
-    }
-
-    public void setUserCoordinateSystem(int userCoordinateSystem) {
-        if (
-            (userCoordinateSystem < COORDINATE_CARTESIAN) ||
-            (movementConstraint > COORDINATE_DIFFERENTIAL)
-        ) {
-            Log.e(TAG, "invalid value for userCoordinateSystem");
-        } else {
-            this.userCoordinateSystem = userCoordinateSystem;
-        }
-    }
-
-    public int getUserCoordinateSystem() {
-        return userCoordinateSystem;
     }
 
     public void setMovementConstraint(int movementConstraint) {
@@ -204,14 +174,6 @@ public class JoystickView extends View {
 
     public int getMovementConstraint() {
         return movementConstraint;
-    }
-
-    public boolean isYAxisInverted() {
-        return yAxisInverted;
-    }
-
-    public void setYAxisInverted(boolean yAxisInverted) {
-        this.yAxisInverted = yAxisInverted;
     }
 
     /**
@@ -551,7 +513,7 @@ public class JoystickView extends View {
             this.reportX = touchX;
             this.reportY = touchY;
 
-            moveListener.onMoved(userX, userY);
+            moveListener.onMoved(cartX, cartY);
         }
     }
 
@@ -559,38 +521,7 @@ public class JoystickView extends View {
         // First convert to cartesian coordinates
         int movementRadius = directional.getHandleRadius();
         cartX = (int) (touchX / movementRadius * movementRange);
-        cartY = (int) (touchY / movementRadius * movementRange);
-
-        radial = Math.sqrt((cartX * cartX) + (cartY * cartY));
-
-        // Invert Y axis if requested
-        if (!yAxisInverted) {
-            cartY *= -1;
-        }
-
-        if (userCoordinateSystem == COORDINATE_CARTESIAN) {
-            userX = cartX;
-            userY = cartY;
-        } else if (userCoordinateSystem == COORDINATE_DIFFERENTIAL) {
-            userX = cartY + cartX / 4;
-            userY = cartY - cartX / 4;
-
-            if (userX < -movementRange) {
-                userX = (int) -movementRange;
-            }
-
-            if (userX > movementRange) {
-                userX = (int) movementRange;
-            }
-
-            if (userY < -movementRange) {
-                userY = (int) -movementRange;
-            }
-
-            if (userY > movementRange) {
-                userY = (int) movementRange;
-            }
-        }
+        cartY = (int) (-touchY / movementRadius * movementRange);
     }
 
     private void returnHandleToCenter() {

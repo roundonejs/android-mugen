@@ -17,22 +17,49 @@
  */
 package com.fishstix.dosboxfree.joystick;
 
-import com.fishstix.dosboxfree.DBGLSurfaceView;
 import com.fishstix.dosboxfree.DosBoxControl;
 
 public class JoystickMovedListener {
-    public void onMoved(final int pan, final int tilt) {
-        DosBoxControl.nativeJoystick(
-            pan,
-            tilt,
-            DBGLSurfaceView.ACTION_MOVE,
-            -1
-        );
+    private static final int KEYCODE_UP_BUTTON = 51;
+    private static final int KEYCODE_RIGHT_BUTTON = 32;
+    private static final int KEYCODE_DOWN_BUTTON = 47;
+    private static final int KEYCODE_LEFT_BUTTON = 29;
+    private static final int DEADZONE = 60;
+
+    public void onMoved(final int x, final int y) {
+        onMoved(x, KEYCODE_RIGHT_BUTTON, KEYCODE_LEFT_BUTTON);
+        onMoved(y, KEYCODE_UP_BUTTON, KEYCODE_DOWN_BUTTON);
+    }
+
+    private void onMoved(
+        final int position,
+        final int positiveKeycode,
+        final int negativeKeycode
+    ) {
+        if (position > DEADZONE) {
+            press(positiveKeycode);
+        } else if (position < -DEADZONE) {
+            press(negativeKeycode);
+        } else {
+            release(positiveKeycode);
+            release(negativeKeycode);
+        }
     }
 
     public void onReleased() { }
 
     public void onReturnedToCenter() {
-        DosBoxControl.nativeJoystick(0, 0, DBGLSurfaceView.ACTION_MOVE, -1);
+        release(KEYCODE_UP_BUTTON);
+        release(KEYCODE_RIGHT_BUTTON);
+        release(KEYCODE_DOWN_BUTTON);
+        release(KEYCODE_LEFT_BUTTON);
+    }
+
+    private void press(final int key) {
+        DosBoxControl.sendNativeKey(key, true, false, false, false);
+    }
+
+    private void release(final int key) {
+        DosBoxControl.sendNativeKey(key, false, false, false, false);
     }
 }
