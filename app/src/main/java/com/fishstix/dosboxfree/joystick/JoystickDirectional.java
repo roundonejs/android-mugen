@@ -7,10 +7,12 @@ public class JoystickDirectional {
     private final Paint backgroudPaint;
     private final Paint handlePaint;
     private int backgroundPosition;
+    private int pointerId;
 
     public JoystickDirectional() {
         backgroudPaint = JoystickHelper.createPaint(0xA0888888);
         handlePaint = JoystickHelper.createPaint(0xB0444444);
+        pointerId = JoystickHelper.INVALID_POINTER_ID;
     }
 
     public Paint getBackground() {
@@ -40,5 +42,21 @@ public class JoystickDirectional {
 
     public int getHandleRadius() {
         return backgroundPosition / 2;
+    }
+
+    public void click(final int newPointerId) {
+        pointerId = newPointerId;
+    }
+
+    public int getPointerId() {
+        return pointerId;
+    }
+
+    public boolean isClicked() {
+        return pointerId != JoystickHelper.INVALID_POINTER_ID;
+    }
+
+    public void release() {
+        pointerId = JoystickHelper.INVALID_POINTER_ID;
     }
 }

@@ -296,17 +296,14 @@ public class JoystickView extends View {
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_POINTER_UP: {
-                if (pId == this.pointerId) {
-                    if (
-                        (pointerId != JoystickHelper.INVALID_POINTER_ID) &&
-                        clickedJoy
-                    ) {
-                        returnHandleToCenter();
-                        clickedJoy = false;
-                        setPointerId(JoystickHelper.INVALID_POINTER_ID);
+                if (
+                    (pId == directional.getPointerId())
+                    && directional.isClicked()
+                ) {
+                    returnHandleToCenter();
+                    directional.release();
 
-                        return true;
-                    }
+                    return true;
                 }
 
                 for (JoystickButton button : buttons) {
@@ -322,14 +319,14 @@ public class JoystickView extends View {
                 int x = (int) mWrap.getX(ev, pointerIndex);
                 int y = (int) mWrap.getY(ev, pointerIndex);
 
-                if (((x >= offsetX) && (x < offsetX + dimX)) && !clickedJoy) {
-                    if (pointerId == JoystickHelper.INVALID_POINTER_ID) {
-                        // pointer within joystick
-                        setPointerId(pId);
-                        clickedJoy = true;
+                if (
+                    (x >= offsetX)
+                    && (x < offsetX + dimX)
+                    && !directional.isClicked()
+                ) {
+                    directional.click(pId);
 
-                        return true;
-                    }
+                    return true;
                 }
 
                 for (JoystickButton button : buttons) {
