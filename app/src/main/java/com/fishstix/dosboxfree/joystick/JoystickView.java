@@ -57,7 +57,6 @@ public class JoystickView extends View {
 
     // Records touch pressure for click handling
     private boolean clickedJoy = false;
-    private float clickThreshold;
 
     // Last touch point in view coordinates
     private int pointerId = JoystickHelper.INVALID_POINTER_ID;
@@ -147,7 +146,6 @@ public class JoystickView extends View {
 
         setMovementRange(256);
         setMoveResolution(1.0f);
-        setClickThreshold(0.4f);
         moveListener = new JoystickMovedListener();
     }
 
@@ -164,22 +162,6 @@ public class JoystickView extends View {
 
     public int getMovementConstraint() {
         return movementConstraint;
-    }
-
-    /**
-     * Set the pressure sensitivity for registering a click
-     * @param clickThreshold threshold 0...1.0f inclusive. 0 will cause clicks to never be reported, 1.0 is a very hard click
-     */
-    public void setClickThreshold(float clickThreshold) {
-        if ((clickThreshold < 0) || (clickThreshold > 1.0f)) {
-            Log.e(TAG, "clickThreshold must range from 0...1.0f inclusive");
-        } else {
-            this.clickThreshold = clickThreshold;
-        }
-    }
-
-    public float getClickThreshold() {
-        return clickThreshold;
     }
 
     public void setMovementRange(float movementRange) {
