@@ -29,6 +29,7 @@ import com.fishstix.dosboxfree.touchevent.TouchEventWrapper;
 
 public class JoystickView extends View {
     private static final String TAG = "JoystickView";
+    private static final int NUMBER_OF_FRAMES = 5;
     private static final int KEYCODE_A_BUTTON = 38;
     private static final int KEYCODE_B_BUTTON = 39;
     private static final int KEYCODE_C_BUTTON = 40;
@@ -47,8 +48,6 @@ public class JoystickView extends View {
 
     // # of pixels movement required between reporting to the listener
     private float moveResolution;
-
-    private boolean autoReturnToCenter;
 
     // Max range of movement in user coordinate system
     public final static int CONSTRAIN_BOX = 0;
@@ -149,16 +148,7 @@ public class JoystickView extends View {
         setMovementRange(256);
         setMoveResolution(1.0f);
         setClickThreshold(0.4f);
-        setAutoReturnToCenter(true);
         moveListener = new JoystickMovedListener();
-    }
-
-    public void setAutoReturnToCenter(boolean autoReturnToCenter) {
-        this.autoReturnToCenter = autoReturnToCenter;
-    }
-
-    public boolean isAutoReturnToCenter() {
-        return autoReturnToCenter;
     }
 
     public void setMovementConstraint(int movementConstraint) {
@@ -525,33 +515,30 @@ public class JoystickView extends View {
     }
 
     private void returnHandleToCenter() {
-        if (autoReturnToCenter) {
-            final int numberOfFrames = 5;
-            final double intervalsX = (0 - touchX) / numberOfFrames;
-            final double intervalsY = (0 - touchY) / numberOfFrames;
+        final double intervalsX = -touchX / NUMBER_OF_FRAMES;
+        final double intervalsY = -touchY / NUMBER_OF_FRAMES;
 
-            for (int i = 0; i < numberOfFrames; i++) {
-                final int j = i;
-                postDelayed(
-                    new Runnable() {
-                    public void run() {
-                        touchX += intervalsX;
-                        touchY += intervalsY;
+        for (int i = 0; i < NUMBER_OF_FRAMES; i++) {
+            final int j = i;
+            postDelayed(
+                new Runnable() {
+                public void run() {
+                    touchX += intervalsX;
+                    touchY += intervalsY;
 
-                        reportOnMoved();
-                        invalidate();
+                    reportOnMoved();
+                    invalidate();
 
-                        if (j == (numberOfFrames - 1)) {
-                            moveListener.onReturnedToCenter();
-                        }
+                    if (j == (NUMBER_OF_FRAMES - 1)) {
+                        moveListener.onReturnedToCenter();
                     }
-                },
-                    i * 40
-                );
-            }
-
-            moveListener.onReleased();
+                }
+            },
+                i * 40
+            );
         }
+
+        moveListener.onReleased();
     }
 
     public void setTouchOffset(int x, int y) {
