@@ -31,6 +31,7 @@ public class JoystickView extends View {
     private static final String TAG = "JoystickView";
     private static final int NUMBER_OF_FRAMES = 5;
     private static final float MOVEMENT_RANGE = 256;
+    private static final float MOVE_RESOLUTION = 1;
     private static final int KEYCODE_A_BUTTON = 38;
     private static final int KEYCODE_B_BUTTON = 39;
     private static final int KEYCODE_C_BUTTON = 40;
@@ -46,9 +47,6 @@ public class JoystickView extends View {
     private int buttonRadius;
 
     private JoystickMovedListener moveListener;
-
-    // # of pixels movement required between reporting to the listener
-    private float moveResolution;
 
     // Max range of movement in user coordinate system
     public final static int CONSTRAIN_BOX = 0;
@@ -144,7 +142,6 @@ public class JoystickView extends View {
             buttonC
         };
 
-        setMoveResolution(1.0f);
         moveListener = new JoystickMovedListener();
     }
 
@@ -161,14 +158,6 @@ public class JoystickView extends View {
 
     public int getMovementConstraint() {
         return movementConstraint;
-    }
-
-    public void setMoveResolution(float moveResolution) {
-        this.moveResolution = moveResolution;
-    }
-
-    public float getMoveResolution() {
-        return moveResolution;
     }
 
     public void setTransparency(int val) {
@@ -469,8 +458,8 @@ public class JoystickView extends View {
 
         calcUserCoordinates();
 
-        boolean rx = Math.abs(touchX - reportX) >= moveResolution;
-        boolean ry = Math.abs(touchY - reportY) >= moveResolution;
+        boolean rx = Math.abs(touchX - reportX) >= MOVE_RESOLUTION;
+        boolean ry = Math.abs(touchY - reportY) >= MOVE_RESOLUTION;
 
         if (rx || ry) {
             this.reportX = touchX;
