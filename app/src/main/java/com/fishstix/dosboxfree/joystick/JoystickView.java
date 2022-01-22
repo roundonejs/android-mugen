@@ -47,9 +47,6 @@ public class JoystickView extends View {
 
     private JoystickMovedListener moveListener;
 
-    // Records touch pressure for click handling
-    private boolean clickedJoy = false;
-
     // Last touch point in view coordinates
     private float touchX, touchY;
 
