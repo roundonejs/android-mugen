@@ -17,15 +17,29 @@
  */
 package com.fishstix.dosboxfree.joystick;
 
-import android.graphics.Paint;
+public abstract class JoystickViewObject {
+    private static final int INVALID_POINTER_ID = -1;
+    private int pointerId;
 
-public class JoystickHelper {
-    public static Paint createPaint(final int color) {
-        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setColor(color);
-        paint.setStrokeWidth(1);
-        paint.setStyle(Paint.Style.FILL_AND_STROKE);
+    public JoystickViewObject() {
+        pointerId = INVALID_POINTER_ID;
+    }
 
-        return paint;
+    public abstract void setAlpha(int alpha);
+
+    public void click(final int newPointerId) {
+        pointerId = newPointerId;
+    }
+
+    public int getPointerId() {
+        return pointerId;
+    }
+
+    public boolean isClicked() {
+        return pointerId != INVALID_POINTER_ID;
+    }
+
+    public void release() {
+        pointerId = INVALID_POINTER_ID;
     }
 }

@@ -19,20 +19,18 @@ package com.fishstix.dosboxfree.joystick;
 
 import android.graphics.Paint;
 
-public class JoystickButton {
+public class JoystickButton extends JoystickViewObject {
     private static final int CLICKED_COLOR = 0xA066FF66;
     private final Paint paint;
     private final Paint clickedPaint;
     private final int key;
     private int x;
     private int y;
-    private int pointerId;
 
     public JoystickButton(final int color, final int buttonKey) {
         paint = JoystickHelper.createPaint(color);
         clickedPaint = JoystickHelper.createPaint(CLICKED_COLOR);
         key = buttonKey;
-        pointerId = JoystickHelper.INVALID_POINTER_ID;
     }
 
     public Paint getPaint() {
@@ -52,18 +50,6 @@ public class JoystickButton {
         clickedPaint.setAlpha(alpha);
     }
 
-    public boolean isClicked() {
-        return pointerId != JoystickHelper.INVALID_POINTER_ID;
-    }
-
-    public void release() {
-        pointerId = JoystickHelper.INVALID_POINTER_ID;
-    }
-
-    public void click(final int newPointerId) {
-        pointerId = newPointerId;
-    }
-
     public int getX() {
         return x;
     }
@@ -75,9 +61,5 @@ public class JoystickButton {
     public void setPosition(final int positionX, final int positionY) {
         x = positionX;
         y = positionY;
-    }
-
-    public int getPointerId() {
-        return pointerId;
     }
 }
