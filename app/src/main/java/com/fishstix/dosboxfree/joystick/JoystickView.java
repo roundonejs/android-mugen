@@ -200,7 +200,7 @@ public class JoystickView extends View {
         drawDirectional(canvas);
 
         for (JoystickButton button : buttons) {
-            drawButton(canvas, button);
+            button.draw(canvas, buttonRadius);
         }
 
         canvas.restore();
@@ -224,15 +224,6 @@ public class JoystickView extends View {
             handleY,
             directional.getHandleRadius(),
             directional.getHandle()
-        );
-    }
-
-    private void drawButton(final Canvas canvas, final JoystickButton button) {
-        canvas.drawCircle(
-            button.getX(),
-            button.getY(),
-            buttonRadius,
-            button.getPaint()
         );
     }
 

@@ -17,6 +17,7 @@
  */
 package com.fishstix.dosboxfree.joystick;
 
+import android.graphics.Canvas;
 import android.graphics.Paint;
 
 public class JoystickButton extends JoystickViewObject {
@@ -33,14 +34,6 @@ public class JoystickButton extends JoystickViewObject {
         key = buttonKey;
     }
 
-    public Paint getPaint() {
-        if (isClicked()) {
-            return clickedPaint;
-        }
-
-        return paint;
-    }
-
     public int getKey() {
         return key;
     }
@@ -48,6 +41,18 @@ public class JoystickButton extends JoystickViewObject {
     public void setAlpha(final int alpha) {
         paint.setAlpha(alpha);
         clickedPaint.setAlpha(alpha);
+    }
+
+    public void draw(final Canvas canvas, final int buttonRadius) {
+        canvas.drawCircle(x, y, buttonRadius, getActivePaint());
+    }
+
+    private Paint getActivePaint() {
+        if (isClicked()) {
+            return clickedPaint;
+        }
+
+        return paint;
     }
 
     public int getX() {
