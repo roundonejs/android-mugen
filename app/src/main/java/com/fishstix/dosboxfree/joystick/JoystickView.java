@@ -29,7 +29,7 @@ import com.fishstix.dosboxfree.touchevent.TouchEventWrapper;
 public class JoystickView extends View {
     private static final String TAG = "JoystickView";
     private static final int NUMBER_OF_FRAMES = 5;
-    private static final float MOVEMENT_RANGE = 256;
+    private static final float MOVEMENT_RANGE = 100;
     private static final float MOVE_RESOLUTION = 1;
     private static final int KEYCODE_A_BUTTON = 38;
     private static final int KEYCODE_B_BUTTON = 39;

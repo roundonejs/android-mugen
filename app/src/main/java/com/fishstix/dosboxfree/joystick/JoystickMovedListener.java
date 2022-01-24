@@ -24,7 +24,7 @@ public class JoystickMovedListener {
     private static final int KEYCODE_RIGHT_BUTTON = 32;
     private static final int KEYCODE_DOWN_BUTTON = 47;
     private static final int KEYCODE_LEFT_BUTTON = 29;
-    private static final int DEADZONE = 60;
+    private static final int DEADZONE = 50;
 
     public void onMoved(final int x, final int y) {
         onMoved(x, KEYCODE_RIGHT_BUTTON, KEYCODE_LEFT_BUTTON);
