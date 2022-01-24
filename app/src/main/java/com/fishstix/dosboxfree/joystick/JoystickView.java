@@ -59,17 +59,21 @@ public class JoystickView extends View {
 
     private TouchEventWrapper mWrap = TouchEventWrapper.newInstance();
 
-    public JoystickView(Context context) {
+    public JoystickView(final Context context) {
         super(context);
         initJoystickView();
     }
 
-    public JoystickView(Context context, AttributeSet attrs) {
+    public JoystickView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
         initJoystickView();
     }
 
-    public JoystickView(Context context, AttributeSet attrs, int defStyle) {
+    public JoystickView(
+        final Context context,
+        final AttributeSet attrs,
+        final int defStyle
+    ) {
         super(context, attrs, defStyle);
         initJoystickView();
     }
@@ -125,7 +129,7 @@ public class JoystickView extends View {
         moveListener = new JoystickMovedListener();
     }
 
-    public void setTransparency(int val) {
+    public void setTransparency(final int val) {
         directional.setAlpha(255 - val);
 
         for (JoystickButton button : buttons) {
@@ -133,7 +137,7 @@ public class JoystickView extends View {
         }
     }
 
-    public void setSize(int val) {
+    public void setSize(final int val) {
         sizefactor = (((double) val + 1) / 6d) - ((val - 5) * 0.12);
     }
 
@@ -159,11 +163,11 @@ public class JoystickView extends View {
 
     @Override
     protected void onLayout(
-        boolean changed,
-        int left,
-        int top,
-        int right,
-        int bottom
+        final boolean changed,
+        final int left,
+        final int top,
+        final int right,
+        final int bottom
     ) {
         super.onLayout(changed, left, top, right, bottom);
 
@@ -249,7 +253,7 @@ public class JoystickView extends View {
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent ev) {
+    public boolean onTouchEvent(final MotionEvent ev) {
         final int action = ev.getAction();
         final int pointerIndex = (
             (action & MotionEvent.ACTION_POINTER_ID_MASK) >>
