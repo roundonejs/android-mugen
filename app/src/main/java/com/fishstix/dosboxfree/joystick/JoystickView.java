@@ -30,7 +30,7 @@ public class JoystickView extends View {
     private static final String TAG = "JoystickView";
     private static final int NUMBER_OF_FRAMES = 5;
     private static final float MOVEMENT_RANGE = 100;
-    private static final float MOVE_RESOLUTION = 1;
+    private static final float MINIMUM_POINT_DISTANCE = 1;
     private static final int KEYCODE_A_BUTTON = 38;
     private static final int KEYCODE_B_BUTTON = 39;
     private static final int KEYCODE_C_BUTTON = 40;
@@ -47,11 +47,8 @@ public class JoystickView extends View {
 
     private JoystickMovedListener moveListener;
 
-    // Last touch point in view coordinates
-    private float touchX, touchY;
-
-    // Last reported position in view coordinates (allows different reporting sensitivities)
-    private float reportX, reportY;
+    private float touchPointX, touchPointY;
+    private float lastTouchPointX, lastTouchPointY;
 
     private int sizeView;
 
@@ -222,8 +219,8 @@ public class JoystickView extends View {
         );
 
         // Draw the handle
-        float handleX = touchX + backgroundPosition;
-        float handleY = touchY + backgroundPosition;
+        float handleX = touchPointX + backgroundPosition;
+        float handleY = touchPointY + backgroundPosition;
         canvas.drawCircle(
             handleX,
             handleY,
@@ -367,9 +364,9 @@ public class JoystickView extends View {
 
             // Translate touch position to center of view
             float x = mWrap.getX(ev, pointerIndex);
-            touchX = x - backgroundPosition;
+            touchPointX = x - backgroundPosition;
             float y = mWrap.getY(ev, pointerIndex);
-            touchY = y - backgroundPosition;
+            touchPointY = y - backgroundPosition;
 
             reportOnMoved();
             invalidate();
@@ -384,12 +381,15 @@ public class JoystickView extends View {
         constrainBox();
         calcUserCoordinates();
 
-        boolean rx = Math.abs(touchX - reportX) >= MOVE_RESOLUTION;
-        boolean ry = Math.abs(touchY - reportY) >= MOVE_RESOLUTION;
-
-        if (rx || ry) {
-            this.reportX = touchX;
-            this.reportY = touchY;
+        if (
+            (Math.abs(touchPointX - lastTouchPointX) >= MINIMUM_POINT_DISTANCE)
+            || (
+                Math.abs(touchPointY - lastTouchPointY)
+                >= MINIMUM_POINT_DISTANCE
+            )
+        ) {
+            lastTouchPointX = touchPointX;
+            lastTouchPointY = touchPointY;
 
             moveListener.onMoved(cartX, cartY);
         }
@@ -397,28 +397,40 @@ public class JoystickView extends View {
 
     private void constrainBox() {
         int movementRadius = directional.getHandleRadius();
-        touchX = Math.max(Math.min(touchX, movementRadius), -movementRadius);
-        touchY = Math.max(Math.min(touchY, movementRadius), -movementRadius);
+        touchPointX = Math.max(
+            Math.min(
+                touchPointX,
+                movementRadius
+            ),
+            -movementRadius
+        );
+        touchPointY = Math.max(
+            Math.min(
+                touchPointY,
+                movementRadius
+            ),
+            -movementRadius
+        );
     }
 
     private void calcUserCoordinates() {
         // First convert to cartesian coordinates
         int movementRadius = directional.getHandleRadius();
-        cartX = (int) (touchX / movementRadius * MOVEMENT_RANGE);
-        cartY = (int) (-touchY / movementRadius * MOVEMENT_RANGE);
+        cartX = (int) (touchPointX / movementRadius * MOVEMENT_RANGE);
+        cartY = (int) (-touchPointY / movementRadius * MOVEMENT_RANGE);
     }
 
     private void returnHandleToCenter() {
-        final double intervalsX = -touchX / NUMBER_OF_FRAMES;
-        final double intervalsY = -touchY / NUMBER_OF_FRAMES;
+        final double intervalsX = -touchPointX / NUMBER_OF_FRAMES;
+        final double intervalsY = -touchPointY / NUMBER_OF_FRAMES;
 
         for (int i = 0; i < NUMBER_OF_FRAMES; i++) {
             final int j = i;
             postDelayed(
                 new Runnable() {
                 public void run() {
-                    touchX += intervalsX;
-                    touchY += intervalsY;
+                    touchPointX += intervalsX;
+                    touchPointY += intervalsY;
 
                     reportOnMoved();
                     invalidate();
