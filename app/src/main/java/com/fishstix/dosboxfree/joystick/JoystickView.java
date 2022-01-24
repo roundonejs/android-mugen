@@ -138,11 +138,23 @@ public class JoystickView extends View {
     }
 
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        // Here we make sure that we have a perfect circle
+    protected void onMeasure(
+        final int widthMeasureSpec,
+        final int heightMeasureSpec
+    ) {
         int measuredWidth = measure(widthMeasureSpec);
         int measuredHeight = measure(heightMeasureSpec);
         setMeasuredDimension(measuredWidth, measuredHeight);
+    }
+
+    private int measure(final int measureSpec) {
+        int specMode = MeasureSpec.getMode(measureSpec);
+
+        if (specMode == MeasureSpec.UNSPECIFIED) {
+            return 200;
+        }
+
+        return MeasureSpec.getSize(measureSpec);
     }
 
     @Override
@@ -175,24 +187,6 @@ public class JoystickView extends View {
 
             centerXButton += (int) (buttonRadius * 2.75);
         }
-    }
-
-    private int measure(int measureSpec) {
-        int result = 0;
-        // Decode the measurement specifications.
-        int specMode = MeasureSpec.getMode(measureSpec);
-        int specSize = MeasureSpec.getSize(measureSpec);
-
-        if (specMode == MeasureSpec.UNSPECIFIED) {
-            // Return a default size of 200 if no bounds are specified.
-            result = 200;
-        } else {
-            // As you want to fill the available space
-            // always return the full available bounds.
-            result = specSize;
-        }
-
-        return result;
     }
 
     @Override
