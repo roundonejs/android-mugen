@@ -56,8 +56,6 @@ public class JoystickView extends View {
     // Size of the view in view coordinates
     private int dimX, dimY;
 
-    private int fulldimX;
-
     // Cartesian coordinates of last touch point - joystick center is (0,0)
     private int cartX, cartY;
 
@@ -163,8 +161,6 @@ public class JoystickView extends View {
 
         int d = Math.min(getMeasuredWidth(), getMeasuredHeight());
 
-        fulldimX = getMeasuredWidth();
-
         dimX = d;
         dimY = d;
 
@@ -173,7 +169,7 @@ public class JoystickView extends View {
 
         buttonRadius = (int) ((d * 0.125) * sizefactor);
 
-        int centerXButton = fulldimX - (int) (buttonRadius * 9.3);
+        int centerXButton = getMeasuredWidth() - (int) (buttonRadius * 9.3);
         int[] centerYButtons = new int[2];
         centerYButtons[0] = centerViewPosition - (int) (buttonRadius * 1.5);
         centerYButtons[1] = centerViewPosition + (int) (buttonRadius * 1.5);
