@@ -53,8 +53,7 @@ public class JoystickView extends View {
     // Last reported position in view coordinates (allows different reporting sensitivities)
     private float reportX, reportY;
 
-    // Size of the view in view coordinates
-    private int dimX, dimY;
+    private int sizeView;
 
     // Cartesian coordinates of last touch point - joystick center is (0,0)
     private int cartX, cartY;
@@ -159,15 +158,12 @@ public class JoystickView extends View {
     ) {
         super.onLayout(changed, left, top, right, bottom);
 
-        int d = Math.min(getMeasuredWidth(), getMeasuredHeight());
+        sizeView = Math.min(getMeasuredWidth(), getMeasuredHeight());
 
-        dimX = d;
-        dimY = d;
-
-        int centerViewPosition = d / 2;
+        int centerViewPosition = sizeView / 2;
         directional.setBackgroundPosition(centerViewPosition);
 
-        buttonRadius = (int) ((d * 0.125) * sizefactor);
+        buttonRadius = (int) ((sizeView * 0.125) * sizefactor);
 
         int centerXButton = getMeasuredWidth() - (int) (buttonRadius * 9.3);
         int[] centerYButtons = new int[2];
@@ -299,7 +295,7 @@ public class JoystickView extends View {
                 int x = (int) mWrap.getX(ev, pointerIndex);
                 int y = (int) mWrap.getY(ev, pointerIndex);
 
-                if ((x >= 0) && (x < dimX) && !directional.isClicked()) {
+                if ((x >= 0) && (x < sizeView) && !directional.isClicked()) {
                     directional.click(pId);
 
                     return true;
