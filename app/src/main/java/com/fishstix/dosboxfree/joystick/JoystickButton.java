@@ -24,6 +24,7 @@ import com.fishstix.dosboxfree.DosBoxControl;
 
 public class JoystickButton extends JoystickViewObject {
     private static final int CLICKED_COLOR = 0xA066FF66;
+    private static int buttonRadius;
     private final Paint paint;
     private final Paint clickedPaint;
     private final int key;
@@ -36,12 +37,16 @@ public class JoystickButton extends JoystickViewObject {
         key = buttonKey;
     }
 
+    public static void setButtonRadius(final int newButtonRadius) {
+        buttonRadius = newButtonRadius;
+    }
+
     public void setAlpha(final int alpha) {
         paint.setAlpha(alpha);
         clickedPaint.setAlpha(alpha);
     }
 
-    public void draw(final Canvas canvas, final int buttonRadius) {
+    public void draw(final Canvas canvas) {
         canvas.drawCircle(x, y, buttonRadius, getActivePaint());
     }
 
@@ -78,5 +83,14 @@ public class JoystickButton extends JoystickViewObject {
         super.release();
 
         DosBoxControl.sendNativeKey(key, false, false, false, false);
+    }
+
+    public boolean inButton(final int positionX, final int positionY) {
+        return (
+            (positionX <= x + buttonRadius) &&
+            (positionX >= x - buttonRadius) &&
+            (positionY <= y + buttonRadius) &&
+            (positionY >= y - buttonRadius)
+        );
     }
 }

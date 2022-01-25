@@ -42,8 +42,6 @@ public class JoystickView extends View {
     private JoystickDirectional directional;
     private JoystickButton[] buttons;
 
-    private int buttonRadius;
-
     private JoystickMovedListener moveListener;
 
     private float touchPointX, touchPointY;
@@ -175,7 +173,8 @@ public class JoystickView extends View {
         int centerViewPosition = sizeView / 2;
         directional.setBackgroundPosition(centerViewPosition);
 
-        buttonRadius = (int) ((sizeView * 0.125) * sizefactor);
+        int buttonRadius = (int) ((sizeView * 0.125) * sizefactor);
+        JoystickButton.setButtonRadius(buttonRadius);
 
         int centerXButton = getMeasuredWidth() - (int) (buttonRadius * 9.3);
         int[] centerYButtons = new int[2];
@@ -199,26 +198,10 @@ public class JoystickView extends View {
         directional.draw(canvas, touchPointX, touchPointY);
 
         for (JoystickButton button : buttons) {
-            button.draw(canvas, buttonRadius);
+            button.draw(canvas);
         }
 
         canvas.restore();
-    }
-
-    private boolean inButton(
-        final JoystickButton button,
-        final int x,
-        final int y
-    ) {
-        int buttonPositionX = button.getX();
-        int buttonPositionY = button.getY();
-
-        return (
-            (x <= buttonPositionX + buttonRadius) &&
-            (x >= buttonPositionX - buttonRadius) &&
-            (y <= buttonPositionY + buttonRadius) &&
-            (y >= buttonPositionY - buttonRadius)
-        );
     }
 
     @Override
@@ -295,7 +278,7 @@ public class JoystickView extends View {
         final int x,
         final int y
     ) {
-        if (inButton(button, x, y) && !button.isClicked()) {
+        if (button.inButton(x, y) && !button.isClicked()) {
             invalidate();
             button.click(pId);
 
