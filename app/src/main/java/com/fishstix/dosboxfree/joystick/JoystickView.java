@@ -197,34 +197,13 @@ public class JoystickView extends View {
     protected void onDraw(final Canvas canvas) {
         canvas.save();
 
-        drawDirectional(canvas);
+        directional.draw(canvas, touchPointX, touchPointY);
 
         for (JoystickButton button : buttons) {
             button.draw(canvas, buttonRadius);
         }
 
         canvas.restore();
-    }
-
-    private void drawDirectional(final Canvas canvas) {
-        int backgroundPosition = directional.getBackgroundPosition();
-        // Draw the background
-        canvas.drawCircle(
-            backgroundPosition,
-            backgroundPosition,
-            directional.getBackgroundRadius(),
-            directional.getBackground()
-        );
-
-        // Draw the handle
-        float handleX = touchPointX + backgroundPosition;
-        float handleY = touchPointY + backgroundPosition;
-        canvas.drawCircle(
-            handleX,
-            handleY,
-            directional.getHandleRadius(),
-            directional.getHandle()
-        );
     }
 
     private boolean inButton(

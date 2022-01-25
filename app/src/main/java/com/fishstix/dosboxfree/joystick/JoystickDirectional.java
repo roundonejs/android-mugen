@@ -17,6 +17,7 @@
  */
 package com.fishstix.dosboxfree.joystick;
 
+import android.graphics.Canvas;
 import android.graphics.Paint;
 
 public class JoystickDirectional extends JoystickViewObject {
@@ -30,17 +31,41 @@ public class JoystickDirectional extends JoystickViewObject {
         handlePaint = JoystickHelper.createPaint(0xB0444444);
     }
 
-    public Paint getBackground() {
-        return backgroudPaint;
-    }
-
-    public Paint getHandle() {
-        return handlePaint;
-    }
-
     public void setAlpha(final int alpha) {
         backgroudPaint.setAlpha(alpha);
         handlePaint.setAlpha(alpha);
+    }
+
+    public void draw(
+        final Canvas canvas,
+        final float touchPointX,
+        final float touchPointY
+    ) {
+        drawBackground(canvas);
+        drawHandle(canvas, touchPointX, touchPointY);
+    }
+
+    private void drawBackground(final Canvas canvas) {
+        int backgroundRadius = backgroundPosition - INNER_PADDING;
+
+        canvas.drawCircle(
+            backgroundPosition,
+            backgroundPosition,
+            backgroundRadius,
+            backgroudPaint
+        );
+    }
+
+    private void drawHandle(
+        final Canvas canvas,
+        final float touchPointX,
+        final float touchPointY
+    ) {
+        float handleX = touchPointX + backgroundPosition;
+        float handleY = touchPointY + backgroundPosition;
+        int handleRadius = backgroundPosition / 2;
+
+        canvas.drawCircle(handleX, handleY, handleRadius, handlePaint);
     }
 
     public void setBackgroundPosition(final int position) {
@@ -49,10 +74,6 @@ public class JoystickDirectional extends JoystickViewObject {
 
     public int getBackgroundPosition() {
         return backgroundPosition;
-    }
-
-    public int getBackgroundRadius() {
-        return backgroundPosition - INNER_PADDING;
     }
 
     public int getHandleRadius() {
