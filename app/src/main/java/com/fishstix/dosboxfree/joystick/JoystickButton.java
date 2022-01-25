@@ -20,6 +20,8 @@ package com.fishstix.dosboxfree.joystick;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
+import com.fishstix.dosboxfree.DosBoxControl;
+
 public class JoystickButton extends JoystickViewObject {
     private static final int CLICKED_COLOR = 0xA066FF66;
     private final Paint paint;
@@ -32,10 +34,6 @@ public class JoystickButton extends JoystickViewObject {
         paint = JoystickHelper.createPaint(color);
         clickedPaint = JoystickHelper.createPaint(CLICKED_COLOR);
         key = buttonKey;
-    }
-
-    public int getKey() {
-        return key;
     }
 
     public void setAlpha(final int alpha) {
@@ -66,5 +64,19 @@ public class JoystickButton extends JoystickViewObject {
     public void setPosition(final int positionX, final int positionY) {
         x = positionX;
         y = positionY;
+    }
+
+    @Override
+    public void click(final int newPointerId) {
+        super.click(newPointerId);
+
+        DosBoxControl.sendNativeKey(key, true, false, false, false);
+    }
+
+    @Override
+    public void release() {
+        super.release();
+
+        DosBoxControl.sendNativeKey(key, false, false, false, false);
     }
 }

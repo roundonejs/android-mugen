@@ -23,7 +23,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.fishstix.dosboxfree.DosBoxControl;
 import com.fishstix.dosboxfree.touchevent.TouchEventWrapper;
 
 public class JoystickView extends View {
@@ -281,16 +280,8 @@ public class JoystickView extends View {
 
     private boolean releaseButton(final JoystickButton button, final int pId) {
         if ((pId == button.getPointerId()) && button.isClicked()) {
-            button.release();
             invalidate();
-
-            DosBoxControl.sendNativeKey(
-                button.getKey(),
-                false,
-                false,
-                false,
-                false
-            );
+            button.release();
 
             return true;
         }
@@ -305,16 +296,8 @@ public class JoystickView extends View {
         final int y
     ) {
         if (inButton(button, x, y) && !button.isClicked()) {
-            button.click(pId);
             invalidate();
-
-            DosBoxControl.sendNativeKey(
-                button.getKey(),
-                true,
-                false,
-                false,
-                false
-            );
+            button.click(pId);
 
             return true;
         }
