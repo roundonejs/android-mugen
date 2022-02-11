@@ -27,7 +27,8 @@ import com.fishstix.dosboxfree.touchevent.TouchEventWrapper;
 
 public class JoystickView extends View {
     private static final String TAG = "JoystickView";
-    private static final int NUMBER_OF_FRAMES = 5;
+    private static final int NUMBER_FRAMES_HANDLE_TO_CENTER = 5;
+    private static final int DELAY_BETWEEN_FRAMES = 40;
     private static final float MOVEMENT_RANGE = 100;
     private static final float MINIMUM_POINT_DISTANCE = 1;
     private static final int KEYCODE_A_BUTTON = 38;
@@ -355,13 +356,12 @@ public class JoystickView extends View {
     }
 
     private void returnHandleToCenter() {
-        final double intervalsX = -touchPointX / NUMBER_OF_FRAMES;
-        final double intervalsY = -touchPointY / NUMBER_OF_FRAMES;
+        final double intervalsX = -touchPointX / NUMBER_FRAMES_HANDLE_TO_CENTER;
+        final double intervalsY = -touchPointY / NUMBER_FRAMES_HANDLE_TO_CENTER;
 
-        for (int i = 0; i < NUMBER_OF_FRAMES; i++) {
-            final int j = i;
-            postDelayed(
-                new Runnable() {
+        for (int i = 0; i < NUMBER_FRAMES_HANDLE_TO_CENTER; i++) {
+            final int frameNumber = i;
+            Runnable viewAnimationHandleToCenter = new Runnable() {
                 public void run() {
                     touchPointX += intervalsX;
                     touchPointY += intervalsY;
@@ -369,13 +369,13 @@ public class JoystickView extends View {
                     reportOnMoved();
                     invalidate();
 
-                    if (j == (NUMBER_OF_FRAMES - 1)) {
+                    if (frameNumber == (NUMBER_FRAMES_HANDLE_TO_CENTER - 1)) {
                         moveListener.onReturnedToCenter();
                     }
                 }
-            },
-                i * 40
-            );
+            };
+
+            postDelayed(viewAnimationHandleToCenter, i * DELAY_BETWEEN_FRAMES);
         }
 
         moveListener.onReleased();
