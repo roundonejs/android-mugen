@@ -19,16 +19,24 @@ package com.fishstix.dosboxfree.joystick;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.view.View;
 
 public class JoystickDirectional extends JoystickViewObject {
     private static final int INNER_PADDING = 10;
+    private static final float MINIMUM_POINT_DISTANCE = 1;
+    private static final int NUMBER_FRAMES_HANDLE_TO_CENTER = 5;
+    private static final int DELAY_BETWEEN_FRAMES = 40;
     private final Paint backgroudPaint;
     private final Paint handlePaint;
     private int backgroundPosition;
+    private float handlePositionX, handlePositionY;
+    private float lastHandlePointX, lastHandlePointY;
+    private View view;
 
-    public JoystickDirectional() {
+    public JoystickDirectional(final View currentView) {
         backgroudPaint = JoystickHelper.createPaint(0xA0888888);
         handlePaint = JoystickHelper.createPaint(0xB0444444);
+        view = currentView;
     }
 
     public void setAlpha(final int alpha) {
@@ -36,13 +44,9 @@ public class JoystickDirectional extends JoystickViewObject {
         handlePaint.setAlpha(alpha);
     }
 
-    public void draw(
-        final Canvas canvas,
-        final float touchPointX,
-        final float touchPointY
-    ) {
+    public void draw(final Canvas canvas) {
         drawBackground(canvas);
-        drawHandle(canvas, touchPointX, touchPointY);
+        drawHandle(canvas);
     }
 
     private void drawBackground(final Canvas canvas) {
@@ -56,39 +60,122 @@ public class JoystickDirectional extends JoystickViewObject {
         );
     }
 
-    private void drawHandle(
-        final Canvas canvas,
-        final float touchPointX,
-        final float touchPointY
-    ) {
-        float handleX = touchPointX + backgroundPosition;
-        float handleY = touchPointY + backgroundPosition;
-        int handleRadius = backgroundPosition / 2;
+    private void drawHandle(final Canvas canvas) {
+        float handleAbsolutePositionX = handlePositionX + backgroundPosition;
+        float handleAbsolutePositionY = handlePositionY + backgroundPosition;
+        int handleRadius = getHandleRadius();
 
-        canvas.drawCircle(handleX, handleY, handleRadius, handlePaint);
+        canvas.drawCircle(
+            handleAbsolutePositionX,
+            handleAbsolutePositionY,
+            handleRadius,
+            handlePaint
+        );
     }
 
     public void setBackgroundPosition(final int position) {
         backgroundPosition = position;
     }
 
-    public int getBackgroundPosition() {
-        return backgroundPosition;
+    @Override
+    public void release() {
+        super.release();
+
+        returnHandleToCenter();
     }
 
-    public int getHandleRadius() {
-        return backgroundPosition / 2;
-    }
+    private void returnHandleToCenter() {
+        final double intervalsX = - (
+            handlePositionX / NUMBER_FRAMES_HANDLE_TO_CENTER
+        );
+        final double intervalsY = - (
+            handlePositionY / NUMBER_FRAMES_HANDLE_TO_CENTER
+        );
 
-    public void onMoved(final int x, final int y) {
-        JoystickMovedListener.onMoved(x, y);
-    }
+        for (int i = 0; i < NUMBER_FRAMES_HANDLE_TO_CENTER; i++) {
+            final int frameNumber = i;
+            Runnable viewAnimationHandleToCenter = new Runnable() {
+                public void run() {
+                    handlePositionX += intervalsX;
+                    handlePositionY += intervalsY;
 
-    public void onReleased() {
+                    reportOnMoved();
+                    view.invalidate();
+
+                    if (frameNumber == (NUMBER_FRAMES_HANDLE_TO_CENTER - 1)) {
+                        JoystickMovedListener.onReturnedToCenter();
+                    }
+                }
+            };
+
+            view.postDelayed(
+                viewAnimationHandleToCenter,
+                i * DELAY_BETWEEN_FRAMES
+            );
+        }
+
         JoystickMovedListener.onReleased();
     }
 
-    public void onReturnedToCenter() {
-        JoystickMovedListener.onReturnedToCenter();
+    public void moveHandle(
+        final float touchPositionX,
+        final float touchPositionY
+    ) {
+        handlePositionX = calculateHandlePoint(touchPositionX);
+        handlePositionY = calculateHandlePoint(touchPositionY);
+
+        reportOnMoved();
+    }
+
+    private float calculateHandlePoint(final float touchAbsolutePosition) {
+        int handleRadius = getHandleRadius();
+        float touchPosition = touchAbsolutePosition - backgroundPosition;
+
+        return Math.max(
+            Math.min(
+                touchPosition,
+                handleRadius
+            ),
+            -handleRadius
+        );
+    }
+
+    private void reportOnMoved() {
+        if (isMoved()) {
+            lastHandlePointX = handlePositionX;
+            lastHandlePointY = handlePositionY;
+
+            int percentagePositionX = calculateHandlePercentagePosition(
+                handlePositionX
+            );
+            int percentagePositionY = -calculateHandlePercentagePosition(
+                handlePositionY
+            );
+            JoystickMovedListener.onMoved(
+                percentagePositionX,
+                percentagePositionY
+            );
+        }
+    }
+
+    private boolean isMoved() {
+        return (
+            (
+                Math.abs(handlePositionX - lastHandlePointX)
+                >= MINIMUM_POINT_DISTANCE
+            )
+            || (
+                Math.abs(handlePositionY - lastHandlePointY)
+                >= MINIMUM_POINT_DISTANCE
+            )
+        );
+    }
+
+    private int calculateHandlePercentagePosition(final float handlePosition) {
+        return (int) (handlePosition / getHandleRadius() * 100);
+    }
+
+    private int getHandleRadius() {
+        return backgroundPosition / 2;
     }
 }

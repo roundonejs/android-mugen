@@ -27,10 +27,6 @@ import com.fishstix.dosboxfree.touchevent.TouchEventWrapper;
 
 public class JoystickView extends View {
     private static final String TAG = "JoystickView";
-    private static final int NUMBER_FRAMES_HANDLE_TO_CENTER = 5;
-    private static final int DELAY_BETWEEN_FRAMES = 40;
-    private static final float MOVEMENT_RANGE = 100;
-    private static final float MINIMUM_POINT_DISTANCE = 1;
     private static final int KEYCODE_A_BUTTON = 38;
     private static final int KEYCODE_B_BUTTON = 39;
     private static final int KEYCODE_C_BUTTON = 40;
@@ -43,13 +39,7 @@ public class JoystickView extends View {
     private JoystickDirectional directional;
     private JoystickButton[] buttons;
 
-    private float handlePointX, handlePointY;
-    private float lastHandlePointX, lastHandlePointY;
-
     private int sizeView;
-
-    // Cartesian coordinates of last touch point - joystick center is (0,0)
-    private int cartX, cartY;
 
     private double sizefactor = 1.0;
 
@@ -77,7 +67,7 @@ public class JoystickView extends View {
     private void initJoystickView() {
         setFocusable(true);
 
-        directional = new JoystickDirectional();
+        directional = new JoystickDirectional(this);
         JoystickButton buttonA = new JoystickButton(
             0xA0FF8888,
             KEYCODE_A_BUTTON
@@ -192,7 +182,7 @@ public class JoystickView extends View {
     protected void onDraw(final Canvas canvas) {
         canvas.save();
 
-        directional.draw(canvas, handlePointX, handlePointY);
+        directional.draw(canvas);
 
         for (JoystickButton button : buttons) {
             button.draw(canvas);
@@ -220,7 +210,6 @@ public class JoystickView extends View {
                     (pId == directional.getPointerId())
                     && directional.isClicked()
                 ) {
-                    returnHandleToCenter();
                     directional.release();
 
                     return true;
@@ -287,93 +276,19 @@ public class JoystickView extends View {
 
     private boolean processMoveEvent(final MotionEvent ev) {
         if (directional.isClicked()) {
-            constrainBox(ev);
-            calcUserCoordinates();
+            int pointerIndex = mWrap.findPointerIndex(
+                ev,
+                directional.getPointerId()
+            );
 
-            reportOnMoved();
+            float touchPositionX = mWrap.getX(ev, pointerIndex);
+            float touchPositionY = mWrap.getY(ev, pointerIndex);
+            directional.moveHandle(touchPositionX, touchPositionY);
             invalidate();
 
             return true;
         }
 
         return false;
-    }
-
-    private void constrainBox(final MotionEvent ev) {
-        int movementRadius = directional.getHandleRadius();
-        int backgroundPosition = directional.getBackgroundPosition();
-        int pointerIndex = mWrap.findPointerIndex(
-            ev,
-            directional.getPointerId()
-        );
-
-        float touchPointX = mWrap.getX(ev, pointerIndex) - backgroundPosition;
-        float touchPointY = mWrap.getY(ev, pointerIndex) - backgroundPosition;
-
-        handlePointX = Math.max(
-            Math.min(
-                touchPointX,
-                movementRadius
-            ),
-            -movementRadius
-        );
-        handlePointY = Math.max(
-            Math.min(
-                touchPointY,
-                movementRadius
-            ),
-            -movementRadius
-        );
-    }
-
-    private void calcUserCoordinates() {
-        // First convert to cartesian coordinates
-        int movementRadius = directional.getHandleRadius();
-        cartX = (int) (handlePointX / movementRadius * MOVEMENT_RANGE);
-        cartY = (int) (-handlePointY / movementRadius * MOVEMENT_RANGE);
-    }
-
-    private void reportOnMoved() {
-        if (
-            (
-                Math.abs(handlePointX - lastHandlePointX)
-                >= MINIMUM_POINT_DISTANCE
-            )
-            || (
-                Math.abs(handlePointY - lastHandlePointY)
-                >= MINIMUM_POINT_DISTANCE
-            )
-        ) {
-            lastHandlePointX = handlePointX;
-            lastHandlePointY = handlePointY;
-
-            directional.onMoved(cartX, cartY);
-        }
-    }
-
-    private void returnHandleToCenter() {
-        final double intervalsX = -handlePointX / NUMBER_FRAMES_HANDLE_TO_CENTER;
-        final double intervalsY = -handlePointY / NUMBER_FRAMES_HANDLE_TO_CENTER;
-
-        for (int i = 0; i < NUMBER_FRAMES_HANDLE_TO_CENTER; i++) {
-            final int frameNumber = i;
-            Runnable viewAnimationHandleToCenter = new Runnable() {
-                public void run() {
-                    handlePointX += intervalsX;
-                    handlePointY += intervalsY;
-
-                    reportOnMoved();
-                    invalidate();
-
-                    if (frameNumber == (NUMBER_FRAMES_HANDLE_TO_CENTER - 1)) {
-                        directional.onReturnedToCenter();
-                    }
-                }
-            };
-
-            postDelayed(viewAnimationHandleToCenter, i * DELAY_BETWEEN_FRAMES);
-        }
-
-        directional.onReleased();
     }
 }
