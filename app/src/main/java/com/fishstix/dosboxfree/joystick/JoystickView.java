@@ -43,8 +43,8 @@ public class JoystickView extends View {
     private JoystickDirectional directional;
     private JoystickButton[] buttons;
 
-    private float touchPointX, touchPointY;
-    private float lastTouchPointX, lastTouchPointY;
+    private float handlePointX, handlePointY;
+    private float lastHandlePointX, lastHandlePointY;
 
     private int sizeView;
 
@@ -192,7 +192,7 @@ public class JoystickView extends View {
     protected void onDraw(final Canvas canvas) {
         canvas.save();
 
-        directional.draw(canvas, touchPointX, touchPointY);
+        directional.draw(canvas, handlePointX, handlePointY);
 
         for (JoystickButton button : buttons) {
             button.draw(canvas);
@@ -287,17 +287,8 @@ public class JoystickView extends View {
 
     private boolean processMoveEvent(final MotionEvent ev) {
         if (directional.isClicked()) {
-            int backgroundPosition = directional.getBackgroundPosition();
-            int pointerIndex = mWrap.findPointerIndex(
-                ev,
-                directional.getPointerId()
-            );
-
-            // Translate touch position to center of view
-            float x = mWrap.getX(ev, pointerIndex);
-            touchPointX = x - backgroundPosition;
-            float y = mWrap.getY(ev, pointerIndex);
-            touchPointY = y - backgroundPosition;
+            constrainBox(ev);
+            calcUserCoordinates();
 
             reportOnMoved();
             invalidate();
@@ -308,34 +299,25 @@ public class JoystickView extends View {
         return false;
     }
 
-    private void reportOnMoved() {
-        constrainBox();
-        calcUserCoordinates();
-
-        if (
-            (Math.abs(touchPointX - lastTouchPointX) >= MINIMUM_POINT_DISTANCE)
-            || (
-                Math.abs(touchPointY - lastTouchPointY)
-                >= MINIMUM_POINT_DISTANCE
-            )
-        ) {
-            lastTouchPointX = touchPointX;
-            lastTouchPointY = touchPointY;
-
-            directional.onMoved(cartX, cartY);
-        }
-    }
-
-    private void constrainBox() {
+    private void constrainBox(final MotionEvent ev) {
         int movementRadius = directional.getHandleRadius();
-        touchPointX = Math.max(
+        int backgroundPosition = directional.getBackgroundPosition();
+        int pointerIndex = mWrap.findPointerIndex(
+            ev,
+            directional.getPointerId()
+        );
+
+        float touchPointX = mWrap.getX(ev, pointerIndex) - backgroundPosition;
+        float touchPointY = mWrap.getY(ev, pointerIndex) - backgroundPosition;
+
+        handlePointX = Math.max(
             Math.min(
                 touchPointX,
                 movementRadius
             ),
             -movementRadius
         );
-        touchPointY = Math.max(
+        handlePointY = Math.max(
             Math.min(
                 touchPointY,
                 movementRadius
@@ -347,20 +329,38 @@ public class JoystickView extends View {
     private void calcUserCoordinates() {
         // First convert to cartesian coordinates
         int movementRadius = directional.getHandleRadius();
-        cartX = (int) (touchPointX / movementRadius * MOVEMENT_RANGE);
-        cartY = (int) (-touchPointY / movementRadius * MOVEMENT_RANGE);
+        cartX = (int) (handlePointX / movementRadius * MOVEMENT_RANGE);
+        cartY = (int) (-handlePointY / movementRadius * MOVEMENT_RANGE);
+    }
+
+    private void reportOnMoved() {
+        if (
+            (
+                Math.abs(handlePointX - lastHandlePointX)
+                >= MINIMUM_POINT_DISTANCE
+            )
+            || (
+                Math.abs(handlePointY - lastHandlePointY)
+                >= MINIMUM_POINT_DISTANCE
+            )
+        ) {
+            lastHandlePointX = handlePointX;
+            lastHandlePointY = handlePointY;
+
+            directional.onMoved(cartX, cartY);
+        }
     }
 
     private void returnHandleToCenter() {
-        final double intervalsX = -touchPointX / NUMBER_FRAMES_HANDLE_TO_CENTER;
-        final double intervalsY = -touchPointY / NUMBER_FRAMES_HANDLE_TO_CENTER;
+        final double intervalsX = -handlePointX / NUMBER_FRAMES_HANDLE_TO_CENTER;
+        final double intervalsY = -handlePointY / NUMBER_FRAMES_HANDLE_TO_CENTER;
 
         for (int i = 0; i < NUMBER_FRAMES_HANDLE_TO_CENTER; i++) {
             final int frameNumber = i;
             Runnable viewAnimationHandleToCenter = new Runnable() {
                 public void run() {
-                    touchPointX += intervalsX;
-                    touchPointY += intervalsY;
+                    handlePointX += intervalsX;
+                    handlePointY += intervalsY;
 
                     reportOnMoved();
                     invalidate();
