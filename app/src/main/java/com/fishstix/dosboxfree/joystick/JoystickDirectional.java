@@ -79,4 +79,16 @@ public class JoystickDirectional extends JoystickViewObject {
     public int getHandleRadius() {
         return backgroundPosition / 2;
     }
+
+    public void onMoved(final int x, final int y) {
+        JoystickMovedListener.onMoved(x, y);
+    }
+
+    public void onReleased() {
+        JoystickMovedListener.onReleased();
+    }
+
+    public void onReturnedToCenter() {
+        JoystickMovedListener.onReturnedToCenter();
+    }
 }

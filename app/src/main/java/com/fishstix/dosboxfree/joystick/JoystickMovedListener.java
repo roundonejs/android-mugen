@@ -26,12 +26,12 @@ public class JoystickMovedListener {
     private static final int KEYCODE_LEFT_BUTTON = 29;
     private static final int DEADZONE = 50;
 
-    public void onMoved(final int x, final int y) {
+    public static void onMoved(final int x, final int y) {
         onMoved(x, KEYCODE_RIGHT_BUTTON, KEYCODE_LEFT_BUTTON);
         onMoved(y, KEYCODE_UP_BUTTON, KEYCODE_DOWN_BUTTON);
     }
 
-    private void onMoved(
+    private static void onMoved(
         final int position,
         final int positiveKeycode,
         final int negativeKeycode
@@ -46,20 +46,20 @@ public class JoystickMovedListener {
         }
     }
 
-    public void onReleased() { }
+    public static void onReleased() { }
 
-    public void onReturnedToCenter() {
+    public static void onReturnedToCenter() {
         release(KEYCODE_UP_BUTTON);
         release(KEYCODE_RIGHT_BUTTON);
         release(KEYCODE_DOWN_BUTTON);
         release(KEYCODE_LEFT_BUTTON);
     }
 
-    private void press(final int key) {
+    private static void press(final int key) {
         DosBoxControl.sendNativeKey(key, true, false, false, false);
     }
 
-    private void release(final int key) {
+    private static void release(final int key) {
         DosBoxControl.sendNativeKey(key, false, false, false, false);
     }
 }

@@ -43,8 +43,6 @@ public class JoystickView extends View {
     private JoystickDirectional directional;
     private JoystickButton[] buttons;
 
-    private JoystickMovedListener moveListener;
-
     private float touchPointX, touchPointY;
     private float lastTouchPointX, lastTouchPointY;
 
@@ -123,8 +121,6 @@ public class JoystickView extends View {
             buttonB,
             buttonC
         };
-
-        moveListener = new JoystickMovedListener();
     }
 
     public void setTransparency(final int val) {
@@ -326,7 +322,7 @@ public class JoystickView extends View {
             lastTouchPointX = touchPointX;
             lastTouchPointY = touchPointY;
 
-            moveListener.onMoved(cartX, cartY);
+            directional.onMoved(cartX, cartY);
         }
     }
 
@@ -370,7 +366,7 @@ public class JoystickView extends View {
                     invalidate();
 
                     if (frameNumber == (NUMBER_FRAMES_HANDLE_TO_CENTER - 1)) {
-                        moveListener.onReturnedToCenter();
+                        directional.onReturnedToCenter();
                     }
                 }
             };
@@ -378,6 +374,6 @@ public class JoystickView extends View {
             postDelayed(viewAnimationHandleToCenter, i * DELAY_BETWEEN_FRAMES);
         }
 
-        moveListener.onReleased();
+        directional.onReleased();
     }
 }
