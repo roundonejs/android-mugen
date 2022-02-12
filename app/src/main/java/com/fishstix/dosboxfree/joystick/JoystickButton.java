@@ -30,16 +30,22 @@ public class JoystickButton extends JoystickViewObject {
     private final Paint paint;
     private final Paint clickedPaint;
     private final int key;
+    private final String label;
     private int x;
     private int y;
 
-    public JoystickButton(final int color, final int buttonKey) {
+    public JoystickButton(
+        final int color,
+        final int buttonKey,
+        final String buttonLabel
+    ) {
         paint = JoystickHelper.createPaint(color);
         clickedPaint = JoystickHelper.createPaint(
             color
             + CLICKED_BUTTON_COLOR_PLUS
         );
         key = buttonKey;
+        label = buttonLabel;
     }
 
     public static void setButtonRadius(final int newButtonRadius) {
@@ -56,6 +62,15 @@ public class JoystickButton extends JoystickViewObject {
 
     public void draw(final Canvas canvas) {
         canvas.drawCircle(x, y, buttonRadius, getActivePaint());
+        drawText(canvas);
+    }
+
+    private void drawText(final Canvas canvas) {
+        paint.setTextSize(buttonRadius);
+        clickedPaint.setTextSize(buttonRadius);
+
+        float textPositionX = x - paint.measureText(label)/2;
+        canvas.drawText(label, textPositionX, y, getActivePaint());
     }
 
     private Paint getActivePaint() {

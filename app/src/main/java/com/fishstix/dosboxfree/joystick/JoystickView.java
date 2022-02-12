@@ -43,6 +43,14 @@ public class JoystickView extends View {
     private static final int COLOR_Z_BUTTON = 0xA088FFFF;
     private static final int COLOR_START_BUTTON = 0xA0DD8833;
     private static final int COLOR_F1_BUTTON = 0xA0DDDDDD;
+    private static final String LABEL_A_BUTTON = "A";
+    private static final String LABEL_B_BUTTON = "B";
+    private static final String LABEL_C_BUTTON = "C";
+    private static final String LABEL_X_BUTTON = "X";
+    private static final String LABEL_Y_BUTTON = "Y";
+    private static final String LABEL_Z_BUTTON = "Z";
+    private static final String LABEL_START_BUTTON = "S";
+    private static final String LABEL_F1_BUTTON = "F1";
 
     private JoystickDirectional directional;
     private JoystickButton[] buttons;
@@ -78,35 +86,43 @@ public class JoystickView extends View {
         directional = new JoystickDirectional(this);
         JoystickButton buttonA = new JoystickButton(
             COLOR_A_BUTTON,
-            KEYCODE_A_BUTTON
+            KEYCODE_A_BUTTON,
+            LABEL_A_BUTTON
         );
         JoystickButton buttonB = new JoystickButton(
             COLOR_B_BUTTON,
-            KEYCODE_B_BUTTON
+            KEYCODE_B_BUTTON,
+            LABEL_B_BUTTON
         );
         JoystickButton buttonC = new JoystickButton(
             COLOR_C_BUTTON,
-            KEYCODE_C_BUTTON
+            KEYCODE_C_BUTTON,
+            LABEL_C_BUTTON
         );
         JoystickButton buttonX = new JoystickButton(
             COLOR_X_BUTTON,
-            KEYCODE_X_BUTTON
+            KEYCODE_X_BUTTON,
+            LABEL_X_BUTTON
         );
         JoystickButton buttonY = new JoystickButton(
             COLOR_Y_BUTTON,
-            KEYCODE_Y_BUTTON
+            KEYCODE_Y_BUTTON,
+            LABEL_Y_BUTTON
         );
         JoystickButton buttonZ = new JoystickButton(
             COLOR_Z_BUTTON,
-            KEYCODE_Z_BUTTON
+            KEYCODE_Z_BUTTON,
+            LABEL_Z_BUTTON
         );
         JoystickButton buttonStart = new JoystickButton(
             COLOR_START_BUTTON,
-            KEYCODE_START_BUTTON
+            KEYCODE_START_BUTTON,
+            LABEL_START_BUTTON
         );
         JoystickButton buttonF1 = new JoystickButton(
             COLOR_F1_BUTTON,
-            KEYCODE_F1_BUTTON
+            KEYCODE_F1_BUTTON,
+            LABEL_F1_BUTTON
         );
 
         buttons = new JoystickButton[] {
