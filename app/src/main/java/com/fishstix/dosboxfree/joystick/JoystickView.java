@@ -35,6 +35,14 @@ public class JoystickView extends View {
     private static final int KEYCODE_Z_BUTTON = 43;
     private static final int KEYCODE_START_BUTTON = 66;
     private static final int KEYCODE_F1_BUTTON = 131;
+    private static final int COLOR_A_BUTTON = 0xA0FF8888;
+    private static final int COLOR_B_BUTTON = 0xA088FF88;
+    private static final int COLOR_C_BUTTON = 0xA08888FF;
+    private static final int COLOR_X_BUTTON = 0xA0FFFF88;
+    private static final int COLOR_Y_BUTTON = 0xA0FF88FF;
+    private static final int COLOR_Z_BUTTON = 0xA088FFFF;
+    private static final int COLOR_START_BUTTON = 0xA0DD8833;
+    private static final int COLOR_F1_BUTTON = 0xA0DDDDDD;
 
     private JoystickDirectional directional;
     private JoystickButton[] buttons;
@@ -69,35 +77,35 @@ public class JoystickView extends View {
 
         directional = new JoystickDirectional(this);
         JoystickButton buttonA = new JoystickButton(
-            0xA0FF8888,
+            COLOR_A_BUTTON,
             KEYCODE_A_BUTTON
         );
         JoystickButton buttonB = new JoystickButton(
-            0xA08888FF,
+            COLOR_B_BUTTON,
             KEYCODE_B_BUTTON
         );
         JoystickButton buttonC = new JoystickButton(
-            0xA0FF8888,
+            COLOR_C_BUTTON,
             KEYCODE_C_BUTTON
         );
         JoystickButton buttonX = new JoystickButton(
-            0xA0FF8888,
+            COLOR_X_BUTTON,
             KEYCODE_X_BUTTON
         );
         JoystickButton buttonY = new JoystickButton(
-            0xA0FF8888,
+            COLOR_Y_BUTTON,
             KEYCODE_Y_BUTTON
         );
         JoystickButton buttonZ = new JoystickButton(
-            0xA0FF8888,
+            COLOR_Z_BUTTON,
             KEYCODE_Z_BUTTON
         );
         JoystickButton buttonStart = new JoystickButton(
-            0xA0FF8888,
+            COLOR_START_BUTTON,
             KEYCODE_START_BUTTON
         );
         JoystickButton buttonF1 = new JoystickButton(
-            0xA0FF8888,
+            COLOR_F1_BUTTON,
             KEYCODE_F1_BUTTON
         );
 
