@@ -26,13 +26,13 @@ public class JoystickButton extends JoystickViewObject {
     private static final int MAX_ALPHA = 255;
     private static final int CLICKED_BUTTON_ALPHA_PLUS = 32;
     private static final int CLICKED_BUTTON_COLOR_PLUS = 0x20000000;
-    private static int buttonRadius;
     private final Paint paint;
     private final Paint clickedPaint;
     private final int key;
     private final String label;
     private int x;
     private int y;
+    private int radius;
 
     public JoystickButton(
         final int color,
@@ -48,10 +48,6 @@ public class JoystickButton extends JoystickViewObject {
         label = buttonLabel;
     }
 
-    public static void setButtonRadius(final int newButtonRadius) {
-        buttonRadius = newButtonRadius;
-    }
-
     public void setAlpha(final int alpha) {
         paint.setAlpha(alpha);
 
@@ -61,14 +57,11 @@ public class JoystickButton extends JoystickViewObject {
     }
 
     public void draw(final Canvas canvas) {
-        canvas.drawCircle(x, y, buttonRadius, getActivePaint());
+        canvas.drawCircle(x, y, radius, getActivePaint());
         drawText(canvas);
     }
 
     private void drawText(final Canvas canvas) {
-        paint.setTextSize(buttonRadius);
-        clickedPaint.setTextSize(buttonRadius);
-
         float textPositionX = x - paint.measureText(label)/2;
         canvas.drawText(label, textPositionX, y, getActivePaint());
     }
@@ -94,6 +87,12 @@ public class JoystickButton extends JoystickViewObject {
         y = positionY;
     }
 
+    public void setRadius(final int newRadius) {
+        radius = newRadius;
+        paint.setTextSize(radius);
+        clickedPaint.setTextSize(radius);
+    }
+
     @Override
     public void click(final int newPointerId) {
         super.click(newPointerId);
@@ -110,10 +109,10 @@ public class JoystickButton extends JoystickViewObject {
 
     public boolean inButton(final int positionX, final int positionY) {
         return (
-            (positionX <= x + buttonRadius) &&
-            (positionX >= x - buttonRadius) &&
-            (positionY <= y + buttonRadius) &&
-            (positionY >= y - buttonRadius)
+            (positionX <= x + radius) &&
+            (positionX >= x - radius) &&
+            (positionY <= y + radius) &&
+            (positionY >= y - radius)
         );
     }
 }

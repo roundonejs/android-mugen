@@ -185,8 +185,6 @@ public class JoystickView extends View {
         directional.setBackgroundPosition(centerViewPosition);
 
         int buttonRadius = (int) ((sizeView * 0.125) * sizefactor);
-        JoystickButton.setButtonRadius(buttonRadius);
-
         int centerXButton = getMeasuredWidth() - (int) (buttonRadius * 9.3);
         int[] centerYButtons = new int[2];
         centerYButtons[0] = centerViewPosition - (int) (buttonRadius * 1.5);
@@ -196,6 +194,7 @@ public class JoystickView extends View {
             for (int j = 0; j < 2; j++) {
                 JoystickButton button = buttons[(j * length) + i];
                 button.setPosition(centerXButton, centerYButtons[j]);
+                button.setRadius(buttonRadius);
             }
 
             centerXButton += (int) (buttonRadius * 2.75);
