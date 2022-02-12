@@ -23,7 +23,9 @@ import android.graphics.Paint;
 import com.fishstix.dosboxfree.DosBoxControl;
 
 public class JoystickButton extends JoystickViewObject {
-    private static final int CLICKED_COLOR = 0xA066FF66;
+    private static final int MAX_ALPHA = 255;
+    private static final int CLICKED_BUTTON_ALPHA_PLUS = 32;
+    private static final int CLICKED_BUTTON_COLOR_PLUS = 0x20000000;
     private static int buttonRadius;
     private final Paint paint;
     private final Paint clickedPaint;
@@ -33,7 +35,10 @@ public class JoystickButton extends JoystickViewObject {
 
     public JoystickButton(final int color, final int buttonKey) {
         paint = JoystickHelper.createPaint(color);
-        clickedPaint = JoystickHelper.createPaint(CLICKED_COLOR);
+        clickedPaint = JoystickHelper.createPaint(
+            color
+            + CLICKED_BUTTON_COLOR_PLUS
+        );
         key = buttonKey;
     }
 
@@ -43,7 +48,10 @@ public class JoystickButton extends JoystickViewObject {
 
     public void setAlpha(final int alpha) {
         paint.setAlpha(alpha);
-        clickedPaint.setAlpha(alpha);
+
+        clickedPaint.setAlpha(
+            Math.min(alpha + CLICKED_BUTTON_ALPHA_PLUS, MAX_ALPHA)
+        );
     }
 
     public void draw(final Canvas canvas) {
