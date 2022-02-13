@@ -33,7 +33,6 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
@@ -92,8 +91,8 @@ public class DosBoxPreferences extends PreferenceActivity implements OnSharedPre
     public static final int XPERIA_BACK_BUTTON = 72617;
 
     public static final String CONFIG_FILE = "dosbox.conf";
-    public static String CONFIG_PATH = Environment.getExternalStorageDirectory().getAbsolutePath()+"/Android/data/com.fishstix.dosbox/files/";
-    public static String STORAGE_PATH = Environment.getExternalStorageDirectory().getAbsolutePath()+"/Downloads/";
+    public String CONFIG_PATH;
+    public String STORAGE_PATH;
     // mappings
     private GamePreference confmap_custom[] = new GamePreference[NUM_USB_MAPPINGS];
 
@@ -113,16 +112,12 @@ public class DosBoxPreferences extends PreferenceActivity implements OnSharedPre
 
     @SuppressWarnings("deprecation")
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.config);
         ctx = this;
         STORAGE_PATH = DosBoxPreferences.getExternalDosBoxDir(ctx);
-        if (isExternalStorageWritable()) {
-            CONFIG_PATH = ctx.getExternalFilesDir(null).getAbsolutePath() + "/";
-        } else {
-            CONFIG_PATH = ctx.getFilesDir().getAbsolutePath()+"/";
-        }
+        CONFIG_PATH = DosBoxPreferences.getExternalDosBoxDir(ctx);
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         if (prefs.getString("dosautoexec", "-1").contentEquals("-1"))
@@ -707,48 +702,7 @@ public class DosBoxPreferences extends PreferenceActivity implements OnSharedPre
         return false;
     }
 
-    /* Checks if external storage is available for read and write */
-    public static boolean isExternalStorageWritable() {
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state)) {
-            return true;
-        }
-        return false;
-    }
-
-    /* Checks if external storage is available to at least read */
-    public static boolean isExternalStorageReadable() {
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state) ||
-            Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-            return true;
-        }
-        return false;
-    }
-
-    public static String getExternalDosBoxDir(Context ctx) {
-        // Create a path where we will place our picture in the user's
-        // public pictures directory.  Note that you should be careful about
-        // what you place here, since the user often manages these files.  For
-        // pictures and other media owned by the application, consider
-        // Context.getExternalMediaDir().
-        File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-
-        // Make sure the Pictures directory exists.
-        if (!path.exists()) {
-            if(path.mkdirs()) {
-                return path.getAbsolutePath() + "/";
-            }
-        }
-        if (path.exists()) {
-            return path.getAbsolutePath() + "/";
-        }
-        // doesnt exist and cant create... use internal memory
-        if (isExternalStorageWritable()) {
-            return ctx.getExternalFilesDir(null).getAbsolutePath() + "/";
-        } else {
-            // external storage does not exist, use internal storage
-            return ctx.getFilesDir().getAbsolutePath()+"/";
-        }
+    public static String getExternalDosBoxDir(final Context ctx) {
+        return ctx.getFilesDir().getAbsolutePath() + "/";
     }
 }
