@@ -95,7 +95,6 @@ public class JoystickDirectional extends JoystickViewObject {
         );
 
         for (int i = 0; i < NUMBER_FRAMES_HANDLE_TO_CENTER; i++) {
-            final int frameNumber = i;
             Runnable viewAnimationHandleToCenter = new Runnable() {
                 public void run() {
                     handlePositionX += intervalsX;
@@ -103,10 +102,6 @@ public class JoystickDirectional extends JoystickViewObject {
 
                     reportOnMoved();
                     view.invalidate();
-
-                    if (frameNumber == (NUMBER_FRAMES_HANDLE_TO_CENTER - 1)) {
-                        JoystickMovedListener.onReturnedToCenter();
-                    }
                 }
             };
 

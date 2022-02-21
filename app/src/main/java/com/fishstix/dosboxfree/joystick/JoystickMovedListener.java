@@ -58,9 +58,7 @@ public class JoystickMovedListener {
         }
     }
 
-    public static void onReleased() { }
-
-    public static void onReturnedToCenter() {
+    public static void onReleased() {
         release(KEYCODE_UP_BUTTON);
         release(KEYCODE_RIGHT_BUTTON);
         release(KEYCODE_DOWN_BUTTON);
