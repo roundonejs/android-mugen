@@ -17,6 +17,9 @@
  */
 package com.fishstix.dosboxfree.joystick;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.fishstix.dosboxfree.DosBoxControl;
 
 public class JoystickMovedListener {
@@ -25,6 +28,15 @@ public class JoystickMovedListener {
     private static final int KEYCODE_DOWN_BUTTON = 47;
     private static final int KEYCODE_LEFT_BUTTON = 29;
     private static final int DEADZONE = 50;
+    private static final Map<Integer, Boolean> pressedKeys;
+
+    static {
+        pressedKeys = new HashMap<>();
+        pressedKeys.put(KEYCODE_UP_BUTTON, false);
+        pressedKeys.put(KEYCODE_RIGHT_BUTTON, false);
+        pressedKeys.put(KEYCODE_DOWN_BUTTON, false);
+        pressedKeys.put(KEYCODE_LEFT_BUTTON, false);
+    }
 
     public static void onMoved(final int x, final int y) {
         onMoved(x, KEYCODE_RIGHT_BUTTON, KEYCODE_LEFT_BUTTON);
@@ -56,10 +68,16 @@ public class JoystickMovedListener {
     }
 
     private static void press(final int key) {
-        DosBoxControl.sendNativeKey(key, true, false, false, false);
+        if (!pressedKeys.get(key).booleanValue()) {
+            DosBoxControl.sendNativeKey(key, true, false, false, false);
+            pressedKeys.put(key, true);
+        }
     }
 
     private static void release(final int key) {
-        DosBoxControl.sendNativeKey(key, false, false, false, false);
+        if (pressedKeys.get(key).booleanValue()) {
+            DosBoxControl.sendNativeKey(key, false, false, false, false);
+            pressedKeys.put(key, false);
+        }
     }
 }
