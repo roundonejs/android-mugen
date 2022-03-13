@@ -30,15 +30,15 @@ public class JoystickDirectional extends JoystickViewObject {
     private static final int DELAY_BETWEEN_FRAMES = 40;
     private final Paint backgroudPaint;
     private final Paint handlePaint;
+    private final View view;
     private int backgroundPosition;
     private float handlePositionX, handlePositionY;
     private float lastHandlePointX, lastHandlePointY;
-    private View view;
 
     public JoystickDirectional(final View currentView) {
+        view = currentView;
         backgroudPaint = JoystickHelper.createPaint(BACKGROUND_COLOR);
         handlePaint = JoystickHelper.createPaint(HANDLE_COLOR);
-        view = currentView;
     }
 
     public void setAlpha(final int alpha) {
@@ -87,10 +87,10 @@ public class JoystickDirectional extends JoystickViewObject {
     }
 
     private void returnHandleToCenter() {
-        final double intervalsX = - (
+        final double intervalsX = -(
             handlePositionX / NUMBER_FRAMES_HANDLE_TO_CENTER
         );
-        final double intervalsY = - (
+        final double intervalsY = -(
             handlePositionY / NUMBER_FRAMES_HANDLE_TO_CENTER
         );
 

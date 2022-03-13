@@ -27,38 +27,9 @@ import com.fishstix.dosboxfree.touchevent.TouchEventWrapper;
 
 public class JoystickView extends View {
     private static final String TAG = "JoystickView";
-    private static final int KEYCODE_A_BUTTON = 38;
-    private static final int KEYCODE_B_BUTTON = 39;
-    private static final int KEYCODE_C_BUTTON = 40;
-    private static final int KEYCODE_X_BUTTON = 49;
-    private static final int KEYCODE_Y_BUTTON = 37;
-    private static final int KEYCODE_Z_BUTTON = 43;
-    private static final int KEYCODE_START_BUTTON = 66;
-    private static final int KEYCODE_F1_BUTTON = 131;
-    private static final int COLOR_A_BUTTON = 0xA0FF8888;
-    private static final int COLOR_B_BUTTON = 0xA088FF88;
-    private static final int COLOR_C_BUTTON = 0xA08888FF;
-    private static final int COLOR_X_BUTTON = 0xA0FFFF88;
-    private static final int COLOR_Y_BUTTON = 0xA0FF88FF;
-    private static final int COLOR_Z_BUTTON = 0xA088FFFF;
-    private static final int COLOR_START_BUTTON = 0xA0DD8833;
-    private static final int COLOR_F1_BUTTON = 0xA0DDDDDD;
-    private static final String LABEL_A_BUTTON = "A";
-    private static final String LABEL_B_BUTTON = "B";
-    private static final String LABEL_C_BUTTON = "C";
-    private static final String LABEL_X_BUTTON = "X";
-    private static final String LABEL_Y_BUTTON = "Y";
-    private static final String LABEL_Z_BUTTON = "Z";
-    private static final String LABEL_START_BUTTON = "S";
-    private static final String LABEL_F1_BUTTON = "F1";
-
     private JoystickDirectional directional;
-    private JoystickButton[] buttons;
-
+    private JoystickKeypad keypad;
     private int sizeView;
-
-    private double sizefactor = 1.0;
-
     private TouchEventWrapper mWrap = TouchEventWrapper.newInstance();
 
     public JoystickView(final Context context) {
@@ -84,69 +55,18 @@ public class JoystickView extends View {
         setFocusable(true);
 
         directional = new JoystickDirectional(this);
-        JoystickButton buttonA = new JoystickButton(
-            COLOR_A_BUTTON,
-            KEYCODE_A_BUTTON,
-            LABEL_A_BUTTON
-        );
-        JoystickButton buttonB = new JoystickButton(
-            COLOR_B_BUTTON,
-            KEYCODE_B_BUTTON,
-            LABEL_B_BUTTON
-        );
-        JoystickButton buttonC = new JoystickButton(
-            COLOR_C_BUTTON,
-            KEYCODE_C_BUTTON,
-            LABEL_C_BUTTON
-        );
-        JoystickButton buttonX = new JoystickButton(
-            COLOR_X_BUTTON,
-            KEYCODE_X_BUTTON,
-            LABEL_X_BUTTON
-        );
-        JoystickButton buttonY = new JoystickButton(
-            COLOR_Y_BUTTON,
-            KEYCODE_Y_BUTTON,
-            LABEL_Y_BUTTON
-        );
-        JoystickButton buttonZ = new JoystickButton(
-            COLOR_Z_BUTTON,
-            KEYCODE_Z_BUTTON,
-            LABEL_Z_BUTTON
-        );
-        JoystickButton buttonStart = new JoystickButton(
-            COLOR_START_BUTTON,
-            KEYCODE_START_BUTTON,
-            LABEL_START_BUTTON
-        );
-        JoystickButton buttonF1 = new JoystickButton(
-            COLOR_F1_BUTTON,
-            KEYCODE_F1_BUTTON,
-            LABEL_F1_BUTTON
-        );
-
-        buttons = new JoystickButton[] {
-            buttonStart,
-            buttonX,
-            buttonY,
-            buttonZ,
-            buttonF1,
-            buttonA,
-            buttonB,
-            buttonC
-        };
+        keypad = new JoystickKeypad(this);
     }
 
     public void setTransparency(final int val) {
-        directional.setAlpha(255 - val);
+        int alpha = 255 - val;
 
-        for (JoystickButton button : buttons) {
-            button.setAlpha(255 - val);
-        }
+        directional.setAlpha(alpha);
+        keypad.setAlpha(alpha);
     }
 
     public void setSize(final int val) {
-        sizefactor = (((double) val + 1) / 6d) - ((val - 5) * 0.12);
+        keypad.setSizeFactor(val);
     }
 
     @Override
@@ -183,22 +103,7 @@ public class JoystickView extends View {
 
         int centerViewPosition = sizeView / 2;
         directional.setBackgroundPosition(centerViewPosition);
-
-        int buttonRadius = (int) ((sizeView * 0.125) * sizefactor);
-        int centerXButton = getMeasuredWidth() - (int) (buttonRadius * 9.3);
-        int[] centerYButtons = new int[2];
-        centerYButtons[0] = centerViewPosition - (int) (buttonRadius * 1.5);
-        centerYButtons[1] = centerViewPosition + (int) (buttonRadius * 1.5);
-
-        for (int i = 0, length = buttons.length / 2; i < length; i++) {
-            for (int j = 0; j < 2; j++) {
-                JoystickButton button = buttons[(j * length) + i];
-                button.setPosition(centerXButton, centerYButtons[j]);
-                button.setRadius(buttonRadius);
-            }
-
-            centerXButton += (int) (buttonRadius * 2.75);
-        }
+        keypad.setSize(sizeView, getMeasuredWidth());
     }
 
     @Override
@@ -206,10 +111,7 @@ public class JoystickView extends View {
         canvas.save();
 
         directional.draw(canvas);
-
-        for (JoystickButton button : buttons) {
-            button.draw(canvas);
-        }
+        keypad.draw(canvas);
 
         canvas.restore();
     }
@@ -238,13 +140,7 @@ public class JoystickView extends View {
                     return true;
                 }
 
-                for (JoystickButton button : buttons) {
-                    if (releaseButton(button, pId)) {
-                        return true;
-                    }
-                }
-
-                return false;
+                return keypad.release(pId);
             }
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_POINTER_DOWN: {
@@ -257,41 +153,8 @@ public class JoystickView extends View {
                     return true;
                 }
 
-                for (JoystickButton button : buttons) {
-                    if (clickButton(button, pId, x, y)) {
-                        return true;
-                    }
-                }
-
-                return false;
+                return keypad.click(pId, x, y);
             }
-        }
-
-        return false;
-    }
-
-    private boolean releaseButton(final JoystickButton button, final int pId) {
-        if ((pId == button.getPointerId()) && button.isClicked()) {
-            invalidate();
-            button.release();
-
-            return true;
-        }
-
-        return false;
-    }
-
-    private boolean clickButton(
-        final JoystickButton button,
-        final int pId,
-        final int x,
-        final int y
-    ) {
-        if (button.inButton(x, y) && !button.isClicked()) {
-            invalidate();
-            button.click(pId);
-
-            return true;
         }
 
         return false;
