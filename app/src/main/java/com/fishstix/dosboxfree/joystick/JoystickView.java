@@ -65,10 +65,6 @@ public class JoystickView extends View {
         keypad.setAlpha(alpha);
     }
 
-    public void setSize(final int val) {
-        keypad.setSizeFactor(val);
-    }
-
     @Override
     protected void onMeasure(
         final int widthMeasureSpec,

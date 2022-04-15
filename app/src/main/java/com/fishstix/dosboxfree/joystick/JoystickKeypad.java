@@ -30,7 +30,6 @@ public class JoystickKeypad {
     private static final String LABEL_F1_BUTTON = "F1";
     private final JoystickButton[] buttons;
     private final View view;
-    private double sizeFactor;
 
     public JoystickKeypad(final View currentView) {
         view = currentView;
@@ -85,7 +84,6 @@ public class JoystickKeypad {
             buttonB,
             buttonC
         };
-        sizeFactor = 1.0;
     }
 
     public void setAlpha(final int alpha) {
@@ -94,13 +92,9 @@ public class JoystickKeypad {
         }
     }
 
-    public void setSizeFactor(final int val) {
-        sizeFactor = (((double) val + 1) / 6d) - ((val - 5) * 0.12);
-    }
-
     public void setSize(final int sizeView, final int screenWidth) {
         int centerViewPosition = sizeView / 2;
-        int buttonRadius = (int) ((sizeView * 0.125) * sizeFactor);
+        int buttonRadius = (int) (sizeView * 0.125);
         int centerXButton = screenWidth - (int) (buttonRadius * 9.3);
         int[] centerYButtons = new int[2];
         centerYButtons[0] = centerViewPosition - (int) (buttonRadius * 1.5);

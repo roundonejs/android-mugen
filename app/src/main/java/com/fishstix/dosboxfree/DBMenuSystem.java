@@ -525,14 +525,10 @@ public class DBMenuSystem {
             );
         }
 
-        // size & transparency & mode of joystick
-        int joysize = prefs.getInt("confjoysize", 5);
-        context.mJoystickView.setSize(joysize);
         LayoutParams params = context.mJoystickView.getLayoutParams();
-        // Log.i("DosBoxTurbo","Joysize: " + (int)(175+((joysize-5)*5)));
         params.height = (int) TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
-            (int) (175 + ((joysize - 5) * 5)),
+            175,
             context.getResources().getDisplayMetrics()
         );
         context.mJoystickView.setTransparency(
