@@ -113,7 +113,7 @@ public class JoystickKeypad {
         final int screenWidth,
         final int buttonRadius
     ) {
-        int specialCenter = (screenWidth / 2) - buttonRadius;
+        int specialCenter = (screenWidth / 2) + buttonRadius;
 
         for (int i = 0, length = specialButtons.length; i < length; i++) {
             JoystickButton button = specialButtons[i];
