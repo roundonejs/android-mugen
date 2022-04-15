@@ -4,6 +4,9 @@ import android.graphics.Canvas;
 import android.view.View;
 
 public class JoystickKeypad {
+    private static final double DISTANCE_BUTTON_RATIO = 2.75;
+    private static final double BUTTON_RADIUS_RATIO = 0.125;
+    private static final double DISTANTE_ACTION_BUTTONS_RATIO = 7;
     private static final int KEYCODE_A_BUTTON = 38;
     private static final int KEYCODE_B_BUTTON = 39;
     private static final int KEYCODE_C_BUTTON = 40;
@@ -29,6 +32,8 @@ public class JoystickKeypad {
     private static final String LABEL_START_BUTTON = "S";
     private static final String LABEL_F1_BUTTON = "F1";
     private final JoystickButton[] buttons;
+    private final JoystickButton[] specialButtons;
+    private final JoystickButton[][] actionButtons;
     private final View view;
 
     public JoystickKeypad(final View currentView) {
@@ -84,6 +89,11 @@ public class JoystickKeypad {
             buttonB,
             buttonC
         };
+        specialButtons = new JoystickButton[] {buttonF1, buttonStart};
+        actionButtons = new JoystickButton[][] {
+            {buttonX, buttonY, buttonZ},
+            {buttonA, buttonB, buttonC}
+        };
     }
 
     public void setAlpha(final int alpha) {
@@ -93,21 +103,51 @@ public class JoystickKeypad {
     }
 
     public void setSize(final int sizeView, final int screenWidth) {
+        int buttonRadius = (int) (sizeView * BUTTON_RADIUS_RATIO);
+
+        setSpecialButtonsPosition(screenWidth, buttonRadius);
+        setActionButtonsPosition(sizeView, screenWidth, buttonRadius);
+    }
+
+    private void setSpecialButtonsPosition(
+        final int screenWidth,
+        final int buttonRadius
+    ) {
+        int specialCenter = (screenWidth / 2) - buttonRadius;
+
+        for (int i = 0, length = specialButtons.length; i < length; i++) {
+            JoystickButton button = specialButtons[i];
+            button.setPosition(specialCenter, buttonRadius);
+            button.setRadius(buttonRadius);
+
+            specialCenter += (int) (buttonRadius * DISTANCE_BUTTON_RATIO);
+        }
+    }
+
+    private void setActionButtonsPosition(
+        final int sizeView,
+        final int screenWidth,
+        final int buttonRadius
+    ) {
         int centerViewPosition = sizeView / 2;
-        int buttonRadius = (int) (sizeView * 0.125);
-        int centerXButton = screenWidth - (int) (buttonRadius * 9.3);
-        int[] centerYButtons = new int[2];
-        centerYButtons[0] = centerViewPosition - (int) (buttonRadius * 1.5);
-        centerYButtons[1] = centerViewPosition + (int) (buttonRadius * 1.5);
+        int distanceButtons = (int) (buttonRadius * DISTANCE_BUTTON_RATIO);
+        int[] centerYButtons = new int[] {
+            centerViewPosition,
+            centerViewPosition + distanceButtons
+        };
 
-        for (int i = 0, length = buttons.length / 2; i < length; i++) {
-            for (int j = 0; j < 2; j++) {
-                JoystickButton button = buttons[(j * length) + i];
-                button.setPosition(centerXButton, centerYButtons[j]);
+        for (int i = 0, length = actionButtons.length; i < length; i++) {
+            int centerXButton = (
+                screenWidth
+                - (int) (buttonRadius * DISTANTE_ACTION_BUTTONS_RATIO)
+            );
+
+            for (JoystickButton button : actionButtons[i]) {
+                button.setPosition(centerXButton, centerYButtons[i]);
                 button.setRadius(buttonRadius);
-            }
 
-            centerXButton += (int) (buttonRadius * 2.75);
+                centerXButton += distanceButtons;
+            }
         }
     }
 
