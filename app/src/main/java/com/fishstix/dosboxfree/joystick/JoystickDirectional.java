@@ -22,8 +22,8 @@ import android.graphics.Paint;
 import android.view.View;
 
 public class JoystickDirectional extends JoystickViewObject {
-    private static final int BACKGROUND_COLOR = 0xA0888888;
-    private static final int HANDLE_COLOR = 0xB0444444;
+    private static final int BACKGROUND_COLOR = 0x5F888888;
+    private static final int HANDLE_COLOR = 0x6F444444;
     private static final int INNER_PADDING = 10;
     private static final float MINIMUM_POINT_DISTANCE = 1;
     private static final int NUMBER_FRAMES_HANDLE_TO_CENTER = 5;
@@ -39,11 +39,6 @@ public class JoystickDirectional extends JoystickViewObject {
         view = currentView;
         backgroudPaint = JoystickHelper.createPaint(BACKGROUND_COLOR);
         handlePaint = JoystickHelper.createPaint(HANDLE_COLOR);
-    }
-
-    public void setAlpha(final int alpha) {
-        backgroudPaint.setAlpha(alpha);
-        handlePaint.setAlpha(alpha);
     }
 
     public void draw(final Canvas canvas) {

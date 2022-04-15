@@ -48,21 +48,13 @@ public class JoystickButton extends JoystickViewObject {
         label = buttonLabel;
     }
 
-    public void setAlpha(final int alpha) {
-        paint.setAlpha(alpha);
-
-        clickedPaint.setAlpha(
-            Math.min(alpha + CLICKED_BUTTON_ALPHA_PLUS, MAX_ALPHA)
-        );
-    }
-
     public void draw(final Canvas canvas) {
         canvas.drawCircle(x, y, radius, getActivePaint());
         drawText(canvas);
     }
 
     private void drawText(final Canvas canvas) {
-        float textPositionX = x - paint.measureText(label)/2;
+        float textPositionX = x - paint.measureText(label) / 2;
         canvas.drawText(label, textPositionX, y, getActivePaint());
     }
 

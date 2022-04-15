@@ -58,13 +58,6 @@ public class JoystickView extends View {
         keypad = new JoystickKeypad(this);
     }
 
-    public void setTransparency(final int val) {
-        int alpha = 255 - val;
-
-        directional.setAlpha(alpha);
-        keypad.setAlpha(alpha);
-    }
-
     @Override
     protected void onMeasure(
         final int widthMeasureSpec,

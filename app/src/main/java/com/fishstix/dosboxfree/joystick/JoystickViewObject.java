@@ -25,8 +25,6 @@ public abstract class JoystickViewObject {
         pointerId = INVALID_POINTER_ID;
     }
 
-    public abstract void setAlpha(int alpha);
-
     public void click(final int newPointerId) {
         pointerId = newPointerId;
     }

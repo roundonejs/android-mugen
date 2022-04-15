@@ -15,14 +15,14 @@ public class JoystickKeypad {
     private static final int KEYCODE_Z_BUTTON = 43;
     private static final int KEYCODE_START_BUTTON = 66;
     private static final int KEYCODE_F1_BUTTON = 131;
-    private static final int COLOR_A_BUTTON = 0xA0FF8888;
-    private static final int COLOR_B_BUTTON = 0xA088FF88;
-    private static final int COLOR_C_BUTTON = 0xA08888FF;
-    private static final int COLOR_X_BUTTON = 0xA0FFFF88;
-    private static final int COLOR_Y_BUTTON = 0xA0FF88FF;
-    private static final int COLOR_Z_BUTTON = 0xA088FFFF;
-    private static final int COLOR_START_BUTTON = 0xA0DD8833;
-    private static final int COLOR_F1_BUTTON = 0xA0DDDDDD;
+    private static final int COLOR_A_BUTTON = 0x5FFF8888;
+    private static final int COLOR_B_BUTTON = 0x5F88FF88;
+    private static final int COLOR_C_BUTTON = 0x5F8888FF;
+    private static final int COLOR_X_BUTTON = 0x5FFFFF88;
+    private static final int COLOR_Y_BUTTON = 0x5FFF88FF;
+    private static final int COLOR_Z_BUTTON = 0x5F88FFFF;
+    private static final int COLOR_START_BUTTON = 0x5FDD8833;
+    private static final int COLOR_F1_BUTTON = 0x5FDDDDDD;
     private static final String LABEL_A_BUTTON = "A";
     private static final String LABEL_B_BUTTON = "B";
     private static final String LABEL_C_BUTTON = "C";
@@ -94,12 +94,6 @@ public class JoystickKeypad {
             {buttonX, buttonY, buttonZ},
             {buttonA, buttonB, buttonC}
         };
-    }
-
-    public void setAlpha(final int alpha) {
-        for (JoystickButton button : buttons) {
-            button.setAlpha(alpha);
-        }
     }
 
     public void setSize(final int sizeView, final int screenWidth) {

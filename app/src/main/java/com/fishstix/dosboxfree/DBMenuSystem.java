@@ -531,12 +531,6 @@ public class DBMenuSystem {
             175,
             context.getResources().getDisplayMetrics()
         );
-        context.mJoystickView.setTransparency(
-            prefs.getInt(
-                "confjoytrans",
-                160
-            )
-        );
         context.mJoystickView.invalidate();
 
         // Joystick Center
