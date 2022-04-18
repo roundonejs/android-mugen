@@ -21,6 +21,8 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.View;
 
+import com.fishstix.dosboxfree.input.JoystickHandleListener;
+
 public class JoystickDirectional extends JoystickViewObject {
     private static final int BACKGROUND_COLOR = 0x5F888888;
     private static final int HANDLE_COLOR = 0x6F444444;
@@ -106,7 +108,7 @@ public class JoystickDirectional extends JoystickViewObject {
             );
         }
 
-        JoystickMovedListener.onReleased();
+        JoystickHandleListener.onReleased();
     }
 
     public void moveHandle(
@@ -143,7 +145,7 @@ public class JoystickDirectional extends JoystickViewObject {
             int percentagePositionY = -calculateHandlePercentagePosition(
                 handlePositionY
             );
-            JoystickMovedListener.onMoved(
+            JoystickHandleListener.onMoved(
                 percentagePositionX,
                 percentagePositionY
             );

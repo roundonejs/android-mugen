@@ -15,14 +15,14 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package com.fishstix.dosboxfree.joystick;
+package com.fishstix.dosboxfree.input;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import com.fishstix.dosboxfree.DosBoxControl;
 
-public class JoystickMovedListener {
+public class JoystickHandleListener {
     private static final int KEYCODE_UP_BUTTON = 51;
     private static final int KEYCODE_RIGHT_BUTTON = 32;
     private static final int KEYCODE_DOWN_BUTTON = 47;
