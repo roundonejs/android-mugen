@@ -20,9 +20,13 @@
 package com.fishstix.dosboxfree;
 
 public class DosBoxControl {
-    public final static int ACTION_DOWN = 0;
-    public final static int ACTION_UP = 1;
-    public final static int ACTION_MOVE = 2;
+    public static final int KEYCODE_UP_BUTTON = 51;
+    public static final int KEYCODE_RIGHT_BUTTON = 32;
+    public static final int KEYCODE_DOWN_BUTTON = 47;
+    public static final int KEYCODE_LEFT_BUTTON = 29;
+    public static final int ACTION_DOWN = 0;
+    public static final int ACTION_UP = 1;
+    public static final int ACTION_MOVE = 2;
 
     public static native void nativeMouse(
         int x,

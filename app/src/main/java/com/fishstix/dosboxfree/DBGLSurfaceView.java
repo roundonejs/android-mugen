@@ -19,6 +19,8 @@
 package com.fishstix.dosboxfree;
 
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -131,6 +133,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     boolean mModifierShift = false;
     public int mActionBarHeight;
     public OpenGLRenderer mRenderer;
+    private Map<Integer, Integer> keyEventToMugenButton;
 
     static class KeyHandler extends Handler {
         private final WeakReference<DBGLSurfaceView> mSurface;
@@ -233,7 +236,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
         }
     }
 
-    public DBGLSurfaceView(Context context) {
+    public DBGLSurfaceView(final Context context) {
         super(context);
         mDirty.set(false);
 
@@ -241,27 +244,51 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
             setup(context);
         }
 
-        Log.i("DosBoxTurbo", "Surface constructor - Default Form");
+        init();
     }
 
-    public DBGLSurfaceView(Context context, AttributeSet attrs) {
+    public DBGLSurfaceView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
 
         if (!this.isInEditMode()) {
             setup(context);
         }
 
-        Log.i("DosBoxTurbo", "Surface constructor - Default Form");
+        init();
     }
 
-    public DBGLSurfaceView(Context context, AttributeSet attrs, int defStyle) {
+    public DBGLSurfaceView(
+        final Context context,
+        final AttributeSet attrs,
+        final int defStyle
+    ) {
         super(context, attrs);
 
         if (!this.isInEditMode()) {
             setup(context);
         }
 
-        Log.i("DosBoxTurbo", "Surface constructor - Default Form");
+        init();
+    }
+
+    private void init() {
+        keyEventToMugenButton = new HashMap<>();
+        keyEventToMugenButton.put(
+            KeyEvent.KEYCODE_DPAD_UP,
+            DosBoxControl.KEYCODE_UP_BUTTON
+        );
+        keyEventToMugenButton.put(
+            KeyEvent.KEYCODE_DPAD_RIGHT,
+            DosBoxControl.KEYCODE_RIGHT_BUTTON
+        );
+        keyEventToMugenButton.put(
+            KeyEvent.KEYCODE_DPAD_DOWN,
+            DosBoxControl.KEYCODE_DOWN_BUTTON
+        );
+        keyEventToMugenButton.put(
+            KeyEvent.KEYCODE_DPAD_LEFT,
+            DosBoxControl.KEYCODE_LEFT_BUTTON
+        );
     }
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
@@ -1683,191 +1710,39 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, final KeyEvent event) {
-        if (mDebug) {
-            Log.d(
-                "DosBoxTurbo",
-                "onKeyDown keyCode=" + keyCode + " mEnableDpad=" +
-                mEnableDpad
-            );
-        }
-
-        if (mEnableDpad) {
-            switch (keyCode) {
-                case KeyEvent.KEYCODE_DPAD_UP:
-
-                    if (
-                        (mInputMode == INPUT_MODE_MOUSE) ||
-                        (mInputMode == INPUT_MODE_REAL_MOUSE)
-                    ) {
-                        y[0] -= mDpadRate;
-                        DosBoxControl.nativeMouse(
-                            (int) x[0],
-                            (int) y[0],
-                            (int) x[0],
-                            (int) y[0] + mDpadRate,
-                            2,
-                            -1
-                        );
-
-                        return true;
-                    } else if (
-                        (mInputMode == INPUT_MODE_JOYSTICK) ||
-                        (mInputMode == INPUT_MODE_REAL_JOYSTICK)
-                    ) {
-                        DosBoxControl.nativeJoystick(0, -1024, 2, -1);
-
-                        return true;
-                    }
-
-                    break;
-                case KeyEvent.KEYCODE_DPAD_DOWN:
-
-                    if (
-                        (mInputMode == INPUT_MODE_MOUSE) ||
-                        (mInputMode == INPUT_MODE_REAL_MOUSE)
-                    ) {
-                        y[0] += mDpadRate;
-                        DosBoxControl.nativeMouse(
-                            (int) x[0],
-                            (int) y[0],
-                            (int) x[0],
-                            (int) y[0] - mDpadRate,
-                            2,
-                            -1
-                        );
-
-                        return true;
-                    } else if (
-                        (mInputMode == INPUT_MODE_JOYSTICK) ||
-                        (mInputMode == INPUT_MODE_REAL_JOYSTICK)
-                    ) {
-                        DosBoxControl.nativeJoystick(0, 1024, 2, -1);
-
-                        return true;
-                    }
-
-                    break;
-                case KeyEvent.KEYCODE_DPAD_LEFT:
-
-                    if (
-                        (mInputMode == INPUT_MODE_MOUSE) ||
-                        (mInputMode == INPUT_MODE_REAL_MOUSE)
-                    ) {
-                        x[0] -= mDpadRate;
-                        DosBoxControl.nativeMouse(
-                            (int) x[0],
-                            (int) y[0],
-                            (int) x[0] + mDpadRate,
-                            (int) y[0],
-                            2,
-                            -1
-                        );
-
-                        return true;
-                    } else if (
-                        (mInputMode == INPUT_MODE_JOYSTICK) ||
-                        (mInputMode == INPUT_MODE_REAL_JOYSTICK)
-                    ) {
-                        DosBoxControl.nativeJoystick(-1024, 0, 2, -1);
-
-                        return true;
-                    }
-
-                    break;
-                case KeyEvent.KEYCODE_DPAD_RIGHT:
-
-                    if (
-                        (mInputMode == INPUT_MODE_MOUSE) ||
-                        (mInputMode == INPUT_MODE_REAL_MOUSE)
-                    ) {
-                        x[0] += mDpadRate;
-                        DosBoxControl.nativeMouse(
-                            (int) x[0],
-                            (int) y[0],
-                            (int) x[0] - mDpadRate,
-                            (int) y[0],
-                            2,
-                            -1
-                        );
-
-                        return true;
-                    } else if (
-                        (mInputMode == INPUT_MODE_JOYSTICK) ||
-                        (mInputMode == INPUT_MODE_REAL_JOYSTICK)
-                    ) {
-                        DosBoxControl.nativeJoystick(1024, 0, 2, -1);
-
-                        return true;
-                    }
-
-                    break;
-                case KeyEvent.KEYCODE_DPAD_CENTER:              // button
-
-                    if (
-                        (mInputMode == INPUT_MODE_MOUSE) ||
-                        (mInputMode == INPUT_MODE_REAL_MOUSE)
-                    ) {
-                        DosBoxControl.nativeMouse(0, 0, 0, 0, 0, BTN_A);
-
-                        return true;
-                    } else if (
-                        (mInputMode == INPUT_MODE_JOYSTICK) ||
-                        (mInputMode == INPUT_MODE_REAL_JOYSTICK)
-                    ) {
-                        DosBoxControl.nativeJoystick(0, 0, 0, BTN_A);
-
-                        return true;
-                    }
-
-                    break;
-            }
-        }
-
-        return handleKey(keyCode, event);
+    public boolean onKeyDown(final int keyCode, final KeyEvent event) {
+        return handleDirectionalKey(keyCode, true) || handleKey(keyCode, event);
     }
 
     @Override
-    public boolean onKeyUp(int keyCode, final KeyEvent event) {
-        if (mDebug) {
-            Log.d("DosBoxTurbo", "onKeyUp keyCode=" + keyCode);
+    public boolean onKeyUp(final int keyCode, final KeyEvent event) {
+        return (
+            handleDirectionalKey(keyCode, false)
+            || handleKey(keyCode, event)
+        );
+    }
+
+    private boolean handleDirectionalKey(
+        final int keyCode,
+        final boolean down
+    ) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_DPAD_UP:
+            case KeyEvent.KEYCODE_DPAD_RIGHT:
+            case KeyEvent.KEYCODE_DPAD_DOWN:
+            case KeyEvent.KEYCODE_DPAD_LEFT:
+                DosBoxControl.sendNativeKey(
+                    keyEventToMugenButton.get(keyCode),
+                    down,
+                    false,
+                    false,
+                    false
+                );
+
+                return true;
         }
 
-        if (mEnableDpad) {
-            switch (keyCode) {
-                // DPAD / TRACKBALL
-                case KeyEvent.KEYCODE_DPAD_UP:
-                case KeyEvent.KEYCODE_DPAD_DOWN:
-                case KeyEvent.KEYCODE_DPAD_LEFT:
-                case KeyEvent.KEYCODE_DPAD_RIGHT:
-
-                    if (
-                        (mInputMode == INPUT_MODE_JOYSTICK) ||
-                        (mInputMode == INPUT_MODE_REAL_JOYSTICK)
-                    ) {
-                        DosBoxControl.nativeJoystick(0, 0, 2, -1);
-                    }
-
-                    return true;
-                case KeyEvent.KEYCODE_DPAD_CENTER:                      // button
-
-                    if (
-                        (mInputMode == INPUT_MODE_MOUSE) ||
-                        (mInputMode == INPUT_MODE_REAL_MOUSE)
-                    ) {
-                        DosBoxControl.nativeMouse(0, 0, 0, 0, 1, BTN_A);
-                    } else if (
-                        (mInputMode == INPUT_MODE_JOYSTICK) ||
-                        (mInputMode == INPUT_MODE_REAL_JOYSTICK)
-                    ) {
-                        DosBoxControl.nativeJoystick(0, 0, 1, BTN_A);
-                    }
-
-                    return true;
-            }
-        }
-
-        return handleKey(keyCode, event);
+        return false;
     }
 
     private boolean handleKey(int keyCode, final KeyEvent event) {

@@ -23,24 +23,28 @@ import java.util.Map;
 import com.fishstix.dosboxfree.DosBoxControl;
 
 public class JoystickHandleListener {
-    private static final int KEYCODE_UP_BUTTON = 51;
-    private static final int KEYCODE_RIGHT_BUTTON = 32;
-    private static final int KEYCODE_DOWN_BUTTON = 47;
-    private static final int KEYCODE_LEFT_BUTTON = 29;
     private static final int DEADZONE = 50;
     private static final Map<Integer, Boolean> pressedKeys;
 
     static {
         pressedKeys = new HashMap<>();
-        pressedKeys.put(KEYCODE_UP_BUTTON, false);
-        pressedKeys.put(KEYCODE_RIGHT_BUTTON, false);
-        pressedKeys.put(KEYCODE_DOWN_BUTTON, false);
-        pressedKeys.put(KEYCODE_LEFT_BUTTON, false);
+        pressedKeys.put(DosBoxControl.KEYCODE_UP_BUTTON, false);
+        pressedKeys.put(DosBoxControl.KEYCODE_RIGHT_BUTTON, false);
+        pressedKeys.put(DosBoxControl.KEYCODE_DOWN_BUTTON, false);
+        pressedKeys.put(DosBoxControl.KEYCODE_LEFT_BUTTON, false);
     }
 
     public static void onMoved(final int x, final int y) {
-        onMoved(x, KEYCODE_RIGHT_BUTTON, KEYCODE_LEFT_BUTTON);
-        onMoved(y, KEYCODE_UP_BUTTON, KEYCODE_DOWN_BUTTON);
+        onMoved(
+            x,
+            DosBoxControl.KEYCODE_RIGHT_BUTTON,
+            DosBoxControl.KEYCODE_LEFT_BUTTON
+        );
+        onMoved(
+            y,
+            DosBoxControl.KEYCODE_UP_BUTTON,
+            DosBoxControl.KEYCODE_DOWN_BUTTON
+        );
     }
 
     private static void onMoved(
@@ -59,10 +63,10 @@ public class JoystickHandleListener {
     }
 
     public static void onReleased() {
-        release(KEYCODE_UP_BUTTON);
-        release(KEYCODE_RIGHT_BUTTON);
-        release(KEYCODE_DOWN_BUTTON);
-        release(KEYCODE_LEFT_BUTTON);
+        release(DosBoxControl.KEYCODE_UP_BUTTON);
+        release(DosBoxControl.KEYCODE_RIGHT_BUTTON);
+        release(DosBoxControl.KEYCODE_DOWN_BUTTON);
+        release(DosBoxControl.KEYCODE_LEFT_BUTTON);
     }
 
     private static void press(final int key) {
