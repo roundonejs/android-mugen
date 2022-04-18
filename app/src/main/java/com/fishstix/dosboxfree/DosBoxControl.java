@@ -1,6 +1,6 @@
 /*
  *  Copyright (C) 2012 Fishstix - Based upon DosBox & anDosBox by Locnet
- *  
+ *
  *  Copyright (C) 2011 Locnet (android.locnet@gmail.com)
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -19,19 +19,64 @@
 
 package com.fishstix.dosboxfree;
 
-public class DosBoxControl {  
-	public static native void nativeMouse(int x, int y, int down_x, int down_y, int action, int button);
-	public static native int nativeKey(int keyCode, int down, int ctrl, int alt, int shift);
-	public static native void nativeJoystick(int x, int y, int action, int button);
-	//public static native void nativeMouseWarp(int x, int y, float xfactor, float yfactor, int src_left, int src_right, int src_top, int src_bottom, int dst_left, int dst_right, int dst_top, int dst_bottom);
-	public static native void nativeMouseWarp(float x, float y, int dst_left, int dst_top, int width, int height);
-	public static native int nativeGetCycleCount();
-	public static native int nativeGetFrameSkipCount();
-	public static native int nativeGetMemSize();
-	public static native boolean nativeGetAutoAdjust();
-	//return true to clear modifier 
-	public static boolean sendNativeKey(int keyCode, boolean down, boolean ctrl, boolean alt, boolean shift) {
-		return (nativeKey(keyCode, (down)?1:0, (ctrl)?1:0, (alt)?1:0, (shift)?1:0) != 0);
-	}
-}
+public class DosBoxControl {
+    public final static int ACTION_DOWN = 0;
+    public final static int ACTION_UP = 1;
+    public final static int ACTION_MOVE = 2;
 
+    public static native void nativeMouse(
+        int x,
+        int y,
+        int down_x,
+        int down_y,
+        int action,
+        int button
+    );
+
+    public static native int nativeKey(
+        int keyCode,
+        int down,
+        int ctrl,
+        int alt,
+        int shift
+    );
+
+    public static native void nativeJoystick(
+        int x,
+        int y,
+        int action,
+        int button
+    );
+
+    public static native void nativeMouseWarp(
+        float x,
+        float y,
+        int dst_left,
+        int dst_top,
+        int width,
+        int height
+    );
+
+    public static native int nativeGetCycleCount();
+
+    public static native int nativeGetFrameSkipCount();
+
+    public static native int nativeGetMemSize();
+
+    public static native boolean nativeGetAutoAdjust();
+
+    public static boolean sendNativeKey(
+        final int keyCode,
+        final boolean down,
+        final boolean ctrl,
+        final boolean alt,
+        final boolean shift
+    ) {
+        int intDown = (down) ? 1 : 0;
+        int intCtrl = (ctrl) ? 1 : 0;
+        int intAlt = (alt) ? 1 : 0;
+        int intShift = (shift) ? 1 : 0;
+
+        return nativeKey(keyCode, intDown, intCtrl, intAlt, intShift) != 0;
+    }
+}

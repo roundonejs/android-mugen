@@ -76,10 +76,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     public final static int INPUT_MODE_REAL_MOUSE = 0xf4;
     public final static int INPUT_MODE_REAL_JOYSTICK = 0xf5;
 
-    public final static int ACTION_DOWN = 0;
-    public final static int ACTION_UP = 1;
-    public final static int ACTION_MOVE = 2;
-
     public final static int PIXEL_BYTES = 2;
 
     private static final int MAX_POINT_CNT = 4;
@@ -419,10 +415,17 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                         0,
                         this.x,
                         this.y,
-                        ACTION_MOVE,
+                        DosBoxControl.ACTION_MOVE,
                         -1
                     );
-                    DosBoxControl.nativeMouse(0, 0, 0, 0, ACTION_MOVE, -1);
+                    DosBoxControl.nativeMouse(
+                        0,
+                        0,
+                        0,
+                        0,
+                        DosBoxControl.ACTION_MOVE,
+                        -1
+                    );
                 }
 
                 try {
@@ -834,7 +837,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
             DosBoxControl.nativeJoystick(
                 (int) ((joy2X * 256.0f) + mJoyCenterX),
                 (int) ((joy2Y * 256.0f) + mJoyCenterY),
-                ACTION_MOVE,
+                DosBoxControl.ACTION_MOVE,
                 -1
             );
         } else {
@@ -847,7 +850,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
             DosBoxControl.nativeJoystick(
                 (int) ((joyX * 256.0f) + mJoyCenterX),
                 (int) ((joyY * 256.0f) + mJoyCenterY),
-                ACTION_MOVE,
+                DosBoxControl.ACTION_MOVE,
                 -1
             );
         }
@@ -1119,7 +1122,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                         (int) ((x[pointerId] * 256f) +
                         mJoyCenterX),
                         (int) ((y[pointerId] * 256f) + mJoyCenterY),
-                        ACTION_MOVE,
+                        DosBoxControl.ACTION_MOVE,
                         -1
                     );
 
@@ -1166,14 +1169,28 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                     !mSPenButton
                 ) {
                     // Handle Samsung SPen Button (RMB) - DOWN
-                    DosBoxControl.nativeMouse(0, 0, 0, 0, ACTION_DOWN, BTN_B);
+                    DosBoxControl.nativeMouse(
+                        0,
+                        0,
+                        0,
+                        0,
+                        DosBoxControl.ACTION_DOWN,
+                        BTN_B
+                    );
                     mSPenButton = true;
                 } else if (
                     ((buttonState &
                     TouchEventWrapper.BUTTON_SECONDARY) == 0) && mSPenButton
                 ) {
                     // Handle Samsung SPen Button (RMB) - UP
-                    DosBoxControl.nativeMouse(0, 0, 0, 0, ACTION_UP, BTN_B);
+                    DosBoxControl.nativeMouse(
+                        0,
+                        0,
+                        0,
+                        0,
+                        DosBoxControl.ACTION_UP,
+                        BTN_B
+                    );
                     mSPenButton = false;
                 }
 
@@ -1209,7 +1226,14 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                     mSPenButton
                 ) {
                     // Handle Samsung SPen Button (RMB) - UP
-                    DosBoxControl.nativeMouse(0, 0, 0, 0, ACTION_UP, BTN_B);
+                    DosBoxControl.nativeMouse(
+                        0,
+                        0,
+                        0,
+                        0,
+                        DosBoxControl.ACTION_UP,
+                        BTN_B
+                    );
                     mSPenButton = false;
 
                     return true;
@@ -1276,7 +1300,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                             DosBoxControl.nativeJoystick(
                                 0,
                                 0,
-                                ACTION_DOWN,
+                                DosBoxControl.ACTION_DOWN,
                                 button
                             );
                         } else if (mInputMode == INPUT_MODE_REAL_MOUSE) {
@@ -1302,7 +1326,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                                 0,
                                 0,
                                 0,
-                                ACTION_DOWN,
+                                DosBoxControl.ACTION_DOWN,
                                 button
                             );
                         }
@@ -1320,7 +1344,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                                     0,
                                     0,
                                     0,
-                                    ACTION_UP,
+                                    DosBoxControl.ACTION_UP,
                                     mGestureSingleClick -
                                     GESTURE_LEFT_CLICK
                                 );
@@ -1341,7 +1365,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                                     0,
                                     -1,
                                     -1,
-                                    ACTION_UP,
+                                    DosBoxControl.ACTION_UP,
                                     mGestureDoubleClick -
                                     GESTURE_LEFT_CLICK
                                 );
@@ -1365,7 +1389,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                                             0,
                                             -1,
                                             -1,
-                                            ACTION_DOWN,
+                                            DosBoxControl.ACTION_DOWN,
                                             mGestureTwoFinger -
                                             GESTURE_LEFT_CLICK
                                         );
@@ -1381,7 +1405,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                                             0,
                                             -1,
                                             -1,
-                                            ACTION_UP,
+                                            DosBoxControl.ACTION_UP,
                                             mGestureTwoFinger -
                                             GESTURE_LEFT_CLICK
                                         );
@@ -1393,7 +1417,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                                             0,
                                             -1,
                                             -1,
-                                            ACTION_DOWN,
+                                            DosBoxControl.ACTION_DOWN,
                                             mGestureTwoFinger -
                                             GESTURE_LEFT_CLICK
                                         );
@@ -1420,7 +1444,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                                     0,
                                     -1,
                                     -1,
-                                    ACTION_UP,
+                                    DosBoxControl.ACTION_UP,
                                     mGestureTwoFinger -
                                     GESTURE_LEFT_CLICK
                                 );
@@ -1434,7 +1458,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                                 0,
                                 0,
                                 0,
-                                ACTION_UP,
+                                DosBoxControl.ACTION_UP,
                                 mButtonDown[pointerId]
                             );
 
@@ -1445,7 +1469,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                             DosBoxControl.nativeJoystick(
                                 0,
                                 0,
-                                ACTION_UP,
+                                DosBoxControl.ACTION_UP,
                                 (mButtonDown[pointerId])
                             );
 
@@ -1502,7 +1526,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                                         (int) (x_last[idx] * mMouseSensitivityX),
                                         (int) (y_last[idx]
                                         * mMouseSensitivityY),
-                                        ACTION_MOVE,
+                                        DosBoxControl.ACTION_MOVE,
                                         -1
                                     );
                                 }
@@ -2159,11 +2183,25 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     }
 
     private final void mouseClick(int button) {
-        DosBoxControl.nativeMouse(0, 0, -1, -1, ACTION_DOWN, button);
+        DosBoxControl.nativeMouse(
+            0,
+            0,
+            -1,
+            -1,
+            DosBoxControl.ACTION_DOWN,
+            button
+        );
         try {
             Thread.sleep(CLICK_DELAY);
         } catch (InterruptedException e) { }
-        DosBoxControl.nativeMouse(0, 0, -1, -1, ACTION_UP, button);
+        DosBoxControl.nativeMouse(
+            0,
+            0,
+            -1,
+            -1,
+            DosBoxControl.ACTION_UP,
+            button
+        );
     }
 
     // Fix for Motorola Keyboards!!! - fishstix
@@ -2191,8 +2229,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
 
                            return super.sendKeyEvent(
                                new KeyEvent(
-                                   KeyEvent.
-                                   ACTION_UP,
+                                   KeyEvent.ACTION_UP,
                                    KeyEvent.KEYCODE_DEL
                                )
                            );
@@ -2306,7 +2343,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                                 0,
                                 -1,
                                 -1,
-                                ACTION_DOWN,
+                                DosBoxControl.ACTION_DOWN,
                                 mGestureDoubleClick -
                                 GESTURE_LEFT_CLICK
                             );
@@ -2382,7 +2419,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                             0,
                             0,
                             0,
-                            ACTION_DOWN,
+                            DosBoxControl.ACTION_DOWN,
                             mGestureSingleClick -
                             GESTURE_LEFT_CLICK
                         );
