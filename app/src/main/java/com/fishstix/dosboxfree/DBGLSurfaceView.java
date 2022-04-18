@@ -56,15 +56,13 @@ import android.view.inputmethod.InputConnection;
 import android.widget.Toast;
 
 import com.fishstix.dosboxfree.dosboxprefs.DosBoxPreferences;
+import com.fishstix.dosboxfree.input.JoystickHandleListener;
 import com.fishstix.dosboxfree.touchevent.TouchEventWrapper;
-
 
 public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     Callback {
     private final static int DEFAULT_WIDTH = 512;    // 800;
     private final static int DEFAULT_HEIGHT = 512;    // 600;
-    public int mJoyCenterX = 0;
-    public int mJoyCenterY = 0;
 
     private final static int BUTTON_REPEAT_DELAY = 100;
     private final static int EVENT_THRESHOLD_DECAY = 100;
@@ -102,7 +100,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     public boolean mScreenTop = false;
     public boolean mGPURendering = false;
     public boolean mKeyboardVisible = false;
-    public short mAnalogStickPref = 0;
 
     int mDpadRate = 7;
     private boolean mLongClick = false;
@@ -779,81 +776,12 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
             }
         }
 
-        float joy2X = 0.0f;
-        range = event.getDevice().getMotionRange(
-            MotionEvent.AXIS_Z,
-            event.getSource()
+        int percentagePositionX = (int) joyX * 100;
+        int percentagePositionY = (int) joyY * 100;
+        JoystickHandleListener.onMoved(
+            percentagePositionX,
+            -percentagePositionY
         );
-
-        if (range != null) {
-            if (historyPos >= 0) {
-                joy2X = InputDeviceState.ProcessAxis(
-                    range,
-                    event.getHistoricalAxisValue(
-                        MotionEvent.AXIS_Z,
-                        historyPos
-                    )
-                );
-            } else {
-                joy2X =
-                    InputDeviceState.ProcessAxis(
-                    range,
-                    event.getAxisValue(MotionEvent.AXIS_Z)
-                    );
-            }
-        }
-
-        float joy2Y = 0.0f;
-        range = event.getDevice().getMotionRange(
-            MotionEvent.AXIS_RZ,
-            event.getSource()
-        );
-
-        if (range != null) {
-            if (historyPos >= 0) {
-                joy2Y = InputDeviceState.ProcessAxis(
-                    range,
-                    event.getHistoricalAxisValue(
-                        MotionEvent.AXIS_RZ,
-                        historyPos
-                    )
-                );
-            } else {
-                joy2Y =
-                    InputDeviceState.ProcessAxis(
-                    range,
-                    event.getAxisValue(MotionEvent.AXIS_RZ)
-                    );
-            }
-        }
-
-        if (mAnalogStickPref == 0) {
-            mMouseThread.setCoord(
-                (int) ((Math.abs(joyX * 32.0f) >
-                DEADZONE) ? (-joyX * 32.0f * mMouseSensitivityX) : 0),
-                (int) ((Math.abs(joyY * 32.0f) >
-                DEADZONE) ? (-joyY * 32.0f * mMouseSensitivityY) : 0)
-            );
-            DosBoxControl.nativeJoystick(
-                (int) ((joy2X * 256.0f) + mJoyCenterX),
-                (int) ((joy2Y * 256.0f) + mJoyCenterY),
-                DosBoxControl.ACTION_MOVE,
-                -1
-            );
-        } else {
-            mMouseThread.setCoord(
-                (int) ((Math.abs(joy2X * 32.0f) >
-                DEADZONE) ? (-joy2X * 32.0f * mMouseSensitivityX) : 0),
-                (int) ((Math.abs(joy2Y * 32.0f) >
-                DEADZONE) ? (-joy2Y * 32.0f * mMouseSensitivityY) : 0)
-            );
-            DosBoxControl.nativeJoystick(
-                (int) ((joyX * 256.0f) + mJoyCenterX),
-                (int) ((joyY * 256.0f) + mJoyCenterY),
-                DosBoxControl.ACTION_MOVE,
-                -1
-            );
-        }
 
         // Handle all other keyevents
         int value = 0;
@@ -1099,10 +1027,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
             ((mWrap.getSource(event) & TouchEventWrapper.SOURCE_CLASS_MASK) ==
             TouchEventWrapper.SOURCE_CLASS_JOYSTICK)
         ) {
-            if (
-                (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) &&
-                (mAnalogStickPref < 3)
-            ) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
                 // use new 3.1 API to handle joystick movements
                 int historySize = event.getHistorySize();
 
@@ -1118,12 +1043,12 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                 if (mInputMode == INPUT_MODE_REAL_JOYSTICK) {
                     x[pointerId] = mWrap.getX(event, pointerId);
                     y[pointerId] = mWrap.getY(event, pointerId);
-                    DosBoxControl.nativeJoystick(
-                        (int) ((x[pointerId] * 256f) +
-                        mJoyCenterX),
-                        (int) ((y[pointerId] * 256f) + mJoyCenterY),
-                        DosBoxControl.ACTION_MOVE,
-                        -1
+
+                    int percentagePositionX = (int) x[pointerId] * 100;
+                    int percentagePositionY = (int) y[pointerId] * 100;
+                    JoystickHandleListener.onMoved(
+                        percentagePositionX,
+                        -percentagePositionY
                     );
 
                     return true;

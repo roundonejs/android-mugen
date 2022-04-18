@@ -59,8 +59,6 @@ public class DBMenuSystem {
     private static final Uri CONTENT_URI = Uri.parse(
         "content://com.fishstix.dosboxlauncher.files/"
     );
-    private final static int JOYSTICK_CENTER_X = 0;
-    private final static int JOYSTICK_CENTER_Y = 0;
     private static final int MAX_MEMORY = 128;
 
     public static final int KEYCODE_F1 = 131;
@@ -533,12 +531,6 @@ public class DBMenuSystem {
         );
         context.mJoystickView.invalidate();
 
-        // Joystick Center
-        context.mSurfaceView.mJoyCenterX =
-            (prefs.getInt("confjoyx", 100) - 100) + JOYSTICK_CENTER_X;
-        context.mSurfaceView.mJoyCenterY =
-            (prefs.getInt("confjoyy", 100) - 100) + JOYSTICK_CENTER_Y;
-
         // Mouse Tracking Mode
         if (Integer.valueOf(prefs.getString("confmousetracking", "0")) == 0) {
             // absolute tracking
@@ -609,11 +601,6 @@ public class DBMenuSystem {
                 )
             );
         }
-
-        // enable/disable genericmotionevent handling for analog sticks
-        // context.mSurfaceView.mGenericMotion = prefs.getBoolean("confgenericmotion", false);
-        context.mSurfaceView.mAnalogStickPref =
-            Short.valueOf(prefs.getString("confanalogsticks", "0"));
 
         // dpad / trackpad emulation
         context.mSurfaceView.mEnableDpad = prefs.getBoolean(
