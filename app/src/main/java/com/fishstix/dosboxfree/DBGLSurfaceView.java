@@ -18,7 +18,6 @@
 
 package com.fishstix.dosboxfree;
 
-import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
@@ -36,8 +35,6 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.opengl.GLSurfaceView;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Message;
 import android.os.SystemClock;
 import android.support.v4.view.MotionEventCompat;
 import android.util.AttributeSet;
@@ -134,36 +131,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     public int mActionBarHeight;
     public OpenGLRenderer mRenderer;
     private Map<Integer, Integer> keyEventToMugenButton;
-
-    static class KeyHandler extends Handler {
-        private final WeakReference<DBGLSurfaceView> mSurface;
-        boolean mReCheck = false;
-
-        KeyHandler(DBGLSurfaceView surface) {
-            mSurface = new WeakReference<DBGLSurfaceView>(surface);
-        }
-
-        @Override
-        public void handleMessage (Message msg) {
-            DBGLSurfaceView surf = mSurface.get();
-
-            if (msg.what == DBMain.SPLASH_TIMEOUT_MESSAGE) {
-                surf.setBackgroundResource(0);
-            } else if (
-                DosBoxControl.sendNativeKey(
-                    msg.what,
-                    false,
-                    surf.mModifierCtrl,
-                    surf.mModifierAlt,
-                    surf.mModifierShift
-                )
-            ) {
-                surf.mModifierCtrl = false;
-                surf.mModifierAlt = false;
-                surf.mModifierShift = false;
-            }
-        }
-    }
 
     class DosBoxVideoThread extends Thread {
         private static final int UPDATE_INTERVAL = 40;
@@ -2214,8 +2181,5 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
 
             return normalizedvalue;
         }
-
-
     }
 }
-
