@@ -76,8 +76,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     boolean mInputLowLatency = false;
     public boolean mGPURendering = false;
 
-    boolean mMaintainAspect = true;
-
     int mContextMenu = 0;
 
     Bitmap mBitmap = null;
@@ -373,19 +371,15 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
         isLandscape = (mRenderer.width > mRenderer.height);
 
         if (mScale) {
-            if (!mMaintainAspect && isLandscape) {
-                mRenderer.x = 0;
-            } else {
-                mRenderer.x = src_width * mRenderer.height / src_height;
+            mRenderer.x = src_width * mRenderer.height / src_height;
 
-                if (mRenderer.x < mRenderer.width) {
-                    mRenderer.width = mRenderer.x;
-                } else if (mRenderer.x > mRenderer.width) {
-                    mRenderer.height = src_height * mRenderer.width / src_width;
-                }
-
-                mRenderer.x = (getWidth() - mRenderer.width) / 2;
+            if (mRenderer.x < mRenderer.width) {
+                mRenderer.width = mRenderer.x;
+            } else if (mRenderer.x > mRenderer.width) {
+                mRenderer.height = src_height * mRenderer.width / src_width;
             }
+
+            mRenderer.x = (getWidth() - mRenderer.width) / 2;
 
             if (isLandscape) {
                 mRenderer.width *= (mParent.mPrefScaleFactor * 0.01f);

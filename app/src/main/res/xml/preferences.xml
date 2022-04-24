@@ -472,11 +472,6 @@
       android:entryValues="@array/confrotation_values"
         android:defaultValue="0"
         android:summary="Configure Auto/Portrait/Landscape rotation" />
-      <CheckBoxPreference
-        android:key="confkeepaspect"
-        android:title="Keep Aspect Ratio"
-        android:defaultValue="true"
-        android:summary="Maintain Scale Aspect Ratio in Landscape Mode" />
       <ListPreference
        android:key="confslidingmenu"
         android:title="QuickMenu Display"

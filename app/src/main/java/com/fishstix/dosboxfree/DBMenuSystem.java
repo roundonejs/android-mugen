@@ -335,12 +335,6 @@ public class DBMenuSystem {
             context.mPrefScaleFilterOn = true;
         }
 
-        // ASPECT Ratio
-        context.mSurfaceView.mMaintainAspect = prefs.getBoolean(
-            "confkeepaspect",
-            true
-        );
-
         // SET Cycles
         if (!prefs.getBoolean("dosmanualconf", false)) {
             try {
