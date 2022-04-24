@@ -583,12 +583,6 @@ public class DBMenuSystem {
             }
         }
 
-        // TOUCHSCREEN MOUSE
-        context.mSurfaceView.mLongPress = prefs.getBoolean(
-            "confgesture_longpress",
-            true
-        );
-
         // FORCE Physical LEFT ALT
         context.mSurfaceView.mUseLeftAltOn = prefs.getBoolean(
             "confaltfix",

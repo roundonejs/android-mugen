@@ -461,17 +461,6 @@
         android:dialogTitle="Range is (1 - 25) [default 7]" />
          </PreferenceCategory>
        </PreferenceScreen>
-
-  <PreferenceScreen
-    android:key="confgestures"
-    android:title="Gesture Mapping"
-    android:summary="Customize gesture actions">
-      <CheckBoxPreference
-          android:key="confgesture_longpress"
-          android:title="Enable Long Press"
-          android:defaultValue="true"
-          android:summary="Hold finger after gesture to emulate mouse hold" />
-      </PreferenceScreen>
       <CheckBoxPreference
        android:key="confaltfix"
        android:title="Use physical ALT"

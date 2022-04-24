@@ -83,7 +83,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     boolean mEnableDpad = false;
     boolean mInputLowLatency = false;
     boolean mUseLeftAltOn = false;
-    public boolean mLongPress = true;
     public boolean mDebug = false;
     public boolean mScreenTop = false;
     public boolean mGPURendering = false;
@@ -768,17 +767,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
 
                     if (mInputMode == INPUT_MODE_MOUSE) {
                         if (pointCnt == 2) {
-                            // handle 2 finger tap gesture
-                            if (mLongPress) {
-                                if (!mTwoFingerAction) {
-                                    mTwoFingerAction = true;
-                                }
-                            }
-
                             return true;
-                        } else if ((pointCnt == 1) && mTwoFingerAction) {
-                            mTwoFingerAction = false;
-                            // return true;
                         }
                     } else if (mInputMode == INPUT_MODE_REAL_MOUSE) {
                         if (mWrap.getButtonState(event) > 0) {
@@ -1235,6 +1224,4 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                    }
         };
     }
-
-    public boolean mTwoFingerAction = false;
 }
