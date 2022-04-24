@@ -350,33 +350,6 @@ JNIEXPORT jint JNICALL Java_com_fishstix_dosboxfree_DosBoxControl_nativeKey(JNIE
 	}
 }
 
-extern "C"
-JNIEXPORT void JNICALL Java_com_fishstix_dosboxfree_DosBoxControl_nativeJoystick(JNIEnv * env, jobject obj, jint x, jint y, jint action, jint button)
-{
-	struct locnet_al_event	event;
-
-	event.eventType = SDL_NOEVENT;
-
-	switch (action) {
-		case 0:
-			event.eventType = SDL_JOYBUTTONDOWN;
-			event.keycode = button;
-			break;
-		case 1:
-			event.eventType = SDL_JOYBUTTONUP;
-			event.keycode = button;
-			break;
-		case 2:
-			event.eventType = SDL_JOYAXISMOTION;
-			event.x = x;
-			event.y = y;
-			break;
-	}
-
-	if 	(event.eventType != SDL_NOEVENT)
-		eventQueue.push(event);
-}
-
 void Android_AudioGetBuffer() {
 	if ((loadf != 0) && (loadf->abort == 0) && (gEnv != 0))
 		loadf->audioBuffer = (jshortArray)gEnv->CallObjectMethod( JavaCallbackThread, JavaAudioGetBuffer );

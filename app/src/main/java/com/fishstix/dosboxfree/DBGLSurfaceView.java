@@ -785,13 +785,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                             return true;                                // capture button touches, pass screen touches through to gesture detetor
                         }
                     } else if (mInputMode == INPUT_MODE_REAL_JOYSTICK) {
-                        DosBoxControl.nativeJoystick(
-                            0,
-                            0,
-                            DosBoxControl.ACTION_UP,
-                            (mButtonDown[pointerId])
-                        );
-
                         if (mWrap.getButtonState(event) > 0) {
                             return true;
                         }

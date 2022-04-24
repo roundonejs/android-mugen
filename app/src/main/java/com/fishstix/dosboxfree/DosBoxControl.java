@@ -44,13 +44,6 @@ public class DosBoxControl {
         int shift
     );
 
-    public static native void nativeJoystick(
-        int x,
-        int y,
-        int action,
-        int button
-    );
-
     public static native int nativeGetCycleCount();
 
     public static native int nativeGetFrameSkipCount();
