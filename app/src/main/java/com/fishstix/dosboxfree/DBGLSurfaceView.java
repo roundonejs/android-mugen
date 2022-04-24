@@ -75,7 +75,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     boolean mScale = false;
     boolean mInputLowLatency = false;
     public boolean mGPURendering = false;
-    public boolean mKeyboardVisible = false;
 
     int mDpadRate = 7;
     boolean mMaintainAspect = true;
@@ -298,7 +297,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
         mVideoThread = new DosBoxVideoThread();
         mKeyHandler = new KeyHandler(this);
 
-        // Receive keyboard events
         requestFocus();
         setFocusableInTouchMode(true);
         setFocusable(true);
@@ -701,7 +699,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     private final static int MAP_NONE = 0;
     private final static int MAP_CYCLEUP = 20002;
     private final static int MAP_CYCLEDOWN = 20003;
-    private final static int MAP_SHOWKEYBOARD = 20004;
     private final static int MAP_SPECIALKEYS = 20005;
     private final static int MAP_ADJUSTCYCLES = 20006;
     private final static int MAP_ADJUSTFRAMES = 20007;
