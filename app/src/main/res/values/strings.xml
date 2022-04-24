@@ -730,26 +730,4 @@
   		<item>6</item>
   		<item>7</item>
   	</string-array>
-    <string-array name="confgesture_singletap">
- 		<item>None</item>
-        <item>Left Click (default)</item>
-  		<item>Right Click</item>
-  	</string-array>
-  	<string-array name="confgesture_singletap_values">
-  		<item>0</item>
-  		<item>3</item>
-  		<item>4</item>
-  	</string-array>
-  	<string-array name="confgesture_doubletap">
- 		<item>None</item>
-        <item>Left Click</item>
-  		<item>Right Click (default)</item>
-  		<item>Double L. Click</item>
-  	</string-array>
-  	<string-array name="confgesture_doubletap_values">
-  		<item>0</item>
-  		<item>3</item>
-  		<item>4</item>
-  		<item>5</item>
-  	</string-array>
 </resources>

@@ -466,43 +466,6 @@
     android:key="confgestures"
     android:title="Gesture Mapping"
     android:summary="Customize gesture actions">
-<!--        <ListPreference
-        android:key="confgesture_swipeup"
-          android:title="Swipe Up Action"
-          android:entries="@array/confgesture_swipe"
-        android:entryValues="@array/confgesture_swipe_values"
-        android:defaultValue="0"
-          android:summary="Configure Swipe Up action"
-      />
-       <ListPreference
-        android:key="confgesture_swipedown"
-          android:title="Swipe Down Action"
-          android:entries="@array/confgesture_swipe"
-        android:entryValues="@array/confgesture_swipe_values"
-        android:defaultValue="0"
-          android:summary="Configure Swipe Down action"
-      />  -->
-      <ListPreference
-          android:key="confgesture_singletap"
-          android:title="Single Tap Action"
-         android:entries="@array/confgesture_singletap"
-        android:entryValues="@array/confgesture_singletap_values"
-          android:defaultValue="3"
-          android:summary="Configure Single Tap for Touchscreen Mouse" />
-      <ListPreference
-          android:key="confgesture_doubletap"
-          android:title="Double Tap Action"
-         android:entries="@array/confgesture_doubletap"
-        android:entryValues="@array/confgesture_doubletap_values"
-          android:defaultValue="4"
-          android:summary="Configure Double Tap for TouchScreen Mouse" />
-      <ListPreference
-          android:key="confgesture_twofinger"
-          android:title="Two Finger Action"
-         android:entries="@array/confgesture_singletap"
-        android:entryValues="@array/confgesture_singletap_values"
-          android:defaultValue="0"
-          android:summary="Configure Two Finger Tap for Touchscreen Mouse" />
       <CheckBoxPreference
           android:key="confgesture_longpress"
           android:title="Enable Long Press"

@@ -1236,11 +1236,5 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
         };
     }
 
-    private final static int GESTURE_NONE = 0;
-    public int mGestureUp = GESTURE_NONE;
-    public int mGestureDown = GESTURE_NONE;
-    public int mGestureSingleClick = GESTURE_NONE;
-    public int mGestureDoubleClick = GESTURE_NONE;
-    public int mGestureTwoFinger = GESTURE_NONE;
     public boolean mTwoFingerAction = false;
 }
