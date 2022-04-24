@@ -849,10 +849,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                                         GESTURE_LEFT_CLICK
                                     );
                                 }
-                            } else {
-                                mouseClick(
-                                    mGestureTwoFinger - GESTURE_LEFT_CLICK
-                                );
                             }
 
                             return true;
@@ -1313,28 +1309,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
         if (mGPURendering) {
             super.surfaceDestroyed(holder);
         }
-    }
-
-    private final void mouseClick(int button) {
-        DosBoxControl.nativeMouse(
-            0,
-            0,
-            -1,
-            -1,
-            DosBoxControl.ACTION_DOWN,
-            button
-        );
-        try {
-            Thread.sleep(CLICK_DELAY);
-        } catch (InterruptedException e) { }
-        DosBoxControl.nativeMouse(
-            0,
-            0,
-            -1,
-            -1,
-            DosBoxControl.ACTION_UP,
-            button
-        );
     }
 
     // Fix for Motorola Keyboards!!! - fishstix
