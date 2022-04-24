@@ -99,8 +99,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     private boolean mLongClick = false;
     // boolean mCalibrate = false;
     boolean mMaintainAspect = true;
-    // private boolean mHasMoved = false;
-    private boolean mSPenButton = false;
 
     int mContextMenu = 0;
 
@@ -745,18 +743,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
 
                 int buttonState = mWrap.getButtonState(event);
 
-                if (
-                    ((buttonState & TouchEventWrapper.BUTTON_SECONDARY) != 0) &&
-                    !mSPenButton
-                ) {
-                    mSPenButton = true;
-                } else if (
-                    ((buttonState &
-                    TouchEventWrapper.BUTTON_SECONDARY) == 0) && mSPenButton
-                ) {
-                    mSPenButton = false;
-                }
-
                 try {
                     if (!mInputLowLatency) {
                         Thread.sleep(95);
@@ -767,32 +753,14 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
 
                 return true;
             }
-        } else if (
-            MotionEventCompat.getActionMasked(event) ==
-            MotionEventCompat.ACTION_HOVER_EXIT
-        ) {
-            if (mInputMode == INPUT_MODE_REAL_MOUSE) {
-                // hover exit
-                int buttonState = mWrap.getButtonState(event);
-
-                if (
-                    ((buttonState & TouchEventWrapper.BUTTON_SECONDARY) == 0) &&
-                    mSPenButton
-                ) {
-                    mSPenButton = false;
-
-                    return true;
-                }
-            }
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
             return super.onGenericMotionEvent(event);
-        } else {
-            return false;
         }
-    }
 
+        return false;
+    }
 
     @Override
     public boolean onTouchEvent(final MotionEvent event) {
