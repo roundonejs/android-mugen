@@ -183,11 +183,6 @@
         android:title="Overlay Joystick"
         android:defaultValue="true"
         android:summary="Show a Virtual Joystick on screen" />
-      <CheckBoxPreference
-        android:key="confbuttonoverlay"
-        android:title="Overlay Buttons"
-        android:defaultValue="false"
-        android:summary="Show Virtual Buttons on screen" />
       <ListPreference
         android:key="confbuttonlocation"
         android:title="Button Location"

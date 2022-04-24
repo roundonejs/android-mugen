@@ -43,11 +43,9 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.view.ContextMenu;
 import android.view.Display;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.Window;
@@ -69,8 +67,6 @@ public class DBMain extends Activity {
     public String mConfPath;
     public static final int HANDLER_ADD_JOYSTICK = 20;
     public static final int HANDLER_REMOVE_JOYSTICK = 21;
-    public static final int HANDLER_ADD_BUTTONS = 22;
-    public static final int HANDLER_REMOVE_BUTTONS = 23;
     public static final int HANDLER_SEND_KEYCODE = 1011;
     public static final int HANDLER_DISABLE_GPU = 323;
 
@@ -549,50 +545,6 @@ public class DBMain extends Activity {
                     DBMenuSystem.saveBooleanPreference(
                         mContext,
                         "confjoyoverlay",
-                        false
-                    );
-                    break;
-                case HANDLER_ADD_BUTTONS:
-                    FrameLayout.LayoutParams params =
-                        new FrameLayout.LayoutParams(
-                        LayoutParams.FILL_PARENT,
-                        LayoutParams.WRAP_CONTENT
-                        );
-
-                    if (
-                        Integer.valueOf(
-                            prefs.getString(
-                                "confbuttonlocation",
-                                "1"
-                            )
-                        ) == 1
-                    ) {
-                        // bottom
-                        params.gravity = Gravity.BOTTOM;
-                        params.topMargin = 0;
-                    } else {
-                        params.gravity = Gravity.TOP;
-
-                        if (
-                            getResources().getConfiguration().orientation ==
-                            Configuration.ORIENTATION_LANDSCAPE
-                        ) {
-                            params.topMargin = 0;
-                        } else {
-                            params.topMargin = mSurfaceView.mActionBarHeight;
-                        }
-                    }
-
-                    DBMenuSystem.saveBooleanPreference(
-                        mContext,
-                        "confbuttonoverlay",
-                        true
-                    );
-                    break;
-                case HANDLER_REMOVE_BUTTONS:
-                    DBMenuSystem.saveBooleanPreference(
-                        mContext,
-                        "confbuttonoverlay",
                         false
                     );
                     break;

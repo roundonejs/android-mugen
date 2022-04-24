@@ -539,38 +539,6 @@ public class DBMenuSystem {
             context.mSurfaceView.mInputLowLatency = true;
         }
 
-        // Emulate Mouse Click
-        // context.mSurfaceView.mEmulateClick = prefs.getBoolean("confmousetapclick", false);
-        // VOL BUTTONS
-        // context.mPrefHardkeyOn = prefs.getBoolean("confvolbuttons", true);
-
-/*
-                if (prefs.getBoolean("confbuttonoverlay", false)) {
-                        context.mSurfaceView.mShowInfo = true;
-                } else {
-                        context.mSurfaceView.mShowInfo = false;
-                }
- */
-        if (prefs.getBoolean("confbuttonoverlay", false)) {
-            context.mHandler.sendMessage(
-                context.mHandler.obtainMessage(
-                    DBMain.
-                    HANDLER_ADD_BUTTONS,
-                    0,
-                    0
-                )
-            );
-        } else {
-            context.mHandler.sendMessage(
-                context.mHandler.obtainMessage(
-                    DBMain.
-                    HANDLER_REMOVE_BUTTONS,
-                    0,
-                    0
-                )
-            );
-        }
-
         // dpad / trackpad emulation
         context.mSurfaceView.mEnableDpad = prefs.getBoolean(
             "confenabledpad",
