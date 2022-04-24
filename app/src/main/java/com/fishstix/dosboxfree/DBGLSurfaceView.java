@@ -26,7 +26,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -39,8 +38,6 @@ import android.os.SystemClock;
 import android.support.v4.view.MotionEventCompat;
 import android.util.AttributeSet;
 import android.util.SparseIntArray;
-import android.view.GestureDetector;
-import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.InputDevice;
 import android.view.InputDevice.MotionRange;
 import android.view.KeyEvent;
@@ -80,7 +77,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     private boolean mSurfaceViewRunning = false;
     public DosBoxVideoThread mVideoThread = null;
     public KeyHandler mKeyHandler = null;
-    private GestureDetector gestureScanner;
 
     boolean mScale = false;
     int mInputMode = INPUT_MODE_MOUSE;
@@ -289,9 +285,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     private void setup(Context context) {
         mParent = (DBMain) context;
-        // setRenderMode(RENDERMODE_WHEN_DIRTY);
 
-        gestureScanner = new GestureDetector(context, new MyGestureDetector());
         mBitmapPaint = new Paint();
         mBitmapPaint.setFilterBitmap(true);
         mTextPaint = new Paint();
@@ -959,8 +953,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
             e.printStackTrace();
         }
 
-        // Thread.yield();
-        return gestureScanner.onTouchEvent(event);
+        return super.onTouchEvent(event);
     }
 
     private final static int MAP_EVENT_CONSUMED = -1;
@@ -1385,154 +1378,10 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
 
     private final static int GESTURE_NONE = 0;
     public final static int GESTURE_LEFT_CLICK = 3;
-    public final static int GESTURE_RIGHT_CLICK = 4;
     public int mGestureUp = GESTURE_NONE;
     public int mGestureDown = GESTURE_NONE;
     public int mGestureSingleClick = GESTURE_NONE;
     public int mGestureDoubleClick = GESTURE_NONE;
     public int mGestureTwoFinger = GESTURE_NONE;
     public boolean mTwoFingerAction = false;
-
-    class MyGestureDetector extends SimpleOnGestureListener {
-        @Override
-        public boolean onDown(MotionEvent event) {
-            return true;
-        }
-
-        private static final int SWIPE_MAX_OFF_PATH = 75;
-        @Override
-        public boolean onFling(
-            MotionEvent e1,
-            MotionEvent e2,
-            float velocityX,
-            float velocityY
-        ) {
-            final float density = getResources().getDisplayMetrics().density;
-            int mMarginTouch = (int) (100 * density + 0.5f);                    // 100dp top margin
-
-            if (
-                getResources().getConfiguration().orientation ==
-                Configuration.ORIENTATION_PORTRAIT
-            ) {
-                return false;
-            }
-
-            if (e1.getY() < e2.getY()) {
-                // swipe down
-                if (e1.getY() > mMarginTouch) {
-                    return false;
-                }
-
-                if (Math.abs(e1.getX() - e2.getX()) > SWIPE_MAX_OFF_PATH) {
-                    return false;
-                }
-
-                // mParent.getSupportActionBar().show();
-                return true;
-            } else {
-                // swipe up
-                if (Math.abs(e1.getX() - e2.getX()) > SWIPE_MAX_OFF_PATH) {
-                    return false;
-                }
-
-                /*if (mParent.getSupportActionBar().isShowing()) {
-                        mParent.getSupportActionBar().hide();
-                        return true;
-                   }*/
-                return false;
-            }
-        }
-
-        @Override
-        public boolean onDoubleTap(MotionEvent event) {
-            // Log.i("DosBoxTurbo","onDoubleTap()");
-            if (mInputMode == INPUT_MODE_MOUSE) {
-                switch (mGestureDoubleClick) {
-                    case GESTURE_LEFT_CLICK:
-                    case GESTURE_RIGHT_CLICK:
-
-                        if (mLongPress) {
-                            mDoubleLong = true;
-                            DosBoxControl.nativeMouse(
-                                0,
-                                0,
-                                -1,
-                                -1,
-                                DosBoxControl.ACTION_DOWN,
-                                mGestureDoubleClick -
-                                GESTURE_LEFT_CLICK
-                            );
-                        } else {
-                            mouseClick(
-                                mGestureDoubleClick -
-                                GESTURE_LEFT_CLICK
-                            );
-                        }
-
-                        return true;
-                }
-            }
-
-            return false;
-        }
-
-        @Override
-        public boolean onSingleTapConfirmed(MotionEvent event) {
-            if (mInputMode == INPUT_MODE_MOUSE) {
-                if (
-                    (mGestureSingleClick != GESTURE_NONE) &&
-                    (mGestureDoubleClick != GESTURE_NONE)
-                ) {
-                    mouseClick(mGestureSingleClick - GESTURE_LEFT_CLICK);
-
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        @Override
-        public boolean onSingleTapUp(MotionEvent event) {
-            if (mInputMode == INPUT_MODE_MOUSE) {
-                if (
-                    (mGestureDoubleClick == GESTURE_NONE) &&
-                    (mGestureSingleClick != GESTURE_NONE)
-                ) {                                                                                             // fishstix,fire only when doubleclick gesture is disabled
-                    mouseClick(mGestureSingleClick - GESTURE_LEFT_CLICK);
-
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        @Override
-        public void onLongPress(MotionEvent event) {
-            // Log.i("DosBoxTurbo","onLongPress()");
-            if (mInputMode == INPUT_MODE_MOUSE) {
-                if (
-                    !mFilterLongClick && mLongPress && !mDoubleLong &&
-                    !mTwoFingerAction
-                ) {
-                    mLongClick = true;
-
-                    if (mGestureSingleClick != GESTURE_NONE) {
-                        DosBoxControl.nativeMouse(
-                            0,
-                            0,
-                            0,
-                            0,
-                            DosBoxControl.ACTION_DOWN,
-                            mGestureSingleClick -
-                            GESTURE_LEFT_CLICK
-                        );
-                    }
-                }
-
-                mFilterLongClick = false;
-            }
-        }
-    }
 }
