@@ -67,7 +67,6 @@ public class DBMenuSystem {
     public final static int CONTEXT_MENU_CYCLES = 2;
     public final static int CONTEXT_MENU_FRAMESKIP = 3;
     public final static int CONTEXT_MENU_MEMORY_SIZE = 4;
-    public final static int CONTEXT_MENU_INPUTMODE = 6;
 
     private final static int MENU_KEYBOARD_CTRL = 61;
     private final static int MENU_KEYBOARD_ALT = 62;
@@ -93,13 +92,6 @@ public class DBMenuSystem {
 
     private final static String PREF_KEY_FRAMESKIP = "dosframeskip";
     private final static String PREF_KEY_CYCLES = "doscycles";
-    // private final static String PREF_KEY_KEY_MAPPING = "pref_key_key_mapping";
-
-    public final static int INPUT_MOUSE = 0;
-    public final static int INPUT_JOYSTICK = 1;
-    public final static int INPUT_REAL_MOUSE = 2;
-    public final static int INPUT_REAL_JOYSTICK = 3;
-    public final static int INPUT_SCROLL = 4;
 
     // following must sync with AndroidOSfunc.cpp
     public final static int DOSBOX_OPTION_ID_SOUND_MODULE_ON = 1;
@@ -453,42 +445,6 @@ public class DBMenuSystem {
             true
         );
 
-        // INPUT MODE
-        switch (Integer.valueOf(prefs.getString("confinputmode", "0"))) {
-            case INPUT_MOUSE:
-                context.mSurfaceView.mInputMode =
-                    DBGLSurfaceView.INPUT_MODE_MOUSE;
-                break;
-            case INPUT_JOYSTICK:
-                context.mSurfaceView.mInputMode =
-                    DBGLSurfaceView.INPUT_MODE_JOYSTICK;
-                DBMain.nativeSetOption(
-                    DBMenuSystem.DOSBOX_OPTION_ID_JOYSTICK_ENABLE,
-                    1,
-                    null,
-                    true
-                );
-                break;
-            case INPUT_REAL_MOUSE:
-                context.mSurfaceView.mInputMode =
-                    DBGLSurfaceView.INPUT_MODE_REAL_MOUSE;
-                break;
-            case INPUT_REAL_JOYSTICK:
-                context.mSurfaceView.mInputMode =
-                    DBGLSurfaceView.INPUT_MODE_REAL_JOYSTICK;
-                DBMain.nativeSetOption(
-                    DBMenuSystem.DOSBOX_OPTION_ID_JOYSTICK_ENABLE,
-                    1,
-                    null,
-                    true
-                );
-                break;
-            case INPUT_SCROLL:
-                context.mSurfaceView.mInputMode =
-                    DBGLSurfaceView.INPUT_MODE_SCROLL;
-                break;
-        }
-
         // VIRTUAL JOYSTICK
         // test enabled
         if (prefs.getBoolean("confjoyoverlay", false)) {
@@ -796,94 +752,6 @@ public class DBMenuSystem {
                 menu.setGroupCheckable(2, true, true);
             }
             break;
-            case CONTEXT_MENU_INPUTMODE:
-            {
-                for (int i = INPUT_MOUSE; i <= INPUT_SCROLL; i++) {
-                    MenuItem item;
-
-                    switch (i) {
-                        case INPUT_MOUSE:
-                            item =
-                                menu.add(
-                                4,
-                                i,
-                                0,
-                                context.getString(
-                                    R.string.input_touchscreen
-                                )
-                                );
-
-                            if (
-                                context.mSurfaceView.mInputMode ==
-                                DBGLSurfaceView.INPUT_MODE_MOUSE
-                            ) {
-                                item.setChecked(true);
-                            }
-
-                            break;
-                        case INPUT_REAL_MOUSE:
-                            item =
-                                menu.add(
-                                4,
-                                i,
-                                0,
-                                context.getString(
-                                    R.string.input_mouse
-                                )
-                                );
-
-                            if (
-                                context.mSurfaceView.mInputMode ==
-                                DBGLSurfaceView.INPUT_MODE_REAL_MOUSE
-                            ) {
-                                item.setChecked(true);
-                            }
-
-                            break;
-                        case INPUT_REAL_JOYSTICK:
-                            item =
-                                menu.add(
-                                4,
-                                i,
-                                0,
-                                context.getString(
-                                    R.string.input_joystick
-                                )
-                                );
-
-                            if (
-                                context.mSurfaceView.mInputMode ==
-                                DBGLSurfaceView.INPUT_MODE_REAL_JOYSTICK
-                            ) {
-                                item.setChecked(true);
-                            }
-
-                            break;
-                        case INPUT_SCROLL:
-                            item =
-                                menu.add(
-                                4,
-                                i,
-                                0,
-                                context.getString(
-                                    R.string.input_scroll
-                                )
-                                );
-
-                            if (
-                                context.mSurfaceView.mInputMode ==
-                                DBGLSurfaceView.INPUT_MODE_SCROLL
-                            ) {
-                                item.setChecked(true);
-                            }
-
-                            break;
-                    }
-                }
-
-                menu.setGroupCheckable(2, true, true);
-            }
-            break;
         }
     }
 
@@ -967,8 +835,7 @@ public class DBMenuSystem {
                         context,
                         KEYCODE_F1 + (itemID - MENU_KEYBOARD_F1)
                     );
-                }
-                else if (
+                } else if (
                     (itemID >= MENU_CYCLE_AUTO) &&
                     (itemID <= MENU_CYCLE_55000)
                 ) {
@@ -1015,8 +882,7 @@ public class DBMenuSystem {
                             Toast.LENGTH_SHORT
                         ).show();
                     }
-                }
-                else if (
+                } else if (
                     (itemID >= MENU_FRAMESKIP_0) &&
                     (itemID <= MENU_FRAMESKIP_10)
                 ) {
@@ -1032,85 +898,6 @@ public class DBMenuSystem {
                         null,
                         true
                     );
-                } else if (
-                    (itemID >= INPUT_MOUSE) &&
-                    (itemID <= INPUT_SCROLL)
-                ) {
-                    savePreference(
-                        context,
-                        "confinputmode",
-                        String.valueOf(itemID)
-                    );
-
-                    switch (itemID) {
-                        case INPUT_MOUSE:
-                            context.mSurfaceView.mInputMode =
-                                DBGLSurfaceView.INPUT_MODE_MOUSE;
-
-                            if (
-                                !getBooleanPreference(
-                                    context,
-                                    "confjoyoverlay"
-                                )
-                            ) {
-                                DBMain.nativeSetOption(
-                                    DBMenuSystem.DOSBOX_OPTION_ID_JOYSTICK_ENABLE,
-                                    0,
-                                    null,
-                                    true
-                                );
-                            }
-
-                            break;
-                        case INPUT_REAL_MOUSE:
-                            context.mSurfaceView.mInputMode =
-                                DBGLSurfaceView.INPUT_MODE_REAL_MOUSE;
-
-                            if (
-                                !getBooleanPreference(
-                                    context,
-                                    "confjoyoverlay"
-                                )
-                            ) {
-                                DBMain.nativeSetOption(
-                                    DBMenuSystem.DOSBOX_OPTION_ID_JOYSTICK_ENABLE,
-                                    0,
-                                    null,
-                                    true
-                                );
-                            }
-
-                            break;
-                        case INPUT_REAL_JOYSTICK:
-                            context.mSurfaceView.mInputMode =
-                                DBGLSurfaceView.INPUT_MODE_JOYSTICK;
-                            DBMain.nativeSetOption(
-                                DBMenuSystem.DOSBOX_OPTION_ID_JOYSTICK_ENABLE,
-                                1,
-                                null,
-                                true
-                            );
-                            break;
-                        case INPUT_SCROLL:
-                            context.mSurfaceView.mInputMode =
-                                DBGLSurfaceView.INPUT_MODE_SCROLL;
-
-                            if (
-                                !getBooleanPreference(
-                                    context,
-                                    "confjoyoverlay"
-                                )
-                            ) {
-                                DBMain.nativeSetOption(
-                                    DBMenuSystem.DOSBOX_OPTION_ID_JOYSTICK_ENABLE,
-                                    0,
-                                    null,
-                                    true
-                                );
-                            }
-
-                            break;
-                    }
                 }
 
                 break;

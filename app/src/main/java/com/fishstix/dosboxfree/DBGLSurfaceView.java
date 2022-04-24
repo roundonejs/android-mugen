@@ -63,12 +63,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     private final static int EVENT_THRESHOLD_DECAY = 100;
     private final static int DEADZONE = 8;
 
-    public final static int INPUT_MODE_MOUSE = 0xf1;
-    public final static int INPUT_MODE_SCROLL = 0xf2;
-    public final static int INPUT_MODE_JOYSTICK = 0xf3;
-    public final static int INPUT_MODE_REAL_MOUSE = 0xf4;
-    public final static int INPUT_MODE_REAL_JOYSTICK = 0xf5;
-
     public final static int PIXEL_BYTES = 2;
 
     private static final int MAX_POINT_CNT = 4;
@@ -79,7 +73,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     public KeyHandler mKeyHandler = null;
 
     boolean mScale = false;
-    int mInputMode = INPUT_MODE_MOUSE;
     boolean mInputLowLatency = false;
     boolean mUseLeftAltOn = false;
     public boolean mDebug = false;
@@ -662,12 +655,11 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
     @Override
-    public boolean onGenericMotionEvent(MotionEvent event) {
+    public boolean onGenericMotionEvent(final MotionEvent event) {
         if (
             event.getEventTime() + EVENT_THRESHOLD_DECAY <
             SystemClock.uptimeMillis()
         ) {
-            // Log.i("DosBoxTurbo","eventtime: "+event.getEventTime() + " systemtime: "+SystemClock.uptimeMillis());
             return true;                // get rid of old events
         }
 
@@ -694,41 +686,15 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                 return true;
             } else {
                 // use older 2.2+ API to handle joystick movements
-                if (mInputMode == INPUT_MODE_REAL_JOYSTICK) {
-                    x[pointerId] = mWrap.getX(event, pointerId);
-                    y[pointerId] = mWrap.getY(event, pointerId);
-
-                    int percentagePositionX = (int) x[pointerId] * 100;
-                    int percentagePositionY = (int) y[pointerId] * 100;
-                    JoystickHandleListener.onMoved(
-                        percentagePositionX,
-                        -percentagePositionY
-                    );
-
-                    return true;
-                }
-            }
-        } else if (
-            (MotionEventCompat.getActionMasked(event) ==
-            MotionEventCompat.ACTION_HOVER_MOVE) &&
-            ((mWrap.getSource(event) & TouchEventWrapper.SOURCE_CLASS_MASK) ==
-            TouchEventWrapper.SOURCE_CLASS_POINTER)
-        ) {
-            if (mInputMode == INPUT_MODE_REAL_MOUSE) {
-                x_last[pointerId] = x[pointerId];
-                y_last[pointerId] = y[pointerId];
                 x[pointerId] = mWrap.getX(event, pointerId);
                 y[pointerId] = mWrap.getY(event, pointerId);
 
-                int buttonState = mWrap.getButtonState(event);
-
-                try {
-                    if (!mInputLowLatency) {
-                        Thread.sleep(95);
-                    } else {
-                        Thread.sleep(65);
-                    }
-                } catch (InterruptedException e) { }
+                int percentagePositionX = (int) x[pointerId] * 100;
+                int percentagePositionY = (int) y[pointerId] * 100;
+                JoystickHandleListener.onMoved(
+                    percentagePositionX,
+                    -percentagePositionY
+                );
 
                 return true;
             }
@@ -758,62 +724,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                     x[id] = mWrap.getX(event, i);
                     y[id] = mWrap.getY(event, i);
                 }
-            }
-
-            switch (MotionEventCompat.getActionMasked(event)) {
-                case MotionEvent.ACTION_UP:
-                case MotionEventCompat.ACTION_POINTER_UP:
-
-                    if (mInputMode == INPUT_MODE_MOUSE) {
-                        if (pointCnt == 2) {
-                            return true;
-                        }
-                    } else if (mInputMode == INPUT_MODE_REAL_MOUSE) {
-                        if (mWrap.getButtonState(event) > 0) {
-                            return true;                                // capture button touches, pass screen touches through to gesture detetor
-                        }
-                    } else if (mInputMode == INPUT_MODE_REAL_JOYSTICK) {
-                        if (mWrap.getButtonState(event) > 0) {
-                            return true;
-                        }
-                    }
-
-                    break;
-                case MotionEvent.ACTION_MOVE:
-
-                    // isTouch[pointerId] = true;
-                    switch (mInputMode) {
-                        case INPUT_MODE_SCROLL:
-                            mScroll_x +=
-                                (int) (x[pointerId] - x_last[pointerId]);
-                            mScroll_y +=
-                                (int) (y[pointerId] - y_last[pointerId]);
-                            forceRedraw();
-                            break;
-                        case INPUT_MODE_MOUSE:
-                        case INPUT_MODE_REAL_MOUSE:
-
-                            if (
-                                event.getEventTime() +
-                                EVENT_THRESHOLD_DECAY <
-                                SystemClock.uptimeMillis()
-                            ) {
-                                return true;                                    // get rid of old events
-                            }
-
-                            try {
-                                if (!mInputLowLatency) {
-                                    Thread.sleep(95);
-                                } else {
-                                    Thread.sleep(65);
-                                }
-                            } catch (InterruptedException e) { }
-
-                            break;
-                        default:
-                    }
-
-                    break;
             }
         }
 

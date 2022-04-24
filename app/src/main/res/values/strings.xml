@@ -11,11 +11,6 @@
     <string name="menu_settings">Settings</string>
     <string name="menu_exit">Exit</string>
 
-    <string name="input_touchscreen">Touchscreen</string>
-    <string name="input_joystick">Joystick</string>
-    <string name="input_mouse">Mouse/Stylus</string>
-    <string name="input_scroll">Scroll Screen</string>
-
     <string name="info_dbquickmenu">DosBox QuickMenu</string>
     <string name="info_cycles">Cycles:</string>
     <string name="info_frameskip">FrameSkip:</string>
@@ -431,20 +426,6 @@
   		<item>0</item>
   		<item>1</item>
   	</string-array>
-    <string-array name="confinputmode">
-  		<item>TouchScreen Mouse</item>
-  	<!--	<item>TouchScreen Joystick</item> -->
-  		<item>Physical Mouse/Stylus</item>
-  		<item>Physical Joystick</item>
-  		<item>Scroll Screen</item>
-  	</string-array>
-  	<string-array name="confinputmode_values">
-  		<item>0</item>
-  	<!-- 	<item>1</item> -->
-  		<item>2</item>
-  		<item>3</item>
-  		<item>4</item>
-   	</string-array>
     <string-array name="confinputlatency">
   		<item>Normal (default)</item>
   		<item>Accurate (slow)</item>

@@ -158,13 +158,6 @@
   </PreferenceCategory>
   <PreferenceCategory android:title="Input Preferences">
       <ListPreference
-        android:key="confinputmode"
-        android:title="Select Input Mode"
-      android:entries="@array/confinputmode"
-        android:entryValues="@array/confinputmode_values"
-        android:defaultValue="0"
-        android:summary="Select Joystick, Mouse or Scroll input" />
-      <ListPreference
         android:key="confinputlatency"
         android:title="Input Latency"
       android:entries="@array/confinputlatency"
