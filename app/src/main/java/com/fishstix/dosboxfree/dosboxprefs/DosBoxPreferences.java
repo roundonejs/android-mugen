@@ -80,7 +80,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
     private Preference confjoyoverlay = null;
     private Preference confenabledpad = null;
     private Preference confdpadsensitivity = null;
-    private Preference confmousetracking = null;
     private PreferenceScreen dpad_mappings = null;
     private Preference confgpu = null;
     private Preference confreset = null;
@@ -166,7 +165,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
         confenabledpad = (Preference) findPreference("confenabledpad");
         confdpadsensitivity =
             (Preference) findPreference("confdpadsensitivity");
-        confmousetracking = (Preference) findPreference("confmousetracking");
         dpad_mappings = (PreferenceScreen) findPreference("dpad_mappings");
         confcustom_add = (Preference) findPreference("confcustom_add");
         confcustom_clear = (Preference) findPreference("confcustom_clear");
@@ -216,8 +214,10 @@ public class DosBoxPreferences extends PreferenceActivity implements
         filterArray[1] = new InputFilter.LengthFilter(1);
 
         // check for Xperia Play
-        if (android.os.Build.DEVICE.equalsIgnoreCase("zeus") ||
-            android.os.Build.DEVICE.contains("R800")) {
+        if (
+            android.os.Build.DEVICE.equalsIgnoreCase("zeus") ||
+            android.os.Build.DEVICE.contains("R800")
+        ) {
             isExperiaPlay = true;
         }
     }
@@ -318,8 +318,10 @@ public class DosBoxPreferences extends PreferenceActivity implements
             );
         } else if (key.contentEquals("confenabledpad")) {
             update_confenabledpad();
-        } else if (key.contentEquals("doscycles") &&
-            prefs.getString("doscycles", "").contentEquals("auto")) {
+        } else if (
+            key.contentEquals("doscycles") &&
+            prefs.getString("doscycles", "").contentEquals("auto")
+        ) {
             // turn on cpuauto and disable it
             Toast.makeText(ctx, R.string.restart, Toast.LENGTH_SHORT).show();
         } else if (
@@ -351,23 +353,8 @@ public class DosBoxPreferences extends PreferenceActivity implements
 
     private void configureInputSettings(int input_mode) {
         switch (input_mode) {
-            case TOUCHSCREEN_MOUSE:
-                // enable tracking settings
-                confmousetracking.setEnabled(true);
-
-                break;
             case TOUCHSCREEN_JOY:
-                confmousetracking.setEnabled(false);
                 confjoyoverlay.setEnabled(true);
-
-                break;
-            case PHYSICAL_MOUSE:
-                confmousetracking.setEnabled(true);
-
-                break;
-            case PHYSICAL_JOY:
-            case SCROLL_SCREEN:
-                confmousetracking.setEnabled(false);
 
                 break;
         }
@@ -461,10 +448,12 @@ public class DosBoxPreferences extends PreferenceActivity implements
                 }
 
                 if (Build.VERSION.SDK_INT > 9) {
-                    if ((Integer.valueOf(confmap_custom[i].getHardCode()) <=
+                    if (
+                        (Integer.valueOf(confmap_custom[i].getHardCode()) <=
                         0) ||
                         (Integer.valueOf(confmap_custom[i].getDosCode()) <=
-                        0)) {
+                        0)
+                    ) {
                         dpad_mappings.removePreference(confmap_custom[i]);
                     }
                 } else {
@@ -789,10 +778,12 @@ public class DosBoxPreferences extends PreferenceActivity implements
                 int hardcode = Integer.valueOf(confmap_custom[i].getHardCode());
 
                 if (hardcode > 0) {
-                    if ((Integer.valueOf(confmap_custom[i].getHardCode()) <=
+                    if (
+                        (Integer.valueOf(confmap_custom[i].getHardCode()) <=
                         0) ||
                         (Integer.valueOf(confmap_custom[i].getDosCode()) <=
-                        0)) {
+                        0)
+                    ) {
                         // found an unassigned mapping
                         dpad_mappings.addPreference(confmap_custom[i]);
                         confcustom_add.setSummary(confcustom_add.getSummary());

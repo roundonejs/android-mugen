@@ -165,13 +165,6 @@
         android:defaultValue="0"
         android:summary="Select Joystick, Mouse or Scroll input" />
       <ListPreference
-        android:key="confmousetracking"
-        android:title="Mouse Tracking"
-      android:entries="@array/confmousetracking"
-        android:entryValues="@array/confmousetracking_values"
-        android:defaultValue="1"
-        android:summary="Choose Absolute or Relative mouse tracking" />
-      <ListPreference
         android:key="confinputlatency"
         android:title="Input Latency"
       android:entries="@array/confinputlatency"

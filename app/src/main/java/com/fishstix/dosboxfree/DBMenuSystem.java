@@ -67,7 +67,6 @@ public class DBMenuSystem {
     public final static int CONTEXT_MENU_CYCLES = 2;
     public final static int CONTEXT_MENU_FRAMESKIP = 3;
     public final static int CONTEXT_MENU_MEMORY_SIZE = 4;
-    public final static int CONTEXT_MENU_TRACKING = 5;
     public final static int CONTEXT_MENU_INPUTMODE = 6;
 
     private final static int MENU_KEYBOARD_CTRL = 61;
@@ -88,9 +87,6 @@ public class DBMenuSystem {
 
     private final static int MENU_CYCLE_AUTO = 150;
     private final static int MENU_CYCLE_55000 = 205;
-
-    private final static int MENU_TRACKING_ABS = 220;
-    private final static int MENU_TRACKING_REL = 221;
 
     private final static int MENU_FRAMESKIP_0 = 206;
     private final static int MENU_FRAMESKIP_10 = 216;
@@ -523,14 +519,6 @@ public class DBMenuSystem {
         );
         context.mJoystickView.invalidate();
 
-        // Mouse Tracking Mode
-        if (Integer.valueOf(prefs.getString("confmousetracking", "0")) == 0) {
-            // absolute tracking
-            context.mSurfaceView.mAbsolute = true;
-        } else {
-            context.mSurfaceView.mAbsolute = false;
-        }
-
         // Input Resolution
         if (Integer.valueOf(prefs.getString("confinputlatency", "0")) == 0) {
             // absolute tracking
@@ -838,20 +826,6 @@ public class DBMenuSystem {
                 menu.setGroupCheckable(2, true, true);
             }
             break;
-            case CONTEXT_MENU_TRACKING:
-            {
-                MenuItem item = menu.add(3, MENU_TRACKING_ABS, 0, "Absolute");
-                MenuItem item2 = menu.add(3, MENU_TRACKING_REL, 0, "Relative");
-
-                if (context.mSurfaceView.mAbsolute) {
-                    item.setChecked(true);
-                } else {
-                    item2.setChecked(true);
-                }
-
-                menu.setGroupCheckable(3, true, true);
-            }
-            break;
             case CONTEXT_MENU_INPUTMODE:
             {
                 for (int i = INPUT_MOUSE; i <= INPUT_SCROLL; i++) {
@@ -1012,14 +986,6 @@ public class DBMenuSystem {
                     null,
                     true
                 );
-                break;
-            case MENU_TRACKING_ABS:
-                context.mSurfaceView.mAbsolute = true;
-                savePreference(context, "confmousetracking", "0");
-                break;
-            case MENU_TRACKING_REL:
-                context.mSurfaceView.mAbsolute = false;
-                savePreference(context, "confmousetracking", "1");
                 break;
             default:
 

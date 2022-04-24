@@ -85,7 +85,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     boolean mScale = false;
     int mInputMode = INPUT_MODE_MOUSE;
     boolean mEnableDpad = false;
-    boolean mAbsolute = true;
     boolean mInputLowLatency = false;
     boolean mUseLeftAltOn = false;
     public boolean mLongPress = true;
@@ -738,16 +737,14 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                 x[pointerId] = mWrap.getX(event, pointerId);
                 y[pointerId] = mWrap.getY(event, pointerId);
 
-                if (!mAbsolute) {
-                    DosBoxControl.nativeMouse(
-                        (int) x[pointerId],
-                        (int) y[pointerId],
-                        (int) x_last[pointerId],
-                        (int) y_last[pointerId],
-                        2,
-                        -1
-                    );
-                }
+                DosBoxControl.nativeMouse(
+                    (int) x[pointerId],
+                    (int) y[pointerId],
+                    (int) x_last[pointerId],
+                    (int) y_last[pointerId],
+                    2,
+                    -1
+                );
 
                 int buttonState = mWrap.getButtonState(event);
 
@@ -1057,16 +1054,14 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
 
                                 int idx = (!virtButton[0]) ? 0 : 1;
 
-                                if (!mAbsolute) {
-                                    DosBoxControl.nativeMouse(
-                                        (int) x[idx],
-                                        (int) y[idx],
-                                        (int) x_last[idx],
-                                        (int) y_last[idx],
-                                        DosBoxControl.ACTION_MOVE,
-                                        -1
-                                    );
-                                }
+                                DosBoxControl.nativeMouse(
+                                    (int) x[idx],
+                                    (int) y[idx],
+                                    (int) x_last[idx],
+                                    (int) y_last[idx],
+                                    DosBoxControl.ACTION_MOVE,
+                                    -1
+                                );
 
                                 try {
                                     if (!mInputLowLatency) {
@@ -1598,23 +1593,9 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     class MyGestureDetector extends SimpleOnGestureListener {
         @Override
         public boolean onDown(MotionEvent event) {
-            if (mInputMode == INPUT_MODE_MOUSE) {
-                if (mAbsolute) {
-                    final int pointerId =
-                        mWrap.getPointerId(
-                        event,
-                        ((event.getAction() &
-                        MotionEvent.ACTION_POINTER_ID_MASK) >>
-                        MotionEvent.ACTION_POINTER_ID_SHIFT)
-                        );
-                    try {
-                        Thread.sleep(85);
-                    } catch (InterruptedException e) { }
-                }
-            }
-
             return true;
         }
+
         private static final int SWIPE_MAX_OFF_PATH = 75;
         @Override
         public boolean onFling(
