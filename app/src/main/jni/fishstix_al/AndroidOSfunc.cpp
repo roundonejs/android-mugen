@@ -417,52 +417,6 @@ JNIEXPORT void JNICALL Java_com_fishstix_dosboxfree_DosBoxControl_nativeMouse(JN
 	}
 }
 
-// fishstix
-extern "C"
-JNIEXPORT void JNICALL Java_com_fishstix_dosboxfree_DosBoxControl_nativeMouseWarp(JNIEnv * env, jobject obj, jfloat x, jfloat y, jint dst_left, jint dst_top, jint width, jint height) {
-	struct locnet_al_event	event;
-	float abs_x = (x - dst_left) / (float)(width);
-	float abs_y = (y - dst_top) / (float)(height);
-	//LOGD(LOG_TAG, "mouse warp x->%f y->%f wid->%f hei->%f dst_left->%f dst_top->%f",x,y,width,height,dst_left,dst_top);
-	if (abs_x < 0) {
-		abs_x = 0;
-	}
-
-	event.eventType = SDL_MOUSEMOTION_ABSOLUTE;
-	event.down_x = abs_x;
-	event.down_y = abs_y;
-	eventQueue.push(event);
-	//LOGD(LOG_TAG, "mouse warp x->%f y->%f",abs_x,abs_y);
-}
-
-/*
-extern "C" void Java_com_fishstix_dosboxfree_DosBoxControl_nativeMouseWarp(JNIEnv * env, jobject obj, jint x, jint y, jfloat xfactor, jfloat yfactor, jint src_left, jint src_right, jint src_top, jint src_bottom, jint dst_left, jint dst_right, jint dst_top, jint dst_bottom) {
-	struct locnet_al_event	event;
-	struct locnet_al_event	event2;
-
-//	if ( (x <= dst_right) && (x >= dst_left) && (y <= dst_bottom) && (y >= dst_top) ) {
-	// Handle Absolute mouse movements
-		float xval = (src_right*xfactor)/(dst_right-dst_left);
-		float yval = (src_bottom*yfactor)/(dst_bottom-dst_top);
-		x = x*xval-(dst_left*xval);
-		y = y*yval-(dst_top*yval);
-		event.eventType = SDL_MOUSEMOTION_WARP;
-		event.x = x;
-		event.y = y;
-
-		eventQueue.push(event);
-
-		event2.eventType = SDL_MOUSEMOTION;
-		event2.down_x = x;
-		event2.down_y = y;
-		event2.x = x;
-		event2.y = y;
-
-		eventQueue.push(event2);
-//	}
-}
-*/
-
 void Android_AudioGetBuffer() {
 	if ((loadf != 0) && (loadf->abort == 0) && (gEnv != 0))
 		loadf->audioBuffer = (jshortArray)gEnv->CallObjectMethod( JavaCallbackThread, JavaAudioGetBuffer );

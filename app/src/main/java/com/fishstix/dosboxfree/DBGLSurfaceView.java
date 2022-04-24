@@ -738,16 +738,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                 x[pointerId] = mWrap.getX(event, pointerId);
                 y[pointerId] = mWrap.getY(event, pointerId);
 
-                if (mAbsolute) {
-                    DosBoxControl.nativeMouseWarp(
-                        x[pointerId],
-                        y[pointerId],
-                        mRenderer.x,
-                        mRenderer.y,
-                        mRenderer.width,
-                        mRenderer.height
-                    );
-                } else {
+                if (!mAbsolute) {
                     DosBoxControl.nativeMouse(
                         (int) x[pointerId],
                         (int) y[pointerId],
@@ -1066,16 +1057,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
 
                                 int idx = (!virtButton[0]) ? 0 : 1;
 
-                                if (mAbsolute) {
-                                    DosBoxControl.nativeMouseWarp(
-                                        x[idx],
-                                        y[idx],
-                                        mRenderer.x,
-                                        mRenderer.y,
-                                        mRenderer.width,
-                                        mRenderer.height
-                                    );
-                                } else {
+                                if (!mAbsolute) {
                                     DosBoxControl.nativeMouse(
                                         (int) x[idx],
                                         (int) y[idx],
@@ -1625,14 +1607,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                         MotionEvent.ACTION_POINTER_ID_MASK) >>
                         MotionEvent.ACTION_POINTER_ID_SHIFT)
                         );
-                    DosBoxControl.nativeMouseWarp(
-                        x[pointerId],
-                        y[pointerId],
-                        mRenderer.x,
-                        mRenderer.y,
-                        mRenderer.width,
-                        mRenderer.height
-                    );
                     try {
                         Thread.sleep(85);
                     } catch (InterruptedException e) { }

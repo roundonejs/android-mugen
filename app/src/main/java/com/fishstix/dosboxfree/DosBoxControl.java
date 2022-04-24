@@ -60,15 +60,6 @@ public class DosBoxControl {
         int button
     );
 
-    public static native void nativeMouseWarp(
-        float x,
-        float y,
-        int dst_left,
-        int dst_top,
-        int width,
-        int height
-    );
-
     public static native int nativeGetCycleCount();
 
     public static native int nativeGetFrameSkipCount();
