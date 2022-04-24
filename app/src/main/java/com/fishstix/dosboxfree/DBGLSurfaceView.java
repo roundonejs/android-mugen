@@ -584,11 +584,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
 
     private int[] mButtonDown = new int[MAX_POINT_CNT];
 
-    float[] x = new float[MAX_POINT_CNT];
-    float[] y = new float[MAX_POINT_CNT];
-
-    float[] x_last = new float[MAX_POINT_CNT];
-    float[] y_last = new float[MAX_POINT_CNT];
     boolean[] virtButton = new boolean[MAX_POINT_CNT];
 
     private TouchEventWrapper mWrap = TouchEventWrapper.newInstance();
@@ -663,10 +658,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
             return true;                // get rid of old events
         }
 
-        final int pointerIndex = MotionEventCompat.getActionIndex(event);
-        final int pointerId =
-            MotionEventCompat.getPointerId(event, pointerIndex);
-
         if (
             (MotionEventCompat.getActionMasked(event) ==
             MotionEvent.ACTION_MOVE) &&
@@ -686,11 +677,17 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                 return true;
             } else {
                 // use older 2.2+ API to handle joystick movements
-                x[pointerId] = mWrap.getX(event, pointerId);
-                y[pointerId] = mWrap.getY(event, pointerId);
+                int pointerIndex = MotionEventCompat.getActionIndex(event);
+                int pointerId = MotionEventCompat.getPointerId(
+                    event,
+                    pointerIndex
+                );
 
-                int percentagePositionX = (int) x[pointerId] * 100;
-                int percentagePositionY = (int) y[pointerId] * 100;
+                float x = mWrap.getX(event, pointerId);
+                float y = mWrap.getY(event, pointerId);
+
+                int percentagePositionX = (int) (x * 100);
+                int percentagePositionY = (int) (y * 100);
                 JoystickHandleListener.onMoved(
                     percentagePositionX,
                     -percentagePositionY
@@ -705,35 +702,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
         }
 
         return false;
-    }
-
-    @Override
-    public boolean onTouchEvent(final MotionEvent event) {
-        final int pointerIndex = MotionEventCompat.getActionIndex(event);
-        final int pointCnt = mWrap.getPointerCount(event);
-        final int pointerId =
-            MotionEventCompat.getPointerId(event, pointerIndex);
-
-        if (pointCnt < MAX_POINT_CNT) {
-            for (int i = 0; i < pointCnt; i++) {
-                int id = MotionEventCompat.getPointerId(event, i);
-
-                if (id < MAX_POINT_CNT) {
-                    x_last[id] = x[id];
-                    y_last[id] = y[id];
-                    x[id] = mWrap.getX(event, i);
-                    y[id] = mWrap.getY(event, i);
-                }
-            }
-        }
-
-        try {
-            Thread.sleep(15);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        return super.onTouchEvent(event);
     }
 
     private final static int MAP_EVENT_CONSUMED = -1;
@@ -892,10 +860,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
         return handleMugenKey(keyCode, false) || handleKey(keyCode, event);
     }
 
-    private boolean handleMugenKey(
-        final int keyCode,
-        final boolean down
-    ) {
+    private boolean handleMugenKey(final int keyCode, final boolean down) {
         if (keyEventToMugenButton.containsKey(keyCode)) {
             DosBoxControl.sendNativeKey(
                 keyEventToMugenButton.get(keyCode),
