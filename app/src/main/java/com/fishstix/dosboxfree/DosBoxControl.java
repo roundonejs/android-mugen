@@ -36,15 +36,6 @@ public class DosBoxControl {
     public static final int ACTION_UP = 1;
     public static final int ACTION_MOVE = 2;
 
-    public static native void nativeMouse(
-        int x,
-        int y,
-        int down_x,
-        int down_y,
-        int action,
-        int button
-    );
-
     public static native int nativeKey(
         int keyCode,
         int down,

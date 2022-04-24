@@ -85,15 +85,11 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     boolean mUseLeftAltOn = false;
     public boolean mLongPress = true;
     public boolean mDebug = false;
-    private static final int CLICK_DELAY = 125;         // in ms
-    private boolean mDoubleLong = false;
     public boolean mScreenTop = false;
     public boolean mGPURendering = false;
     public boolean mKeyboardVisible = false;
 
     int mDpadRate = 7;
-    private boolean mLongClick = false;
-    // boolean mCalibrate = false;
     boolean mMaintainAspect = true;
 
     int mContextMenu = 0;
@@ -726,15 +722,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                 x[pointerId] = mWrap.getX(event, pointerId);
                 y[pointerId] = mWrap.getY(event, pointerId);
 
-                DosBoxControl.nativeMouse(
-                    (int) x[pointerId],
-                    (int) y[pointerId],
-                    (int) x_last[pointerId],
-                    (int) y_last[pointerId],
-                    2,
-                    -1
-                );
-
                 int buttonState = mWrap.getButtonState(event);
 
                 try {
@@ -780,103 +767,20 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                 case MotionEventCompat.ACTION_POINTER_UP:
 
                     if (mInputMode == INPUT_MODE_MOUSE) {
-                        if (mLongClick) {
-                            // single tap long click release
-                            DosBoxControl.nativeMouse(
-                                0,
-                                0,
-                                0,
-                                0,
-                                DosBoxControl.ACTION_UP,
-                                mGestureSingleClick -
-                                GESTURE_LEFT_CLICK
-                            );
-                            mLongClick = false;
-
-                            return true;
-                        } else if (mDoubleLong) {
-                            // double tap long click release
-                            try {
-                                Thread.sleep(CLICK_DELAY);
-                            } catch (InterruptedException e) { }
-                            DosBoxControl.nativeMouse(
-                                0,
-                                0,
-                                -1,
-                                -1,
-                                DosBoxControl.ACTION_UP,
-                                mGestureDoubleClick -
-                                GESTURE_LEFT_CLICK
-                            );
-                            mDoubleLong = false;
-                            // return true;
-                        } else if (pointCnt == 2) {
+                        if (pointCnt == 2) {
                             // handle 2 finger tap gesture
                             if (mLongPress) {
                                 if (!mTwoFingerAction) {
-                                    // press button down
-                                    DosBoxControl.nativeMouse(
-                                        0,
-                                        0,
-                                        -1,
-                                        -1,
-                                        DosBoxControl.ACTION_DOWN,
-                                        mGestureTwoFinger -
-                                        GESTURE_LEFT_CLICK
-                                    );
                                     mTwoFingerAction = true;
-                                } else {
-                                    // already pressing button - release and press again
-                                    DosBoxControl.nativeMouse(
-                                        0,
-                                        0,
-                                        -1,
-                                        -1,
-                                        DosBoxControl.ACTION_UP,
-                                        mGestureTwoFinger -
-                                        GESTURE_LEFT_CLICK
-                                    );
-                                    try {
-                                        Thread.sleep(CLICK_DELAY);
-                                    } catch (InterruptedException e) { }
-                                    DosBoxControl.nativeMouse(
-                                        0,
-                                        0,
-                                        -1,
-                                        -1,
-                                        DosBoxControl.ACTION_DOWN,
-                                        mGestureTwoFinger -
-                                        GESTURE_LEFT_CLICK
-                                    );
                                 }
                             }
 
                             return true;
                         } else if ((pointCnt == 1) && mTwoFingerAction) {
-                            // release two finger gesture
-                            DosBoxControl.nativeMouse(
-                                0,
-                                0,
-                                -1,
-                                -1,
-                                DosBoxControl.ACTION_UP,
-                                mGestureTwoFinger -
-                                GESTURE_LEFT_CLICK
-                            );
                             mTwoFingerAction = false;
                             // return true;
                         }
                     } else if (mInputMode == INPUT_MODE_REAL_MOUSE) {
-                        // Log.v("Mouse","BUTTON UP: " + (mButtonDown[pointerId]));
-                        DosBoxControl.nativeMouse(
-                            0,
-                            0,
-                            0,
-                            0,
-                            DosBoxControl.ACTION_UP,
-                            mButtonDown[pointerId]
-                        );
-
                         if (mWrap.getButtonState(event) > 0) {
                             return true;                                // capture button touches, pass screen touches through to gesture detetor
                         }
@@ -915,17 +819,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                             ) {
                                 return true;                                    // get rid of old events
                             }
-
-                            int idx = (!virtButton[0]) ? 0 : 1;
-
-                            DosBoxControl.nativeMouse(
-                                (int) x[idx],
-                                (int) y[idx],
-                                (int) x_last[idx],
-                                (int) y_last[idx],
-                                DosBoxControl.ACTION_MOVE,
-                                -1
-                            );
 
                             try {
                                 if (!mInputLowLatency) {
@@ -1351,7 +1244,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     }
 
     private final static int GESTURE_NONE = 0;
-    public final static int GESTURE_LEFT_CLICK = 3;
     public int mGestureUp = GESTURE_NONE;
     public int mGestureDown = GESTURE_NONE;
     public int mGestureSingleClick = GESTURE_NONE;

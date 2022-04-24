@@ -377,46 +377,6 @@ JNIEXPORT void JNICALL Java_com_fishstix_dosboxfree_DosBoxControl_nativeJoystick
 		eventQueue.push(event);
 }
 
-extern "C"
-JNIEXPORT void JNICALL Java_com_fishstix_dosboxfree_DosBoxControl_nativeMouse(JNIEnv * env, jobject obj, jint x, jint y, jint down_x, jint down_y, jint action, jint button)
-{
-	struct locnet_al_event	event;
-
-	event.eventType = SDL_NOEVENT;
-
-	switch (action) {
-		case 0:
-			event.eventType = SDL_MOUSEBUTTONDOWN;
-			event.down_x = down_x;
-			event.down_y = down_y;
-			event.keycode = button;
-			//LOGD(LOG_TAG, "mouseDown ->  action: %d  button: %d", action,button);
-			break;
-		case 1:
-			event.eventType = SDL_MOUSEBUTTONUP;
-			event.keycode = button;
-			//LOGD(LOG_TAG, "mouseUp ->  action: %d  button: %d", action,button);
-			break;
-		case 2:
-			event.eventType = SDL_MOUSEMOTION;
-			event.down_x = down_x;
-			event.down_y = down_y;
-			event.x = x;
-			event.y = y;
-			break;
-		case 3:
-			event.eventType = SDL_MOUSEMOTION_WARP;
-			event.x = x;
-			event.y = y;
-			break;
-	}
-
-	if 	(event.eventType != SDL_NOEVENT) {
-		eventQueue.push(event);
-		//LOGD(LOG_TAG, "push action: %d  button: %d", action,button);
-	}
-}
-
 void Android_AudioGetBuffer() {
 	if ((loadf != 0) && (loadf->abort == 0) && (gEnv != 0))
 		loadf->audioBuffer = (jshortArray)gEnv->CallObjectMethod( JavaCallbackThread, JavaAudioGetBuffer );
