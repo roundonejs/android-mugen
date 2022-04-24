@@ -634,16 +634,29 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
         final MotionEvent event,
         final int historyPos
     ) {
-        int percentagePositionX = getJoystickHandlerPercentagePosition(
+        int percentagePositionX = getJoystickPercentagePosition(
             event,
             historyPos,
             MotionEvent.AXIS_X
         );
-        int percentagePositionY = getJoystickHandlerPercentagePosition(
+        int percentagePositionY = getJoystickPercentagePosition(
             event,
             historyPos,
             MotionEvent.AXIS_Y
         );
+
+        if ((percentagePositionX == 0) && (percentagePositionY == 0)) {
+            percentagePositionX = getJoystickPercentagePosition(
+                event,
+                historyPos,
+                MotionEvent.AXIS_HAT_X
+            );
+            percentagePositionY = getJoystickPercentagePosition(
+                event,
+                historyPos,
+                MotionEvent.AXIS_HAT_Y
+            );
+        }
 
         JoystickHandleListener.onMoved(
             percentagePositionX,
@@ -651,7 +664,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
         );
     }
 
-    private int getJoystickHandlerPercentagePosition(
+    private int getJoystickPercentagePosition(
         final MotionEvent event,
         final int historyPos,
         final int axisCode
