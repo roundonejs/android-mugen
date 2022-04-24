@@ -112,11 +112,9 @@ public class DBMain extends Activity {
     public String mPID = null;
     public int mPrefScaleFactor = 100;
     private Context mContext;
-    public Button bButtonA, bButtonB, bButtonC, bButtonD;
 
     // Private Views
     public JoystickView mJoystickView = null;
-    public ButtonLayout mButtonsView = null;
 
     static {
         System.loadLibrary("fishstix_util");
@@ -155,10 +153,7 @@ public class DBMain extends Activity {
         mFrameLayout = (FrameLayout) findViewById(R.id.mFrame);
         mSurfaceView = (DBGLSurfaceView) findViewById(R.id.mSurf);
         mJoystickView = (JoystickView) findViewById(R.id.mJoystickView);
-        mButtonsView = (ButtonLayout) findViewById(R.id.ButtonLayout);
         mJoystickView.setVisibility(View.GONE);
-        mButtonsView.setVisibility(View.GONE);
-        mButtonsView.mDBLauncher = this;
         registerForContextMenu(mSurfaceView);
 
         if (prefs.getBoolean("dosmanualconf", false)) {
@@ -204,12 +199,6 @@ public class DBMain extends Activity {
             }
         }
         );
-
-        // resources
-        bButtonA = (Button) findViewById(R.id.ButtonA);
-        bButtonB = (Button) findViewById(R.id.ButtonB);
-        bButtonC = (Button) findViewById(R.id.ButtonC);
-        bButtonD = (Button) findViewById(R.id.ButtonD);
     }
 
     @Override
@@ -287,50 +276,6 @@ public class DBMain extends Activity {
                     ).show();
                 }
             }
-        }
-
-        // check orientation to hide actionbar (in landscape)
-        if (
-            getResources().getConfiguration().orientation ==
-            Configuration.ORIENTATION_LANDSCAPE
-        ) {
-            // getSupportActionBar().hide();
-        }
-
-        // handle virtual buttons (top or bottom location)
-        if (mButtonsView.isShown()) {
-            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-                LayoutParams.FILL_PARENT,
-                LayoutParams.WRAP_CONTENT
-            );
-
-            if (
-                Integer.valueOf(
-                    prefs.getString(
-                        "confbuttonlocation",
-                        "1"
-                    )
-                ) == 1
-            ) {
-                // bottom
-                mButtonsView.setGravity(Gravity.BOTTOM);
-                params.gravity = Gravity.BOTTOM;
-                params.topMargin = 0;
-            } else {
-                mButtonsView.setGravity(Gravity.TOP);
-                params.gravity = Gravity.TOP;
-
-                if (
-                    getResources().getConfiguration().orientation ==
-                    Configuration.ORIENTATION_LANDSCAPE
-                ) {
-                    params.topMargin = 0;
-                } else {
-                    params.topMargin = mSurfaceView.mActionBarHeight;
-                }
-            }
-
-            mButtonsView.setLayoutParams(params);
         }
 
         mSurfaceView.mDirty.set(true);
@@ -623,11 +568,9 @@ public class DBMain extends Activity {
                         ) == 1
                     ) {
                         // bottom
-                        mButtonsView.setGravity(Gravity.BOTTOM);
                         params.gravity = Gravity.BOTTOM;
                         params.topMargin = 0;
                     } else {
-                        mButtonsView.setGravity(Gravity.TOP);
                         params.gravity = Gravity.TOP;
 
                         if (
@@ -640,9 +583,6 @@ public class DBMain extends Activity {
                         }
                     }
 
-                    mButtonsView.setLayoutParams(params);
-                    mButtonsView.setVisibility(View.VISIBLE);
-
                     DBMenuSystem.saveBooleanPreference(
                         mContext,
                         "confbuttonoverlay",
@@ -650,9 +590,6 @@ public class DBMain extends Activity {
                     );
                     break;
                 case HANDLER_REMOVE_BUTTONS:
-                    mButtonsView.setVisibility(View.GONE);
-                    mButtonsView.setOnTouchListener(null);
-
                     DBMenuSystem.saveBooleanPreference(
                         mContext,
                         "confbuttonoverlay",
