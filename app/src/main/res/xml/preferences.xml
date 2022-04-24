@@ -439,15 +439,6 @@
                android:key="confcustom_clear"
                android:title="Clear All Mappings"
                android:summary="Clear all button/controller maps" />
-
-         <PreferenceCategory android:title="Advanced Controller Settings">
-         <EditTextPreference
-        android:key="confdpadsensitivity"
-        android:title="DPad sensitivity"
-        android:summary="Phone DPad/Optical Trackpad sensitivity value"
-            android:defaultValue="7"
-        android:dialogTitle="Range is (1 - 25) [default 7]" />
-         </PreferenceCategory>
        </PreferenceScreen>
   </PreferenceCategory>
   <PreferenceCategory android:title="Screen and Rotation Settings">

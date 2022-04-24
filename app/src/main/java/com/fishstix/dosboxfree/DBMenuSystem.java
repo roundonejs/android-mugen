@@ -476,24 +476,6 @@ public class DBMenuSystem {
             context.mSurfaceView.mInputLowLatency = true;
         }
 
-        // dpad / trackpad emulation
-        try {
-            int tmp = Integer.valueOf(
-                prefs.getString(
-                    "confdpadsensitivity",
-                    "7"
-                ).trim()
-            );
-
-            if ((tmp >= 1) && (tmp <= 25)) {
-                context.mSurfaceView.mDpadRate = tmp;
-            } else {
-                context.mSurfaceView.mDpadRate = 7;
-            }
-        } catch (NumberFormatException e) {
-            context.mSurfaceView.mDpadRate = 7;
-        }
-
         // OS 2.1 - 2.3 < > key fix
         // context.mSurfaceView.mEnableLTKeyFix = prefs.getBoolean("conffixgingerkey", false);
 
