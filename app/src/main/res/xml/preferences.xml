@@ -533,11 +533,6 @@
        android:key="confreset"
        android:title="Reset to Default"
        android:summary="Reset all preferences to default values" />
-    <CheckBoxPreference
-        android:key="confdebug"
-        android:title="Enable Debug"
-        android:defaultValue="false"
-        android:summary="Enable Debug Mode (SLOW)" />
     <ListPreference
        android:key="confoptimization"
         android:title="Optimizations"

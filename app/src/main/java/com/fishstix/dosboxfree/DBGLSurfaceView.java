@@ -74,7 +74,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
 
     boolean mScale = false;
     boolean mInputLowLatency = false;
-    public boolean mDebug = false;
     public boolean mScreenTop = false;
     public boolean mGPURendering = false;
     public boolean mKeyboardVisible = false;

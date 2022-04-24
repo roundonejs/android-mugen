@@ -542,20 +542,11 @@ public class DBMenuSystem {
             null,
             true
         );
-        // DEBUG
-        context.mSurfaceView.mDebug = prefs.getBoolean("confdebug", false);
-
-        if (context.mSurfaceView.mDebug) {
-            // debug mode enabled, show warning
-            Toast.makeText(context, R.string.debug, Toast.LENGTH_LONG).show();
-        }
 
         context.mSurfaceView.forceRedraw();
     }
 
-
-
-    static public void copyConfigFile(DBMain context) {
+    public static void copyConfigFile(final DBMain context) {
         try {
 
             InputStream myInput = new FileInputStream(
