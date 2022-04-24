@@ -256,6 +256,41 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
             KeyEvent.KEYCODE_DPAD_LEFT,
             DosBoxControl.KEYCODE_LEFT_BUTTON
         );
+
+        keyEventToMugenButton.put(
+            KeyEvent.KEYCODE_BUTTON_X,
+            DosBoxControl.KEYCODE_X_BUTTON
+        );
+        keyEventToMugenButton.put(
+            KeyEvent.KEYCODE_BUTTON_Y,
+            DosBoxControl.KEYCODE_Y_BUTTON
+        );
+        keyEventToMugenButton.put(
+            KeyEvent.KEYCODE_BUTTON_L1,
+            DosBoxControl.KEYCODE_Y_BUTTON
+        );
+
+        keyEventToMugenButton.put(
+            KeyEvent.KEYCODE_BUTTON_A,
+            DosBoxControl.KEYCODE_A_BUTTON
+        );
+        keyEventToMugenButton.put(
+            KeyEvent.KEYCODE_BUTTON_B,
+            DosBoxControl.KEYCODE_B_BUTTON
+        );
+        keyEventToMugenButton.put(
+            KeyEvent.KEYCODE_BUTTON_R1,
+            DosBoxControl.KEYCODE_C_BUTTON
+        );
+
+        keyEventToMugenButton.put(
+            KeyEvent.KEYCODE_BUTTON_START,
+            DosBoxControl.KEYCODE_START_BUTTON
+        );
+        keyEventToMugenButton.put(
+            KeyEvent.KEYCODE_BUTTON_SELECT,
+            DosBoxControl.KEYCODE_F1_BUTTON
+        );
     }
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
@@ -1319,35 +1354,28 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
 
     @Override
     public boolean onKeyDown(final int keyCode, final KeyEvent event) {
-        return handleDirectionalKey(keyCode, true) || handleKey(keyCode, event);
+        return handleMugenKey(keyCode, true) || handleKey(keyCode, event);
     }
 
     @Override
     public boolean onKeyUp(final int keyCode, final KeyEvent event) {
-        return (
-            handleDirectionalKey(keyCode, false)
-            || handleKey(keyCode, event)
-        );
+        return handleMugenKey(keyCode, false) || handleKey(keyCode, event);
     }
 
-    private boolean handleDirectionalKey(
+    private boolean handleMugenKey(
         final int keyCode,
         final boolean down
     ) {
-        switch (keyCode) {
-            case KeyEvent.KEYCODE_DPAD_UP:
-            case KeyEvent.KEYCODE_DPAD_RIGHT:
-            case KeyEvent.KEYCODE_DPAD_DOWN:
-            case KeyEvent.KEYCODE_DPAD_LEFT:
-                DosBoxControl.sendNativeKey(
-                    keyEventToMugenButton.get(keyCode),
-                    down,
-                    false,
-                    false,
-                    false
-                );
+        if (keyEventToMugenButton.containsKey(keyCode)) {
+            DosBoxControl.sendNativeKey(
+                keyEventToMugenButton.get(keyCode),
+                down,
+                false,
+                false,
+                false
+            );
 
-                return true;
+            return true;
         }
 
         return false;

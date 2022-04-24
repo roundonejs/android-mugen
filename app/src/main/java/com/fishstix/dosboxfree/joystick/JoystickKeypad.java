@@ -3,18 +3,12 @@ package com.fishstix.dosboxfree.joystick;
 import android.graphics.Canvas;
 import android.view.View;
 
+import com.fishstix.dosboxfree.DosBoxControl;
+
 public class JoystickKeypad {
     private static final double DISTANCE_BUTTON_RATIO = 2.75;
     private static final double BUTTON_RADIUS_RATIO = 0.125;
     private static final double DISTANTE_ACTION_BUTTONS_RATIO = 7;
-    private static final int KEYCODE_A_BUTTON = 38;
-    private static final int KEYCODE_B_BUTTON = 39;
-    private static final int KEYCODE_C_BUTTON = 40;
-    private static final int KEYCODE_X_BUTTON = 49;
-    private static final int KEYCODE_Y_BUTTON = 37;
-    private static final int KEYCODE_Z_BUTTON = 43;
-    private static final int KEYCODE_START_BUTTON = 66;
-    private static final int KEYCODE_F1_BUTTON = 131;
     private static final int COLOR_A_BUTTON = 0x5FFF8888;
     private static final int COLOR_B_BUTTON = 0x5F88FF88;
     private static final int COLOR_C_BUTTON = 0x5F8888FF;
@@ -40,42 +34,42 @@ public class JoystickKeypad {
         view = currentView;
         JoystickButton buttonA = new JoystickButton(
             COLOR_A_BUTTON,
-            KEYCODE_A_BUTTON,
+            DosBoxControl.KEYCODE_A_BUTTON,
             LABEL_A_BUTTON
         );
         JoystickButton buttonB = new JoystickButton(
             COLOR_B_BUTTON,
-            KEYCODE_B_BUTTON,
+            DosBoxControl.KEYCODE_B_BUTTON,
             LABEL_B_BUTTON
         );
         JoystickButton buttonC = new JoystickButton(
             COLOR_C_BUTTON,
-            KEYCODE_C_BUTTON,
+            DosBoxControl.KEYCODE_C_BUTTON,
             LABEL_C_BUTTON
         );
         JoystickButton buttonX = new JoystickButton(
             COLOR_X_BUTTON,
-            KEYCODE_X_BUTTON,
+            DosBoxControl.KEYCODE_X_BUTTON,
             LABEL_X_BUTTON
         );
         JoystickButton buttonY = new JoystickButton(
             COLOR_Y_BUTTON,
-            KEYCODE_Y_BUTTON,
+            DosBoxControl.KEYCODE_Y_BUTTON,
             LABEL_Y_BUTTON
         );
         JoystickButton buttonZ = new JoystickButton(
             COLOR_Z_BUTTON,
-            KEYCODE_Z_BUTTON,
+            DosBoxControl.KEYCODE_Z_BUTTON,
             LABEL_Z_BUTTON
         );
         JoystickButton buttonStart = new JoystickButton(
             COLOR_START_BUTTON,
-            KEYCODE_START_BUTTON,
+            DosBoxControl.KEYCODE_START_BUTTON,
             LABEL_START_BUTTON
         );
         JoystickButton buttonF1 = new JoystickButton(
             COLOR_F1_BUTTON,
-            KEYCODE_F1_BUTTON,
+            DosBoxControl.KEYCODE_F1_BUTTON,
             LABEL_F1_BUTTON
         );
 

@@ -24,6 +24,14 @@ public class DosBoxControl {
     public static final int KEYCODE_RIGHT_BUTTON = 32;
     public static final int KEYCODE_DOWN_BUTTON = 47;
     public static final int KEYCODE_LEFT_BUTTON = 29;
+    public static final int KEYCODE_A_BUTTON = 38;
+    public static final int KEYCODE_B_BUTTON = 39;
+    public static final int KEYCODE_C_BUTTON = 40;
+    public static final int KEYCODE_X_BUTTON = 49;
+    public static final int KEYCODE_Y_BUTTON = 37;
+    public static final int KEYCODE_Z_BUTTON = 43;
+    public static final int KEYCODE_START_BUTTON = 66;
+    public static final int KEYCODE_F1_BUTTON = 131;
     public static final int ACTION_DOWN = 0;
     public static final int ACTION_UP = 1;
     public static final int ACTION_MOVE = 2;
