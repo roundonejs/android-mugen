@@ -598,7 +598,10 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     float hatYlast = 0f;
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
-    private void processJoystickInput(MotionEvent event, int historyPos) {
+    private void processJoystickInput(
+        final MotionEvent event,
+        final int historyPos
+    ) {
         float hatX = 0.0f;
         InputDevice.MotionRange range = event.getDevice().getMotionRange(
             MotionEvent.AXIS_HAT_X,
@@ -647,56 +650,17 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
             }
         }
 
-        float joyX = 0.0f;
-        range = event.getDevice().getMotionRange(
-            MotionEvent.AXIS_X,
-            event.getSource()
+        int percentagePositionX = getJoystickHandlerPercentagePosition(
+            event,
+            historyPos,
+            MotionEvent.AXIS_X
+        );
+        int percentagePositionY = getJoystickHandlerPercentagePosition(
+            event,
+            historyPos,
+            MotionEvent.AXIS_Y
         );
 
-        if (range != null) {
-            if (historyPos >= 0) {
-                joyX = InputDeviceState.ProcessAxis(
-                    range,
-                    event.getHistoricalAxisValue(
-                        MotionEvent.AXIS_X,
-                        historyPos
-                    )
-                );
-            } else {
-                joyX =
-                    InputDeviceState.ProcessAxis(
-                    range,
-                    event.getAxisValue(MotionEvent.AXIS_X)
-                    );
-            }
-        }
-
-        float joyY = 0.0f;
-        range = event.getDevice().getMotionRange(
-            MotionEvent.AXIS_Y,
-            event.getSource()
-        );
-
-        if (range != null) {
-            if (historyPos >= 0) {
-                joyY = InputDeviceState.ProcessAxis(
-                    range,
-                    event.getHistoricalAxisValue(
-                        MotionEvent.AXIS_Y,
-                        historyPos
-                    )
-                );
-            } else {
-                joyY =
-                    InputDeviceState.ProcessAxis(
-                    range,
-                    event.getAxisValue(MotionEvent.AXIS_Y)
-                    );
-            }
-        }
-
-        int percentagePositionX = (int) joyX * 100;
-        int percentagePositionY = (int) joyY * 100;
         JoystickHandleListener.onMoved(
             percentagePositionX,
             -percentagePositionY
@@ -923,6 +887,31 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
 
             hatYlast = hatY;
         }
+    }
+
+    private int getJoystickHandlerPercentagePosition(
+        final MotionEvent event,
+        final int historyPos,
+        final int axisCode
+    ) {
+        InputDevice.MotionRange range = event.getDevice().getMotionRange(
+            axisCode,
+            event.getSource()
+        );
+
+        if (range != null) {
+            float axisValue;
+
+            if (historyPos >= 0) {
+                axisValue = event.getHistoricalAxisValue(axisCode, historyPos);
+            } else {
+                axisValue = event.getAxisValue(axisCode);
+            }
+
+            return (int) (InputDeviceState.ProcessAxis(range, axisValue) * 100);
+        }
+
+        return 0;
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
