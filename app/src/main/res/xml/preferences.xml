@@ -178,41 +178,6 @@
         android:entryValues="@array/confinputlatency_values"
         android:defaultValue="0"
         android:summary="Select Latency of input devices" />
-      <!--  temp -->
-     <PreferenceScreen
-         android:title="Virtual Joystick"
-         android:summary="Virtual Joystick Settings">
-      <com.fishstix.dosboxfree.dosboxprefs.preference.SeekBarPreference android:key="confjoyx"
-           android:title="Joy Center X"
-           android:summary="Adjust Joystick Calibration X-Axis"
-           android:dialogMessage="Joystick Calibration X (def: 100)"
-           android:defaultValue="100"
-           android:max="200" />
-         <com.fishstix.dosboxfree.dosboxprefs.preference.SeekBarPreference android:key="confjoyy"
-           android:title="Joy Center Y"
-           android:summary="Adjust Joystick Calibration Y-Axis"
-           android:dialogMessage="Joystick Calibration Y (def: 100)"
-           android:defaultValue="100"
-           android:max="200" />
-      <com.fishstix.dosboxfree.dosboxprefs.preference.SeekBarPreference android:key="confjoysize"
-           android:title="Joystick Size"
-           android:summary="Setting Size too high may cause overlap"
-           android:dialogMessage="Joystick Size (def: 5)"
-           android:defaultValue="5"
-           android:max="10" />
-      <com.fishstix.dosboxfree.dosboxprefs.preference.SeekBarPreference android:key="confjoytrans"
-           android:title="Joystick Translucency"
-           android:summary="Adjust Translucency of the Joystick"
-           android:dialogMessage="Joystick Tranlucency (def: 80)"
-           android:defaultValue="80"
-           android:max="235" />
-      <CheckBoxPreference
-          android:key="confjoymousemode"
-          android:title="Use Joystick as Mouse"
-          android:defaultValue="false"
-          android:summary="@string/pref_mousejoymode" />
-       </PreferenceScreen>
-       <!-- end temp -->
       <CheckBoxPreference
         android:key="confjoyoverlay"
         android:title="Overlay Joystick"
@@ -495,26 +460,6 @@
                android:summary="Clear all button/controller maps" />
 
          <PreferenceCategory android:title="Advanced Controller Settings">
-<!--          <Preference
-             android:key="confmapanalog_mouse"
-             android:title="Map analog stick to Mouse"
-             android:summary="Select an Analog Stick to map to Mouse Movement" />
-         <Preference
-             android:key="confmapanalog_joy"
-             android:title="Map analog stick to Joystick"
-             android:summary="Select an Analog Stick to map to DOS Joystick" />  -->
-     <!--      <CheckBoxPreference
-            android:key="confgenericmotion"
-            android:title="Enable Analog Sticks"
-            android:defaultValue="true"
-            android:summary="Map Analog Sticks to Mouse and Joystick" /> -->
-        <ListPreference
-            android:key="confanalogsticks"
-            android:title="Physical Analog Sticks"
-           android:entries="@array/confanalog_maps"
-          android:entryValues="@array/confanalog_maps_values"
-            android:defaultValue="0"
-            android:summary="Configure Physical Analog Stick Mappings" />
          <CheckBoxPreference
             android:key="confenabledpad"
             android:title="Map DPad to Input Device"
