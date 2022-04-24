@@ -79,7 +79,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     private DBMain mParent = null;
     private boolean mSurfaceViewRunning = false;
     public DosBoxVideoThread mVideoThread = null;
-    public DosBoxMouseThread mMouseThread = null;
     public KeyHandler mKeyHandler = null;
     private GestureDetector gestureScanner;
 
@@ -321,10 +320,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
             requestRender();
         }
 
-        mMouseThread = new DosBoxMouseThread();
-        mMouseThread.setPriority(Thread.MIN_PRIORITY);
-        mMouseThread.setRunning(true);
-        mMouseThread.start();
         mVideoThread = new DosBoxVideoThread();
         mKeyHandler = new KeyHandler(this);
 
@@ -387,7 +382,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     public void shutDown() {
         mBitmap = null;
         mVideoThread = null;
-        mMouseThread = null;
         mKeyHandler = null;
     }
 

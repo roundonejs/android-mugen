@@ -426,7 +426,6 @@ public class DBMain extends Activity {
         }
 
         mSurfaceView.mVideoThread.setRunning(false);
-        mSurfaceView.mMouseThread.setRunning(false);
 
         nativeStop();
     }
