@@ -535,12 +535,6 @@ public class DBMenuSystem {
             }
         }
 
-        // FORCE Physical LEFT ALT
-        context.mSurfaceView.mUseLeftAltOn = prefs.getBoolean(
-            "confaltfix",
-            false
-        );
-
         // SOUND
         DBMain.nativeSetOption(
             DBMenuSystem.DOSBOX_OPTION_ID_SOUND_MODULE_ON,

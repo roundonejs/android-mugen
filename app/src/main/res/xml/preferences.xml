@@ -449,11 +449,6 @@
         android:dialogTitle="Range is (1 - 25) [default 7]" />
          </PreferenceCategory>
        </PreferenceScreen>
-      <CheckBoxPreference
-       android:key="confaltfix"
-       android:title="Use physical ALT"
-       android:defaultValue="false"
-       android:summary="Use physical left ALT key instead of virt. left ALT" />
   </PreferenceCategory>
   <PreferenceCategory android:title="Screen and Rotation Settings">
       <CheckBoxPreference

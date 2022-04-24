@@ -74,7 +74,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
 
     boolean mScale = false;
     boolean mInputLowLatency = false;
-    boolean mUseLeftAltOn = false;
     public boolean mDebug = false;
     public boolean mScreenTop = false;
     public boolean mGPURendering = false;
@@ -714,9 +713,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     private final static int MAP_ADJUSTFRAMES = 20007;
     private final static int MAP_UNLOCK_SPEED = 20008;
 
-
-    // private boolean mMapCapture = false;
-
     // Map of Custom Maps
     public SparseIntArray customMap = new SparseIntArray(
         DosBoxPreferences.NUM_USB_MAPPINGS
@@ -946,21 +942,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                         (event.isAltPressed() || event.isShiftPressed()) &&
                         (unicode == 0) &&
                         ((event.getFlags() & KeyEvent.FLAG_FROM_SYSTEM) == 0)
-                    ) {
-                        break;
-                    }
-
-                    // fixed alt key problem for physical keyboard with only left alt
-                    if (
-                        (!mUseLeftAltOn) &&
-                        (keyCode == KeyEvent.KEYCODE_ALT_LEFT)
-                    ) {
-                        break;
-                    }
-
-                    if (
-                        (!mUseLeftAltOn) &&
-                        (keyCode == KeyEvent.KEYCODE_SHIFT_RIGHT)
                     ) {
                         break;
                     }
