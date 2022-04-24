@@ -80,7 +80,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
 
     boolean mScale = false;
     int mInputMode = INPUT_MODE_MOUSE;
-    boolean mEnableDpad = false;
     boolean mInputLowLatency = false;
     boolean mUseLeftAltOn = false;
     public boolean mDebug = false;
@@ -1010,19 +1009,16 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
             int backval = customMap.get(DosBoxPreferences.XPERIA_BACK_BUTTON);
 
             if (backval > 0) {
-                // Special Sony XPeria Play case
-                if (!mEnableDpad) {
-                    // sony xperia play O (circle) button
-                    DosBoxControl.sendNativeKey(
-                        backval,
-                        (event.getAction() == KeyEvent.ACTION_DOWN),
-                        mModifierCtrl,
-                        mModifierAlt,
-                        mModifierShift
-                    );
+                // sony xperia play O (circle) button
+                DosBoxControl.sendNativeKey(
+                    backval,
+                    (event.getAction() == KeyEvent.ACTION_DOWN),
+                    mModifierCtrl,
+                    mModifierAlt,
+                    mModifierShift
+                );
 
-                    return true;                        // consume event
-                }
+                return true;                            // consume event
             }
 
             return true;                // consume event

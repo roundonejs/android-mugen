@@ -78,7 +78,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
     private Preference confcustom_add = null;
     private Preference confcustom_clear = null;
     private Preference confjoyoverlay = null;
-    private Preference confenabledpad = null;
     private Preference confdpadsensitivity = null;
     private PreferenceScreen dpad_mappings = null;
     private Preference confgpu = null;
@@ -162,7 +161,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
         confreset.setOnPreferenceClickListener(this);
         dosmanualconf_file = (Preference) findPreference("dosmanualconf_file");
         confjoyoverlay = (Preference) findPreference("confjoyoverlay");
-        confenabledpad = (Preference) findPreference("confenabledpad");
         confdpadsensitivity =
             (Preference) findPreference("confdpadsensitivity");
         dpad_mappings = (PreferenceScreen) findPreference("dpad_mappings");
@@ -240,10 +238,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
             )
         );
 
-        // disable dpad sensitivity when dpad is not enabled
-        update_confenabledpad();
-
-
         // update MT32 config
 
         boolean MTROM_valid = true;
@@ -316,8 +310,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
                     )
                 )
             );
-        } else if (key.contentEquals("confenabledpad")) {
-            update_confenabledpad();
         } else if (
             key.contentEquals("doscycles") &&
             prefs.getString("doscycles", "").contentEquals("auto")
@@ -420,14 +412,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
         }
 
         dosmanualconf_file.setSummary(configFile);
-    }
-
-    private void update_confenabledpad() {
-        if (prefs.getBoolean("confenabledpad", false)) {
-            confdpadsensitivity.setEnabled(true);
-        } else {
-            confdpadsensitivity.setEnabled(false);
-        }
     }
 
     private void updateMapSummary() {

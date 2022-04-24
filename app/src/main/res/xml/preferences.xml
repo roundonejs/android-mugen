@@ -448,11 +448,6 @@
                android:summary="Clear all button/controller maps" />
 
          <PreferenceCategory android:title="Advanced Controller Settings">
-         <CheckBoxPreference
-            android:key="confenabledpad"
-            android:title="Map DPad to Input Device"
-            android:defaultValue="false"
-            android:summary="Use DPAD as a Mouse or Joystick device" />
          <EditTextPreference
         android:key="confdpadsensitivity"
         android:title="DPad sensitivity"

@@ -528,10 +528,6 @@ public class DBMenuSystem {
         }
 
         // dpad / trackpad emulation
-        context.mSurfaceView.mEnableDpad = prefs.getBoolean(
-            "confenabledpad",
-            false
-        );
         try {
             int tmp = Integer.valueOf(
                 prefs.getString(
