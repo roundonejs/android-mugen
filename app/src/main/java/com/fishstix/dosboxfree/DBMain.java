@@ -41,7 +41,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.view.ContextMenu;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -312,16 +311,6 @@ public class DBMain extends Activity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-    }
-
-    @Override
-    public void onCreateContextMenu(
-        ContextMenu menu,
-        View v,
-        ContextMenu.ContextMenuInfo menuInfo
-    ) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        DBMenuSystem.doCreateContextMenu(this, menu, v, menuInfo);
     }
 
     @Override

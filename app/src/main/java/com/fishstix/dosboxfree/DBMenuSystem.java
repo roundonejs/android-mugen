@@ -42,10 +42,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.TypedValue;
-import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Toast;
 
@@ -61,12 +59,6 @@ public class DBMenuSystem {
     private static final int MAX_MEMORY = 128;
 
     public static final int KEYCODE_F1 = 131;
-    // public static final int KEYCODE_F12 = 142;
-
-    public final static int CONTEXT_MENU_SPECIAL_KEYS = 1;
-    public final static int CONTEXT_MENU_CYCLES = 2;
-    public final static int CONTEXT_MENU_FRAMESKIP = 3;
-    public final static int CONTEXT_MENU_MEMORY_SIZE = 4;
 
     private final static int MENU_KEYBOARD_CTRL = 61;
     private final static int MENU_KEYBOARD_ALT = 62;
@@ -627,89 +619,7 @@ public class DBMenuSystem {
         builder.create().show();
     }
 
-    static public void doCreateContextMenu(
-        DBMain context,
-        ContextMenu menu,
-        View v,
-        ContextMenu.ContextMenuInfo menuInfo
-    ) {
-        switch (context.mSurfaceView.mContextMenu) {
-            case CONTEXT_MENU_SPECIAL_KEYS:
-            {
-                MenuItem item;
-                item = menu.add(0, MENU_KEYBOARD_CTRL, 0, "Ctrl");
-                item.setCheckable(true);
-                item.setChecked(context.mSurfaceView.mModifierCtrl);
-
-                item = menu.add(0, MENU_KEYBOARD_ALT, 0, "Alt");
-                item.setCheckable(true);
-                item.setChecked(context.mSurfaceView.mModifierAlt);
-
-                item = menu.add(0, MENU_KEYBOARD_SHIFT, 0, "Shift");
-                item.setCheckable(true);
-                item.setChecked(context.mSurfaceView.mModifierShift);
-
-                menu.add(0, MENU_KEYBOARD_ESC, 0, "ESC");
-                menu.add(0, MENU_KEYBOARD_TAB, 0, "Tab");
-                menu.add(0, MENU_KEYBOARD_DEL, 0, "Del");
-                menu.add(0, MENU_KEYBOARD_INSERT, 0, "Ins");
-                menu.add(0, MENU_KEYBOARD_PAUSE_BREAK, 0, "Break");
-                menu.add(0, MENU_KEYBOARD_SCROLL_LOCK, 0, "Scrl. Lck");
-
-                for (int i = MENU_KEYBOARD_F1; i <= MENU_KEYBOARD_F12; i++) {
-                    menu.add(0, i, 0, "F" + (i - MENU_KEYBOARD_F1 + 1));
-                }
-
-                menu.add(0, MENU_KEYBOARD_SWAP_MEDIA, 0, "Swap Media");
-                context.mSurfaceView.mContextMenu = -1;
-
-                item = menu.add(0, MENU_KEYBOARD_TURBO, 0, "Fast Forward");
-                item.setCheckable(true);
-                item.setChecked(context.mTurboOn);
-            }
-            break;
-            case CONTEXT_MENU_CYCLES:
-            {
-
-                MenuItem item = menu.add(1, MENU_CYCLE_AUTO, 0, "Auto");
-
-                if (DosBoxControl.nativeGetAutoAdjust()) {
-                    item.setChecked(true);
-                }
-
-                for (int i = MENU_CYCLE_AUTO + 1; i <= MENU_CYCLE_55000; i++) {
-                    int value = (i - MENU_CYCLE_AUTO) * 1000;
-                    item = menu.add(1, i, 0, "" + value);
-
-                    if (
-                        !DosBoxControl.nativeGetAutoAdjust() &&
-                        (value == DosBoxControl.nativeGetCycleCount())
-                    ) {
-                        item.setChecked(true);
-                    }
-                }
-
-                menu.setGroupCheckable(1, true, true);
-            }
-            break;
-            case CONTEXT_MENU_FRAMESKIP:
-            {
-                for (int i = MENU_FRAMESKIP_0; i <= MENU_FRAMESKIP_10; i++) {
-                    int value = (i - MENU_FRAMESKIP_0);
-                    MenuItem item = menu.add(2, i, 0, "" + value);
-
-                    if (value == DosBoxControl.nativeGetFrameSkipCount()) {
-                        item.setChecked(true);
-                    }
-                }
-
-                menu.setGroupCheckable(2, true, true);
-            }
-            break;
-        }
-    }
-
-    static public void doSendDownUpKey(DBMain context, int keyCode) {
+    public static void doSendDownUpKey(DBMain context, int keyCode) {
         DosBoxControl.sendNativeKey(
             keyCode,
             true,
@@ -729,7 +639,7 @@ public class DBMenuSystem {
         context.mSurfaceView.mModifierShift = false;
     }
 
-    static public boolean doContextItemSelected(DBMain context, MenuItem item) {
+    public static boolean doContextItemSelected(DBMain context, MenuItem item) {
         int itemID = item.getItemId();
 
         switch (itemID) {

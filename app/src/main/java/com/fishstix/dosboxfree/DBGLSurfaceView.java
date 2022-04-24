@@ -76,8 +76,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     boolean mInputLowLatency = false;
     public boolean mGPURendering = false;
 
-    int mContextMenu = 0;
-
     Bitmap mBitmap = null;
     private Paint mBitmapPaint = null;
     private Paint mTextPaint = null;
@@ -692,9 +690,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     private final static int MAP_NONE = 0;
     private final static int MAP_CYCLEUP = 20002;
     private final static int MAP_CYCLEDOWN = 20003;
-    private final static int MAP_SPECIALKEYS = 20005;
-    private final static int MAP_ADJUSTCYCLES = 20006;
-    private final static int MAP_ADJUSTFRAMES = 20007;
     private final static int MAP_UNLOCK_SPEED = 20008;
 
     // Map of Custom Maps
@@ -773,30 +768,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                             Toast.LENGTH_SHORT
                         ).show();
                     }
-                }
-
-                return MAP_EVENT_CONSUMED;
-            case MAP_SPECIALKEYS:
-
-                if (event.getAction() == KeyEvent.ACTION_UP) {
-                    mContextMenu = DBMenuSystem.CONTEXT_MENU_SPECIAL_KEYS;
-                    mParent.openContextMenu(this);
-                }
-
-                return MAP_EVENT_CONSUMED;
-            case MAP_ADJUSTCYCLES:
-
-                if (event.getAction() == KeyEvent.ACTION_UP) {
-                    mContextMenu = DBMenuSystem.CONTEXT_MENU_CYCLES;
-                    mParent.openContextMenu(this);
-                }
-
-                return MAP_EVENT_CONSUMED;
-            case MAP_ADJUSTFRAMES:
-
-                if (event.getAction() == KeyEvent.ACTION_UP) {
-                    mContextMenu = DBMenuSystem.CONTEXT_MENU_FRAMESKIP;
-                    mParent.openContextMenu(this);
                 }
 
                 return MAP_EVENT_CONSUMED;
