@@ -41,7 +41,6 @@ import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.text.InputFilter;
 import android.text.Spanned;
-import android.util.Log;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.widget.Toast;
@@ -191,7 +190,6 @@ public class DosBoxPreferences extends PreferenceActivity implements OnSharedPre
         };
         filterArray[1] = new InputFilter.LengthFilter(1);
         // check for Xperia Play
-        Log.i("DosBoxTurbo", "Build.DEVICE: "+android.os.Build.DEVICE);
         if (android.os.Build.DEVICE.equalsIgnoreCase("zeus") || android.os.Build.DEVICE.contains("R800"))
             isExperiaPlay = true;
     }

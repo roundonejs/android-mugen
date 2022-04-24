@@ -24,7 +24,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import android.content.res.AssetManager;
-import android.util.Log;
 
 public class MugenDirectoryCreator {
     private static final String MUGEN_DIRECTORY = "mugen";
@@ -68,8 +67,6 @@ public class MugenDirectoryCreator {
         try {
             return assetManager.list(directoryName);
         } catch (IOException e) {
-            Log.e("DosBoxTurbo", "Failed to get asset file list.", e);
-
             throw new RuntimeException(e);
         }
     }

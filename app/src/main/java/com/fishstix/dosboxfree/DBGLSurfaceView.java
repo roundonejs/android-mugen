@@ -38,7 +38,6 @@ import android.os.Build;
 import android.os.SystemClock;
 import android.support.v4.view.MotionEventCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -400,8 +399,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
         int startLine,
         int endLine
     ) {
-        Log.i("DosBoxTurbo", "calcScreenCoordinates()");
-
         if ((src_width <= 0) || (src_height <= 0)) {
             return;
         }
@@ -802,15 +799,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                     mSPenButton = false;
                 }
 
-                if (mDebug) {
-                    Log.d(
-                        "DosBoxTurbo",
-                        "onGenericMotionEvent() INPUT_MODE_REAL_MOUSE x: " +
-                        x[pointerId] + "  y: " + y[pointerId] + "  |  xL: " +
-                        x_last[pointerId] + "  yL: " + y_last[pointerId]
-                    );
-                }
-
                 try {
                     if (!mInputLowLatency) {
                         Thread.sleep(95);
@@ -957,10 +945,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                                     GESTURE_LEFT_CLICK
                                 );
                                 mLongClick = false;
-                                Log.i(
-                                    "DosBoxTurbo",
-                                    "SingleTap Long Click Release"
-                                );
 
                                 return true;
                             } else if (mDoubleLong) {
@@ -977,10 +961,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                                     mGestureDoubleClick -
                                     GESTURE_LEFT_CLICK
                                 );
-                                Log.i(
-                                    "DosBoxTurbo",
-                                    "DoubleTap Long Click Release"
-                                );
                                 mDoubleLong = false;
                                 // return true;
                             } else if (pointCnt == 2) {
@@ -988,10 +968,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                                 if (mLongPress) {
                                     if (!mTwoFingerAction) {
                                         // press button down
-                                        Log.i(
-                                            "DosBoxTurbo",
-                                            "2-Finger Long Click Down"
-                                        );
                                         DosBoxControl.nativeMouse(
                                             0,
                                             0,
@@ -1004,10 +980,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                                         mTwoFingerAction = true;
                                     } else {
                                         // already pressing button - release and press again
-                                        Log.i(
-                                            "DosBoxTurbo",
-                                            "2-Finger Long Click - AGAIN"
-                                        );
                                         DosBoxControl.nativeMouse(
                                             0,
                                             0,
@@ -1031,10 +1003,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                                         );
                                     }
                                 } else {
-                                    Log.i(
-                                        "DosBoxTurbo",
-                                        "2-Finger Long Click Down-UP"
-                                    );
                                     mouseClick(
                                         mGestureTwoFinger - GESTURE_LEFT_CLICK
                                     );
@@ -1043,10 +1011,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                                 return true;
                             } else if ((pointCnt == 1) && mTwoFingerAction) {
                                 // release two finger gesture
-                                Log.i(
-                                    "DosBoxTurbo",
-                                    "2-Finger Long Click Release"
-                                );
                                 DosBoxControl.nativeMouse(
                                     0,
                                     0,
@@ -1106,12 +1070,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                                     EVENT_THRESHOLD_DECAY <
                                     SystemClock.uptimeMillis()
                                 ) {
-                                    Log.i(
-                                        "DosBoxTurbo",
-                                        "eventtime: " + event.getEventTime() + " systemtime: " +
-                                        SystemClock.uptimeMillis()
-                                    );
-
                                     return true;                                // get rid of old events
                                 }
 
@@ -1136,15 +1094,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                                         * mMouseSensitivityY),
                                         DosBoxControl.ACTION_MOVE,
                                         -1
-                                    );
-                                }
-
-                                if (mDebug) {
-                                    Log.d(
-                                        "DosBoxTurbo",
-                                        "mAbsolute=" + mAbsolute + " MotionEvent MOVE(" + pointerId + ")" + " x[idx]=" +
-                                        x[idx] + " y[idx]" + y[idx] + " mRenderer.x=" + mRenderer.x + " mRenderer.y=" + mRenderer.y + " mRenderer.width=" + mRenderer.width + " mRenderer.height=" +
-                                        mRenderer.height
                                     );
                                 }
 
@@ -1395,10 +1344,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     }
 
     private boolean handleKey(int keyCode, final KeyEvent event) {
-        if (mDebug) {
-            Log.d("DosBoxTurbo", "handleKey keyCode=" + keyCode);
-        }
-
         int tKeyCode = 0;
 
         // check for xperia play back case
@@ -1488,14 +1433,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
             default:
                 boolean down = (event.getAction() == KeyEvent.ACTION_DOWN);
 
-                if (mDebug) {
-                    Log.d(
-                        "DosBoxTurbo",
-                        "handleKey (default) keyCode=" + keyCode + " down=" +
-                        down
-                    );
-                }
-
                 if (!down || (event.getRepeatCount() == 0)) {
                     int unicode = event.getUnicodeChar();
 
@@ -1533,32 +1470,14 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                     long diff = event.getEventTime() - event.getDownTime();
 
                     if (!down && (diff < 50)) {
-                        // simulate as long press
-                        if (mDebug) {
-                            Log.d(
-                                "DosBoxTurbo",
-                                "LongPress consumed keyCode=" + keyCode + " down=" +
-                                down
-                            );
-                        }
-
                         mKeyHandler.removeMessages(keyCode);
                         mKeyHandler.sendEmptyMessageDelayed(
                             keyCode,
                             BUTTON_REPEAT_DELAY -
                             diff
                         );
-                    } else if (down && mKeyHandler.hasMessages(keyCode)) {
-                        if (mDebug) {
-                            Log.d(
-                                "DosBoxTurbo",
-                                "KeyUp consumed keyCode=" + keyCode + " down=" +
-                                down
-                            );
-                        }
-
-                        // there is an key up in queue, should be repeated event
-                    } else {
+                    } else if (down &&
+                        mKeyHandler.hasMessages(keyCode)) { } else {
                         boolean result = DosBoxControl.sendNativeKey(
                             keyCode,
                             down,
@@ -1706,8 +1625,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     class MyGestureDetector extends SimpleOnGestureListener {
         @Override
         public boolean onDown(MotionEvent event) {
-            Log.i("DosBoxTurbo", "onDown()");
-
             if (mInputMode == INPUT_MODE_MOUSE) {
                 if (mAbsolute) {
                     final int pointerId =
@@ -1818,8 +1735,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
 
         @Override
         public boolean onSingleTapConfirmed(MotionEvent event) {
-            Log.i("DosBoxTurbo", "onSingleTapConfirmed()");
-
             if (mInputMode == INPUT_MODE_MOUSE) {
                 if (
                     (mGestureSingleClick != GESTURE_NONE) &&
@@ -1836,8 +1751,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
 
         @Override
         public boolean onSingleTapUp(MotionEvent event) {
-            Log.i("DosBoxTurbo", "onSingleTapUp()");
-
             if (mInputMode == INPUT_MODE_MOUSE) {
                 if (
                     (mGestureDoubleClick == GESTURE_NONE) &&

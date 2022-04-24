@@ -20,7 +20,6 @@
 package com.fishstix.dosboxfree;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 
 public class DosBoxThread extends Thread {
@@ -36,8 +35,6 @@ public class DosBoxThread extends Thread {
     public void run() {
         String path = mParent.mConfPath + mParent.mConfFile;
         mDosBoxRunning = true;
-
-        Log.i("DosBoxTurbo", "Using DosBox Config: " + path);
 
         mParent.nativeStart(
             mParent,

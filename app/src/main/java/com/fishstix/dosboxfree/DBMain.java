@@ -41,7 +41,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Display;
 import android.view.Gravity;
@@ -125,7 +124,6 @@ public class DBMain extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i("DosBoxTurbo", "onCreate()");
         mugenDirectoryCreator = new MugenDirectoryCreator(
             getAssets(),
             getApplication().getApplicationInfo().dataDir
@@ -176,13 +174,6 @@ public class DBMain extends Activity {
 
             mConfPath = f.getParent() + "/";
             mConfFile = f.getName();
-
-            if (!f.exists()) {
-                Log.i(
-                    "DosBoxTurbo",
-                    "Config file not found: " + f.getAbsolutePath()
-                );
-            }
         }
 
         mSurfaceView.mGPURendering = true;
@@ -205,14 +196,6 @@ public class DBMain extends Activity {
             public void onGlobalLayout() {
                 // re-calculate joystick constants
                 mSurfaceView.mActionBarHeight = 30;
-                Log.v(
-                    "DosBoxTurbo",
-                    String.format(
-                        "new width=%d; new height=%d",
-                        mSurfaceView.getWidth(),
-                        mSurfaceView.getHeight()
-                    )
-                );
                 mSurfaceView.setDirty();
 
                 Rect r = new Rect();
@@ -231,7 +214,6 @@ public class DBMain extends Activity {
 
     @Override
     protected void onDestroy() {
-        Log.i("DosBoxTurbo", "onDestroy()");
         stopDosBox();
         shutDownDosBox();
         mSurfaceView.shutDown();
@@ -241,20 +223,17 @@ public class DBMain extends Activity {
 
     @Override
     protected void onPause() {
-        Log.i("DosBoxTurbo", "onPause()");
         pauseDosBox(true);
         super.onPause();
     }
 
     @Override
     protected void onStop() {
-        Log.i("DosBoxTurbo", "onStop()");
         super.onStop();
     }
 
     @Override
     protected void onResume() {
-        Log.i("DosBoxTurbo", "onResume()");
         super.onResume();
         pauseDosBox(false);
 
@@ -355,7 +334,6 @@ public class DBMain extends Activity {
         }
 
         mSurfaceView.mDirty.set(true);
-        Log.i("DosBoxTurbo", "onResume");
     }
 
     private String ReadCPUgovernor() {
@@ -393,7 +371,6 @@ public class DBMain extends Activity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        Log.i("DosBoxTurbo", "Config Change");
     }
 
     @Override

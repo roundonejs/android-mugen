@@ -41,7 +41,6 @@ import android.content.res.AssetManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
@@ -132,12 +131,10 @@ public class DBMenuSystem {
            }*/
         Runtime rt = Runtime.getRuntime();
         long maxMemory = rt.maxMemory();
-        Log.v("DosBoxTurbo", "maxMemory:" + Long.toString(maxMemory));
         ActivityManager am = (ActivityManager) context.getSystemService(
             Context.ACTIVITY_SERVICE
         );
         int memoryClass = am.getMemoryClass();
-        Log.v("DosBoxTurbo", "memoryClass:" + Integer.toString(memoryClass));
         int maxMem = (int) Math.max(maxMemory / 1024, memoryClass) * 4;
 
         if (!prefs.getBoolean("dosmanualconf", false)) {          // only write conf if not in manual config mode
@@ -332,11 +329,6 @@ public class DBMenuSystem {
                 out.close();
                 myInput.close();
                 scanner.close();
-                Log.i(
-                    "DosBoxTurbo",
-                    "finished writing: " + context.mConfPath +
-                    context.mConfFile
-                );
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -657,12 +649,6 @@ public class DBMenuSystem {
                 }
             }
         }
-
-        Log.i(
-            "DosBoxTurbo",
-            "Found " + context.mSurfaceView.customMap.size() +
-            " custom mappings."
-        );
 
         // GESTURES
         context.mSurfaceView.mGestureUp =
@@ -1312,9 +1298,7 @@ public class DBMenuSystem {
             out.flush();
             out.close();
             out = null;
-        } catch (Exception e) {
-            Log.e("DosBoxTurbo", e.getMessage());
-        }
+        } catch (Exception e) { }
     }
 
     public static void CopyROM(DBMain ctx, File infile) {
@@ -1334,9 +1318,7 @@ public class DBMenuSystem {
             out.flush();
             out.close();
             out = null;
-        } catch (Exception e) {
-            Log.e("DosBoxTurbo", e.getMessage());
-        }
+        } catch (Exception e) { }
     }
 
     public static boolean MT32_ROM_exists(DBMain ctx) {
