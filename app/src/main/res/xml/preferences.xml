@@ -462,13 +462,6 @@
         android:dialogMessage="Landscape Scale Factor"
         android:defaultValue="100"
         android:max="100" />
-      <ListPreference
-        android:key="confscalelocation"
-        android:title="Scaled Screen Location"
-      android:entries="@array/confscalelocation"
-        android:entryValues="@array/confscalelocation_values"
-        android:defaultValue="0"
-        android:summary="When scaling is on, choose screen location" />
     <ListPreference
         android:key="confscalemode"
         android:title="Scale Quality"

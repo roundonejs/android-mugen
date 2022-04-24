@@ -74,7 +74,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
 
     boolean mScale = false;
     boolean mInputLowLatency = false;
-    public boolean mScreenTop = false;
     public boolean mGPURendering = false;
     public boolean mKeyboardVisible = false;
 
@@ -396,11 +395,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                 mRenderer.height *= (mParent.mPrefScaleFactor * 0.01f);
                 mRenderer.x = (getWidth() - mRenderer.width) / 2;
 
-                if (!mScreenTop) {
-                    mRenderer.y = (getHeight() - mRenderer.height) / 2;
-                } else {
-                    mRenderer.y = 0;
-                }
+                mRenderer.y = (getHeight() - mRenderer.height) / 2;
             } else {
                 // portrait
                 mRenderer.y = mActionBarHeight;

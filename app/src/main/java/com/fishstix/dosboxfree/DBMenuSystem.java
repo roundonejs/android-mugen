@@ -325,13 +325,6 @@ public class DBMenuSystem {
         // SCALE SCREEN
         context.mSurfaceView.mScale = prefs.getBoolean("confscale", false);
 
-        if (Integer.valueOf(prefs.getString("confscalelocation", "0")) == 0) {
-            context.mSurfaceView.mScreenTop = false;
-        }
-        else {
-            context.mSurfaceView.mScreenTop = true;
-        }
-
         // SCREEN SCALE FACTOR
         context.mPrefScaleFactor = prefs.getInt("confresizefactor", 100);
 
