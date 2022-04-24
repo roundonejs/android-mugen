@@ -832,251 +832,243 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
             MotionEventCompat.getPointerId(event, pointerIndex);
 
         if (pointCnt < MAX_POINT_CNT) {
-            // if (pointerIndex <= MAX_POINT_CNT - 1){
-            {
-                for (int i = 0; i < pointCnt; i++) {
-                    int id = MotionEventCompat.getPointerId(event, i);
+            for (int i = 0; i < pointCnt; i++) {
+                int id = MotionEventCompat.getPointerId(event, i);
 
-                    if (id < MAX_POINT_CNT) {
-                        x_last[id] = x[id];
-                        y_last[id] = y[id];
-                        x[id] = mWrap.getX(event, i);
-                        y[id] = mWrap.getY(event, i);
-                    }
+                if (id < MAX_POINT_CNT) {
+                    x_last[id] = x[id];
+                    y_last[id] = y[id];
+                    x[id] = mWrap.getX(event, i);
+                    y[id] = mWrap.getY(event, i);
                 }
+            }
 
-                switch (MotionEventCompat.getActionMasked(event)) {
-                    case MotionEvent.ACTION_DOWN:
-                    case MotionEventCompat.ACTION_POINTER_DOWN:
-                        int button = -1;
+            switch (MotionEventCompat.getActionMasked(event)) {
+                case MotionEvent.ACTION_DOWN:
+                case MotionEventCompat.ACTION_POINTER_DOWN:
+                    int button = -1;
 
-                        // Save the ID of this pointer
+                    // Save the ID of this pointer
+                    if (mInputMode == INPUT_MODE_MOUSE) { }
+                    else if (mInputMode == INPUT_MODE_REAL_JOYSTICK) {
+                        int buttonState = mWrap.getButtonState(event);
+
                         if (
-                            mInputMode ==
-                            INPUT_MODE_MOUSE
-                        ) { } else if (
-                            mInputMode ==
-                            INPUT_MODE_REAL_JOYSTICK
+                            (buttonState &
+                            TouchEventWrapper.BUTTON_PRIMARY) != 0
                         ) {
-                            int buttonState = mWrap.getButtonState(event);
+                            button = BTN_A;
+                        } else if (
+                            (buttonState &
+                            TouchEventWrapper.BUTTON_SECONDARY) != 0
+                        ) {
+                            button = BTN_B;
+                        }
 
-                            if (
-                                (buttonState &
-                                TouchEventWrapper.BUTTON_PRIMARY) != 0
-                            ) {
-                                button = BTN_A;
-                            } else if (
-                                (buttonState &
-                                TouchEventWrapper.BUTTON_SECONDARY) != 0
-                            ) {
-                                button = BTN_B;
-                            }
+                        DosBoxControl.nativeJoystick(
+                            0,
+                            0,
+                            DosBoxControl.ACTION_DOWN,
+                            button
+                        );
+                    } else if (mInputMode == INPUT_MODE_REAL_MOUSE) {
+                        int buttonState = mWrap.getButtonState(event);
 
-                            DosBoxControl.nativeJoystick(
-                                0,
-                                0,
-                                DosBoxControl.ACTION_DOWN,
-                                button
-                            );
-                        } else if (mInputMode == INPUT_MODE_REAL_MOUSE) {
-                            int buttonState = mWrap.getButtonState(event);
+                        if (
+                            (buttonState &
+                            TouchEventWrapper.BUTTON_PRIMARY) != 0
+                        ) {
+                            button = BTN_A;
+                        } else if (
+                            (buttonState &
+                            TouchEventWrapper.BUTTON_SECONDARY) != 0
+                        ) {
+                            button = BTN_B;
+                        } else if (buttonState == 0) {
+                            // handle trackpad presses as button clicks
+                            button = BTN_A;
+                        }
 
-                            if (
-                                (buttonState &
-                                TouchEventWrapper.BUTTON_PRIMARY) != 0
-                            ) {
-                                button = BTN_A;
-                            } else if (
-                                (buttonState &
-                                TouchEventWrapper.BUTTON_SECONDARY) != 0
-                            ) {
-                                button = BTN_B;
-                            } else if (buttonState == 0) {
-                                // handle trackpad presses as button clicks
-                                button = BTN_A;
-                            }
+                        DosBoxControl.nativeMouse(
+                            0,
+                            0,
+                            0,
+                            0,
+                            DosBoxControl.ACTION_DOWN,
+                            button
+                        );
+                    }
 
+                    mButtonDown[pointerId] = button;
+                    break;
+                case MotionEvent.ACTION_UP:
+                case MotionEventCompat.ACTION_POINTER_UP:
+
+                    if (mInputMode == INPUT_MODE_MOUSE) {
+                        if (mLongClick) {
+                            // single tap long click release
                             DosBoxControl.nativeMouse(
                                 0,
                                 0,
                                 0,
                                 0,
-                                DosBoxControl.ACTION_DOWN,
-                                button
+                                DosBoxControl.ACTION_UP,
+                                mGestureSingleClick -
+                                GESTURE_LEFT_CLICK
                             );
-                        }
+                            mLongClick = false;
 
-                        mButtonDown[pointerId] = button;
-                        break;
-                    case MotionEvent.ACTION_UP:
-                    case MotionEventCompat.ACTION_POINTER_UP:
-
-                        if (mInputMode == INPUT_MODE_MOUSE) {
-                            if (mLongClick) {
-                                // single tap long click release
-                                DosBoxControl.nativeMouse(
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    DosBoxControl.ACTION_UP,
-                                    mGestureSingleClick -
-                                    GESTURE_LEFT_CLICK
-                                );
-                                mLongClick = false;
-
-                                return true;
-                            } else if (mDoubleLong) {
-                                // double tap long click release
-                                try {
-                                    Thread.sleep(CLICK_DELAY);
-                                } catch (InterruptedException e) { }
-                                DosBoxControl.nativeMouse(
-                                    0,
-                                    0,
-                                    -1,
-                                    -1,
-                                    DosBoxControl.ACTION_UP,
-                                    mGestureDoubleClick -
-                                    GESTURE_LEFT_CLICK
-                                );
-                                mDoubleLong = false;
-                                // return true;
-                            } else if (pointCnt == 2) {
-                                // handle 2 finger tap gesture
-                                if (mLongPress) {
-                                    if (!mTwoFingerAction) {
-                                        // press button down
-                                        DosBoxControl.nativeMouse(
-                                            0,
-                                            0,
-                                            -1,
-                                            -1,
-                                            DosBoxControl.ACTION_DOWN,
-                                            mGestureTwoFinger -
-                                            GESTURE_LEFT_CLICK
-                                        );
-                                        mTwoFingerAction = true;
-                                    } else {
-                                        // already pressing button - release and press again
-                                        DosBoxControl.nativeMouse(
-                                            0,
-                                            0,
-                                            -1,
-                                            -1,
-                                            DosBoxControl.ACTION_UP,
-                                            mGestureTwoFinger -
-                                            GESTURE_LEFT_CLICK
-                                        );
-                                        try {
-                                            Thread.sleep(CLICK_DELAY);
-                                        } catch (InterruptedException e) { }
-                                        DosBoxControl.nativeMouse(
-                                            0,
-                                            0,
-                                            -1,
-                                            -1,
-                                            DosBoxControl.ACTION_DOWN,
-                                            mGestureTwoFinger -
-                                            GESTURE_LEFT_CLICK
-                                        );
-                                    }
+                            return true;
+                        } else if (mDoubleLong) {
+                            // double tap long click release
+                            try {
+                                Thread.sleep(CLICK_DELAY);
+                            } catch (InterruptedException e) { }
+                            DosBoxControl.nativeMouse(
+                                0,
+                                0,
+                                -1,
+                                -1,
+                                DosBoxControl.ACTION_UP,
+                                mGestureDoubleClick -
+                                GESTURE_LEFT_CLICK
+                            );
+                            mDoubleLong = false;
+                            // return true;
+                        } else if (pointCnt == 2) {
+                            // handle 2 finger tap gesture
+                            if (mLongPress) {
+                                if (!mTwoFingerAction) {
+                                    // press button down
+                                    DosBoxControl.nativeMouse(
+                                        0,
+                                        0,
+                                        -1,
+                                        -1,
+                                        DosBoxControl.ACTION_DOWN,
+                                        mGestureTwoFinger -
+                                        GESTURE_LEFT_CLICK
+                                    );
+                                    mTwoFingerAction = true;
                                 } else {
-                                    mouseClick(
-                                        mGestureTwoFinger - GESTURE_LEFT_CLICK
+                                    // already pressing button - release and press again
+                                    DosBoxControl.nativeMouse(
+                                        0,
+                                        0,
+                                        -1,
+                                        -1,
+                                        DosBoxControl.ACTION_UP,
+                                        mGestureTwoFinger -
+                                        GESTURE_LEFT_CLICK
+                                    );
+                                    try {
+                                        Thread.sleep(CLICK_DELAY);
+                                    } catch (InterruptedException e) { }
+                                    DosBoxControl.nativeMouse(
+                                        0,
+                                        0,
+                                        -1,
+                                        -1,
+                                        DosBoxControl.ACTION_DOWN,
+                                        mGestureTwoFinger -
+                                        GESTURE_LEFT_CLICK
                                     );
                                 }
-
-                                return true;
-                            } else if ((pointCnt == 1) && mTwoFingerAction) {
-                                // release two finger gesture
-                                DosBoxControl.nativeMouse(
-                                    0,
-                                    0,
-                                    -1,
-                                    -1,
-                                    DosBoxControl.ACTION_UP,
-                                    mGestureTwoFinger -
-                                    GESTURE_LEFT_CLICK
+                            } else {
+                                mouseClick(
+                                    mGestureTwoFinger - GESTURE_LEFT_CLICK
                                 );
-                                mTwoFingerAction = false;
-                                // return true;
                             }
-                        } else if (mInputMode == INPUT_MODE_REAL_MOUSE) {
-                            // Log.v("Mouse","BUTTON UP: " + (mButtonDown[pointerId]));
+
+                            return true;
+                        } else if ((pointCnt == 1) && mTwoFingerAction) {
+                            // release two finger gesture
                             DosBoxControl.nativeMouse(
                                 0,
                                 0,
-                                0,
-                                0,
+                                -1,
+                                -1,
                                 DosBoxControl.ACTION_UP,
-                                mButtonDown[pointerId]
+                                mGestureTwoFinger -
+                                GESTURE_LEFT_CLICK
                             );
-
-                            if (mWrap.getButtonState(event) > 0) {
-                                return true;                            // capture button touches, pass screen touches through to gesture detetor
-                            }
-                        } else if (mInputMode == INPUT_MODE_REAL_JOYSTICK) {
-                            DosBoxControl.nativeJoystick(
-                                0,
-                                0,
-                                DosBoxControl.ACTION_UP,
-                                (mButtonDown[pointerId])
-                            );
-
-                            if (mWrap.getButtonState(event) > 0) {
-                                return true;
-                            }
+                            mTwoFingerAction = false;
+                            // return true;
                         }
+                    } else if (mInputMode == INPUT_MODE_REAL_MOUSE) {
+                        // Log.v("Mouse","BUTTON UP: " + (mButtonDown[pointerId]));
+                        DosBoxControl.nativeMouse(
+                            0,
+                            0,
+                            0,
+                            0,
+                            DosBoxControl.ACTION_UP,
+                            mButtonDown[pointerId]
+                        );
 
-                        break;
-                    case MotionEvent.ACTION_MOVE:
+                        if (mWrap.getButtonState(event) > 0) {
+                            return true;                                // capture button touches, pass screen touches through to gesture detetor
+                        }
+                    } else if (mInputMode == INPUT_MODE_REAL_JOYSTICK) {
+                        DosBoxControl.nativeJoystick(
+                            0,
+                            0,
+                            DosBoxControl.ACTION_UP,
+                            (mButtonDown[pointerId])
+                        );
 
-                        // isTouch[pointerId] = true;
-                        switch (mInputMode) {
-                            case INPUT_MODE_SCROLL:
-                                mScroll_x +=
-                                    (int) (x[pointerId] - x_last[pointerId]);
-                                mScroll_y +=
-                                    (int) (y[pointerId] - y_last[pointerId]);
-                                forceRedraw();
-                                break;
-                            case INPUT_MODE_MOUSE:
-                            case INPUT_MODE_REAL_MOUSE:
+                        if (mWrap.getButtonState(event) > 0) {
+                            return true;
+                        }
+                    }
 
-                                if (
-                                    event.getEventTime() +
-                                    EVENT_THRESHOLD_DECAY <
-                                    SystemClock.uptimeMillis()
-                                ) {
-                                    return true;                                // get rid of old events
+                    break;
+                case MotionEvent.ACTION_MOVE:
+
+                    // isTouch[pointerId] = true;
+                    switch (mInputMode) {
+                        case INPUT_MODE_SCROLL:
+                            mScroll_x +=
+                                (int) (x[pointerId] - x_last[pointerId]);
+                            mScroll_y +=
+                                (int) (y[pointerId] - y_last[pointerId]);
+                            forceRedraw();
+                            break;
+                        case INPUT_MODE_MOUSE:
+                        case INPUT_MODE_REAL_MOUSE:
+
+                            if (
+                                event.getEventTime() +
+                                EVENT_THRESHOLD_DECAY <
+                                SystemClock.uptimeMillis()
+                            ) {
+                                return true;                                    // get rid of old events
+                            }
+
+                            int idx = (!virtButton[0]) ? 0 : 1;
+
+                            DosBoxControl.nativeMouse(
+                                (int) x[idx],
+                                (int) y[idx],
+                                (int) x_last[idx],
+                                (int) y_last[idx],
+                                DosBoxControl.ACTION_MOVE,
+                                -1
+                            );
+
+                            try {
+                                if (!mInputLowLatency) {
+                                    Thread.sleep(95);
+                                } else {
+                                    Thread.sleep(65);
                                 }
+                            } catch (InterruptedException e) { }
 
-                                int idx = (!virtButton[0]) ? 0 : 1;
+                            break;
+                        default:
+                    }
 
-                                DosBoxControl.nativeMouse(
-                                    (int) x[idx],
-                                    (int) y[idx],
-                                    (int) x_last[idx],
-                                    (int) y_last[idx],
-                                    DosBoxControl.ACTION_MOVE,
-                                    -1
-                                );
-
-                                try {
-                                    if (!mInputLowLatency) {
-                                        Thread.sleep(95);
-                                    } else {
-                                        Thread.sleep(65);
-                                    }
-                                } catch (InterruptedException e) { }
-
-                                break;
-                            default:
-                        }
-
-                        break;
-                }
+                    break;
             }
         }
 
