@@ -93,8 +93,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     public boolean mDebug = false;
     private static final int CLICK_DELAY = 125;         // in ms
     private boolean mDoubleLong = false;
-    public float mMouseSensitivityX = 1.0f;
-    public float mMouseSensitivityY = 1.0f;
     public boolean mScreenTop = false;
     public boolean mGPURendering = false;
     public boolean mKeyboardVisible = false;
@@ -757,11 +755,10 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                     );
                 } else {
                     DosBoxControl.nativeMouse(
-                        (int) (x[pointerId] *
-                        mMouseSensitivityX),
-                        (int) (y[pointerId] * mMouseSensitivityY),
-                        (int) (x_last[pointerId] * mMouseSensitivityX),
-                        (int) (y_last[pointerId] * mMouseSensitivityY),
+                        (int) x[pointerId],
+                        (int) y[pointerId],
+                        (int) x_last[pointerId],
+                        (int) y_last[pointerId],
                         2,
                         -1
                     );
@@ -1086,12 +1083,10 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                                     );
                                 } else {
                                     DosBoxControl.nativeMouse(
-                                        (int) (x[idx] *
-                                        mMouseSensitivityX),
-                                        (int) (y[idx] * mMouseSensitivityY),
-                                        (int) (x_last[idx] * mMouseSensitivityX),
-                                        (int) (y_last[idx]
-                                        * mMouseSensitivityY),
+                                        (int) x[idx],
+                                        (int) y[idx],
+                                        (int) x_last[idx],
+                                        (int) y_last[idx],
                                         DosBoxControl.ACTION_MOVE,
                                         -1
                                     );
@@ -1476,8 +1471,10 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                             BUTTON_REPEAT_DELAY -
                             diff
                         );
-                    } else if (down &&
-                        mKeyHandler.hasMessages(keyCode)) { } else {
+                    } else if (
+                        down &&
+                        mKeyHandler.hasMessages(keyCode)
+                    ) { } else {
                         boolean result = DosBoxControl.sendNativeKey(
                             keyCode,
                             down,

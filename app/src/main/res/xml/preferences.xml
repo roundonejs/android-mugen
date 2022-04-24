@@ -171,22 +171,6 @@
         android:entryValues="@array/confmousetracking_values"
         android:defaultValue="1"
         android:summary="Choose Absolute or Relative mouse tracking" />
-      <PreferenceScreen
-         android:title="Mouse Sensitivity"
-         android:summary="Adjust mouse sensitivity for Relative Mouse Tracking">
-        <com.fishstix.dosboxfree.dosboxprefs.preference.SeekBarPreference android:key="confmousesensitivityx"
-             android:title="X Sensitivity"
-             android:summary="Relative Mouse Tracking Sensitivity X Direction"
-             android:dialogMessage="Relative X Mouse Sensitivity (def: 50)"
-             android:defaultValue="50"
-             android:max="300" />
-        <com.fishstix.dosboxfree.dosboxprefs.preference.SeekBarPreference android:key="confmousesensitivityy"
-             android:title="Y Sensitivity"
-             android:summary="Relative Mouse Tracking Sensitivity Y Direction"
-             android:dialogMessage="Relative Y Mouse Sensitivity (def: 50)"
-             android:defaultValue="50"
-             android:max="300" />
-    </PreferenceScreen>
       <ListPreference
         android:key="confinputlatency"
         android:title="Input Latency"

@@ -531,29 +531,6 @@ public class DBMenuSystem {
             context.mSurfaceView.mAbsolute = false;
         }
 
-        // mouse sensitivity
-        context.mSurfaceView.mMouseSensitivityX =
-            ((float) prefs.getInt("confmousesensitivityx", 50) / 100f) + 0.5f;
-        context.mSurfaceView.mMouseSensitivityY =
-            ((float) prefs.getInt("confmousesensitivityy", 50) / 100f) + 0.5f;
-
-        // Absolute Tracking Calibration function
-        /*if (prefs.getBoolean("conf_doReset",false)) {
-                // reset calibration data
-                context.mSurfaceView.mWarpX = 0f;
-                context.mSurfaceView.mWarpY = 0f;
-                prefs.edit().putBoolean("conf_doReset", false);
-                prefs.edit().putBoolean("conf_doCalibrate", false).commit();
-           } else if (prefs.getBoolean("conf_doCalibrate", false)) {
-                context.mSurfaceView.mCalibrate = true;
-                Toast.makeText(context, R.string.abscalibrate, Toast.LENGTH_SHORT).show();
-                prefs.edit().putBoolean("conf_doReset", false);
-                prefs.edit().putBoolean("conf_doCalibrate", false).commit();
-           }*/
-
-        // context.mSurfaceView.mWarpX = Float.valueOf(prefs.getString("confwarpX", "0"));
-        // context.mSurfaceView.mWarpY = Float.valueOf(prefs.getString("confwarpY", "0"));
-
         // Input Resolution
         if (Integer.valueOf(prefs.getString("confinputlatency", "0")) == 0) {
             // absolute tracking
