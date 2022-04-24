@@ -605,9 +605,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
 
     private int[] mButtonDown = new int[MAX_POINT_CNT];
 
-    private final static int BTN_A = 0;
-    private final static int BTN_B = 1;
-
     float[] x = new float[MAX_POINT_CNT];
     float[] y = new float[MAX_POINT_CNT];
 
@@ -752,29 +749,11 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                     ((buttonState & TouchEventWrapper.BUTTON_SECONDARY) != 0) &&
                     !mSPenButton
                 ) {
-                    // Handle Samsung SPen Button (RMB) - DOWN
-                    DosBoxControl.nativeMouse(
-                        0,
-                        0,
-                        0,
-                        0,
-                        DosBoxControl.ACTION_DOWN,
-                        BTN_B
-                    );
                     mSPenButton = true;
                 } else if (
                     ((buttonState &
                     TouchEventWrapper.BUTTON_SECONDARY) == 0) && mSPenButton
                 ) {
-                    // Handle Samsung SPen Button (RMB) - UP
-                    DosBoxControl.nativeMouse(
-                        0,
-                        0,
-                        0,
-                        0,
-                        DosBoxControl.ACTION_UP,
-                        BTN_B
-                    );
                     mSPenButton = false;
                 }
 
@@ -800,15 +779,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                     ((buttonState & TouchEventWrapper.BUTTON_SECONDARY) == 0) &&
                     mSPenButton
                 ) {
-                    // Handle Samsung SPen Button (RMB) - UP
-                    DosBoxControl.nativeMouse(
-                        0,
-                        0,
-                        0,
-                        0,
-                        DosBoxControl.ACTION_UP,
-                        BTN_B
-                    );
                     mSPenButton = false;
 
                     return true;
@@ -844,63 +814,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
             }
 
             switch (MotionEventCompat.getActionMasked(event)) {
-                case MotionEvent.ACTION_DOWN:
-                case MotionEventCompat.ACTION_POINTER_DOWN:
-                    int button = -1;
-
-                    // Save the ID of this pointer
-                    if (mInputMode == INPUT_MODE_MOUSE) { }
-                    else if (mInputMode == INPUT_MODE_REAL_JOYSTICK) {
-                        int buttonState = mWrap.getButtonState(event);
-
-                        if (
-                            (buttonState &
-                            TouchEventWrapper.BUTTON_PRIMARY) != 0
-                        ) {
-                            button = BTN_A;
-                        } else if (
-                            (buttonState &
-                            TouchEventWrapper.BUTTON_SECONDARY) != 0
-                        ) {
-                            button = BTN_B;
-                        }
-
-                        DosBoxControl.nativeJoystick(
-                            0,
-                            0,
-                            DosBoxControl.ACTION_DOWN,
-                            button
-                        );
-                    } else if (mInputMode == INPUT_MODE_REAL_MOUSE) {
-                        int buttonState = mWrap.getButtonState(event);
-
-                        if (
-                            (buttonState &
-                            TouchEventWrapper.BUTTON_PRIMARY) != 0
-                        ) {
-                            button = BTN_A;
-                        } else if (
-                            (buttonState &
-                            TouchEventWrapper.BUTTON_SECONDARY) != 0
-                        ) {
-                            button = BTN_B;
-                        } else if (buttonState == 0) {
-                            // handle trackpad presses as button clicks
-                            button = BTN_A;
-                        }
-
-                        DosBoxControl.nativeMouse(
-                            0,
-                            0,
-                            0,
-                            0,
-                            DosBoxControl.ACTION_DOWN,
-                            button
-                        );
-                    }
-
-                    mButtonDown[pointerId] = button;
-                    break;
                 case MotionEvent.ACTION_UP:
                 case MotionEventCompat.ACTION_POINTER_UP:
 
@@ -1084,8 +997,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
 
     private final static int MAP_EVENT_CONSUMED = -1;
     private final static int MAP_NONE = 0;
-    private final static int MAP_LEFTCLICK = 20000;
-    private final static int MAP_RIGHTCLICK = 20001;
     private final static int MAP_CYCLEUP = 20002;
     private final static int MAP_CYCLEDOWN = 20003;
     private final static int MAP_SHOWKEYBOARD = 20004;
@@ -1093,8 +1004,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     private final static int MAP_ADJUSTCYCLES = 20006;
     private final static int MAP_ADJUSTFRAMES = 20007;
     private final static int MAP_UNLOCK_SPEED = 20008;
-    private final static int MAP_JOYBTN_A = 20009;
-    private final static int MAP_JOYBTN_B = 20010;
 
 
     // private boolean mMapCapture = false;
@@ -1106,46 +1015,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
 
     private final int getMappedKeyCode(final int button, final KeyEvent event) {
         switch (button) {
-            case MAP_LEFTCLICK:
-                DosBoxControl.nativeMouse(
-                    0,
-                    0,
-                    0,
-                    0,
-                    (event.getAction() == KeyEvent.ACTION_DOWN) ? 0 : 1,
-                    BTN_A
-                );
-
-                return MAP_EVENT_CONSUMED;
-            case MAP_RIGHTCLICK:
-                DosBoxControl.nativeMouse(
-                    0,
-                    0,
-                    0,
-                    0,
-                    (event.getAction() == KeyEvent.ACTION_DOWN) ? 0 : 1,
-                    BTN_B
-                );
-
-                return MAP_EVENT_CONSUMED;
-            case MAP_JOYBTN_A:
-                DosBoxControl.nativeJoystick(
-                    0,
-                    0,
-                    (event.getAction() == KeyEvent.ACTION_DOWN) ? 0 : 1,
-                    BTN_A
-                );
-
-                return MAP_EVENT_CONSUMED;
-            case MAP_JOYBTN_B:
-                DosBoxControl.nativeJoystick(
-                    0,
-                    0,
-                    (event.getAction() == KeyEvent.ACTION_DOWN) ? 0 : 1,
-                    BTN_B
-                );
-
-                return MAP_EVENT_CONSUMED;
             case MAP_CYCLEUP:
 
                 if (event.getAction() == KeyEvent.ACTION_UP) {
@@ -1310,32 +1179,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
 
             if (backval > 0) {
                 // Special Sony XPeria Play case
-                if (mEnableDpad) {
-                    // FIRE2
-                    if (
-                        (mInputMode == INPUT_MODE_MOUSE) ||
-                        (mInputMode == INPUT_MODE_REAL_MOUSE)
-                    ) {
-                        DosBoxControl.nativeMouse(
-                            0,
-                            0,
-                            0,
-                            0,
-                            (event.getAction() == KeyEvent.ACTION_DOWN) ? 0 : 1,
-                            BTN_B
-                        );
-                    } else if (
-                        (mInputMode == INPUT_MODE_JOYSTICK) ||
-                        (mInputMode == INPUT_MODE_REAL_JOYSTICK)
-                    ) {
-                        DosBoxControl.nativeJoystick(
-                            0,
-                            0,
-                            (event.getAction() == KeyEvent.ACTION_DOWN) ? 0 : 1,
-                            BTN_B
-                        );
-                    }
-                } else {
+                if (!mEnableDpad) {
                     // sony xperia play O (circle) button
                     DosBoxControl.sendNativeKey(
                         backval,
@@ -1574,7 +1418,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     private final static int GESTURE_NONE = 0;
     public final static int GESTURE_LEFT_CLICK = 3;
     public final static int GESTURE_RIGHT_CLICK = 4;
-    public final static int GESTURE_DOUBLE_CLICK = 5;
     public int mGestureUp = GESTURE_NONE;
     public int mGestureDown = GESTURE_NONE;
     public int mGestureSingleClick = GESTURE_NONE;
@@ -1659,12 +1502,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                         }
 
                         return true;
-                    case GESTURE_DOUBLE_CLICK:
-                        mouseClick(BTN_A);
-                        try {
-                            Thread.sleep(CLICK_DELAY);
-                        } catch (InterruptedException e) { }
-                        mouseClick(BTN_A);
                 }
             }
 
