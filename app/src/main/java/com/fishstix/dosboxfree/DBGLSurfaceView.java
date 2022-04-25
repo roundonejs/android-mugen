@@ -129,15 +129,10 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                     synchronized (mDirty) {
                         if (mDirty.get()) {
                             if (bDirtyCoords.get()) {
-                                calcScreenCoordinates(
-                                    mSrc_width,
-                                    mSrc_height,
-                                    mStartLine,
-                                    mEndLine
-                                );
+                                calcScreenCoordinates(mSrc_width, mSrc_height);
                             }
 
-                            VideoRedraw(
+                            videoRedraw(
                                 mBitmap,
                                 mSrc_width,
                                 mSrc_height,
@@ -161,6 +156,83 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                     } catch (InterruptedException e) { }
                 }
             }
+        }
+
+        private void calcScreenCoordinates(
+            final int src_width,
+            final int src_height
+        ) {
+            if ((src_width <= 0) || (src_height <= 0)) {
+                return;
+            }
+
+            mRenderer.width = getWidth();
+            mRenderer.height = getHeight();
+
+            boolean isLandscape = (mRenderer.width > mRenderer.height);
+
+            if (mScale) {
+                mRenderer.x = src_width * mRenderer.height / src_height;
+
+                if (mRenderer.x < mRenderer.width) {
+                    mRenderer.width = mRenderer.x;
+                } else if (mRenderer.x > mRenderer.width) {
+                    mRenderer.height = src_height * mRenderer.width / src_width;
+                }
+
+                mRenderer.x = (getWidth() - mRenderer.width) / 2;
+
+                if (isLandscape) {
+                    mRenderer.width *= (mParent.mPrefScaleFactor * 0.01f);
+                    mRenderer.height *= (mParent.mPrefScaleFactor * 0.01f);
+                    mRenderer.x = (getWidth() - mRenderer.width) / 2;
+
+                    mRenderer.y = (getHeight() - mRenderer.height) / 2;
+                } else {
+                    mRenderer.y = 0;
+                }
+
+                // no power of two extenstion
+                mRenderer.mCropWorkspace[0] = 0;
+                mRenderer.mCropWorkspace[1] = src_height;
+                mRenderer.mCropWorkspace[2] = src_width;
+                mRenderer.mCropWorkspace[3] = -src_height;
+            } else {
+                if ((mScroll_x + src_width) < mRenderer.width) {
+                    mScroll_x = mRenderer.width - src_width;
+                }
+
+                if ((mScroll_y + src_height) < mRenderer.height) {
+                    mScroll_y = mRenderer.height - src_height;
+                }
+
+                mScroll_x = Math.min(mScroll_x, 0);
+                mScroll_y = Math.min(mScroll_y, 0);
+                mRenderer.mCropWorkspace[0] = -mScroll_x; // left
+                mRenderer.mCropWorkspace[1] = Math.min(
+                    mRenderer.height - mScroll_y,
+                    src_height
+                    ) + mScroll_y; // bottom - top
+                mRenderer.mCropWorkspace[2] = Math.min(
+                    mRenderer.width - mScroll_x,
+                    src_width
+                ); // right
+                mRenderer.mCropWorkspace[3] = -mRenderer.mCropWorkspace[1]; // -(bottom - top)
+                mRenderer.width = mRenderer.mCropWorkspace[2] -
+                    mRenderer.mCropWorkspace[0];
+                mRenderer.height =
+                    (Math.max(
+                        -mScroll_y,
+                        0
+                    ) + mScroll_y + mRenderer.mCropWorkspace[1]) -
+                    (Math.max(-mScroll_y, 0) + mScroll_y);
+
+                mRenderer.x = (getWidth() - mRenderer.width) / 2;
+                mRenderer.y = 0;
+            }
+
+            bDirtyCoords.set(false);
+            mRenderer.filter_on = mParent.mPrefScaleFilterOn;
         }
     }
 
@@ -347,85 +419,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
         mKeyHandler = null;
     }
 
-    public void calcScreenCoordinates(
-        final int src_width,
-        final int src_height,
-        final int startLine,
-        final int endLine
-    ) {
-        if ((src_width <= 0) || (src_height <= 0)) {
-            return;
-        }
-
-        mRenderer.width = getWidth();
-        mRenderer.height = getHeight();
-
-        boolean isLandscape = (mRenderer.width > mRenderer.height);
-
-        if (mScale) {
-            mRenderer.x = src_width * mRenderer.height / src_height;
-
-            if (mRenderer.x < mRenderer.width) {
-                mRenderer.width = mRenderer.x;
-            } else if (mRenderer.x > mRenderer.width) {
-                mRenderer.height = src_height * mRenderer.width / src_width;
-            }
-
-            mRenderer.x = (getWidth() - mRenderer.width) / 2;
-
-            if (isLandscape) {
-                mRenderer.width *= (mParent.mPrefScaleFactor * 0.01f);
-                mRenderer.height *= (mParent.mPrefScaleFactor * 0.01f);
-                mRenderer.x = (getWidth() - mRenderer.width) / 2;
-
-                mRenderer.y = (getHeight() - mRenderer.height) / 2;
-            } else {
-                mRenderer.y = 0;
-            }
-
-            // no power of two extenstion
-            mRenderer.mCropWorkspace[0] = 0;
-            mRenderer.mCropWorkspace[1] = src_height;
-            mRenderer.mCropWorkspace[2] = src_width;
-            mRenderer.mCropWorkspace[3] = -src_height;
-        } else {
-            if ((mScroll_x + src_width) < mRenderer.width) {
-                mScroll_x = mRenderer.width - src_width;
-            }
-
-            if ((mScroll_y + src_height) < mRenderer.height) {
-                mScroll_y = mRenderer.height - src_height;
-            }
-
-            mScroll_x = Math.min(mScroll_x, 0);
-            mScroll_y = Math.min(mScroll_y, 0);
-            mRenderer.mCropWorkspace[0] = -mScroll_x;                     // left
-            mRenderer.mCropWorkspace[1] = Math.min(
-                mRenderer.height - mScroll_y,
-                src_height
-                ) + mScroll_y;                                                                                                // bottom - top
-            mRenderer.mCropWorkspace[2] = Math.min(
-                mRenderer.width - mScroll_x,
-                src_width
-            );                                                                                                  // right
-            mRenderer.mCropWorkspace[3] = -mRenderer.mCropWorkspace[1];                     // -(bottom - top)
-            mRenderer.width = mRenderer.mCropWorkspace[2] -
-                mRenderer.mCropWorkspace[0];                                                      // Math.min(mRenderer.width - mScroll_x, src_width) + mScroll_x;
-            mRenderer.height =
-                (Math.max(
-                    -mScroll_y,
-                    0
-                ) + mScroll_y + mRenderer.mCropWorkspace[1]) -
-                (Math.max(-mScroll_y, 0) + mScroll_y);
-
-            mRenderer.x = (getWidth() - mRenderer.width) / 2;
-            mRenderer.y = 0;
-        }
-
-        bDirtyCoords.set(false);
-        mRenderer.filter_on = mParent.mPrefScaleFilterOn;
-    }
-
     private Rect mSrcRect = new Rect();
     private Rect mDstRect = new Rect();
     private Rect mDirtyRect = new Rect();
@@ -523,29 +516,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
 
         surfaceHolder = null;
     }
-
-    public void VideoRedraw(
-        Bitmap bitmap,
-        int src_width,
-        int src_height,
-        int startLine,
-        int endLine
-    ) {
-        if (
-            !mSurfaceViewRunning || (bitmap == null) || (src_width <= 0) ||
-            (src_height <= 0)
-        ) {
-            return;
-        }
-
-        if (mGPURendering) {
-            mRenderer.setBitmap(bitmap);
-            requestRender();
-        } else {
-            canvasDraw(bitmap, src_width, src_height, startLine, endLine);
-        }
-    }
-
 
     private int[] mButtonDown = new int[MAX_POINT_CNT];
 
@@ -938,7 +908,29 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
 
     public void forceRedraw() {
         setDirty();
-        VideoRedraw(mBitmap, mSrc_width, mSrc_height, 0, mSrc_height);
+        videoRedraw(mBitmap, mSrc_width, mSrc_height, 0, mSrc_height);
+    }
+
+    private void videoRedraw(
+        final Bitmap bitmap,
+        final int src_width,
+        final int src_height,
+        final int startLine,
+        final int endLine
+    ) {
+        if (
+            !mSurfaceViewRunning || (bitmap == null) || (src_width <= 0) ||
+            (src_height <= 0)
+        ) {
+            return;
+        }
+
+        if (mGPURendering) {
+            mRenderer.setBitmap(bitmap);
+            requestRender();
+        } else {
+            canvasDraw(bitmap, src_width, src_height, startLine, endLine);
+        }
     }
 
     public void surfaceChanged(
