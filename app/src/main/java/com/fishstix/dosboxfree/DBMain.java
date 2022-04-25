@@ -185,7 +185,6 @@ public class DBMain extends Activity {
             new OnGlobalLayoutListener() {
             public void onGlobalLayout() {
                 // re-calculate joystick constants
-                mSurfaceView.mActionBarHeight = 30;
                 mSurfaceView.setDirty();
 
                 Rect r = new Rect();

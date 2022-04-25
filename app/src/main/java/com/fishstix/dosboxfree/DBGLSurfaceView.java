@@ -87,11 +87,9 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     private int mScroll_y = 0;
 
     final AtomicBoolean mDirty = new AtomicBoolean(false);
-    private boolean isLandscape = false;
     int mStartLine = 0;
     int mEndLine = 0;
 
-    public int mActionBarHeight;
     public OpenGLRenderer mRenderer;
     private Map<Integer, Integer> keyEventToMugenButton;
 
@@ -350,10 +348,10 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     }
 
     public void calcScreenCoordinates(
-        int src_width,
-        int src_height,
-        int startLine,
-        int endLine
+        final int src_width,
+        final int src_height,
+        final int startLine,
+        final int endLine
     ) {
         if ((src_width <= 0) || (src_height <= 0)) {
             return;
@@ -362,7 +360,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
         mRenderer.width = getWidth();
         mRenderer.height = getHeight();
 
-        isLandscape = (mRenderer.width > mRenderer.height);
+        boolean isLandscape = (mRenderer.width > mRenderer.height);
 
         if (mScale) {
             mRenderer.x = src_width * mRenderer.height / src_height;
@@ -382,8 +380,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
 
                 mRenderer.y = (getHeight() - mRenderer.height) / 2;
             } else {
-                // portrait
-                mRenderer.y = mActionBarHeight;
+                mRenderer.y = 0;
             }
 
             // no power of two extenstion
@@ -421,44 +418,44 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                 ) + mScroll_y + mRenderer.mCropWorkspace[1]) -
                 (Math.max(-mScroll_y, 0) + mScroll_y);
 
-            if (isLandscape) {
-                mRenderer.x = (getWidth() - mRenderer.width) / 2;
-                mRenderer.y = 0;
-            } else {
-                mRenderer.x = (getWidth() - mRenderer.width) / 2;
-                mRenderer.y = mActionBarHeight;
-            }
+            mRenderer.x = (getWidth() - mRenderer.width) / 2;
+            mRenderer.y = 0;
         }
 
         bDirtyCoords.set(false);
         mRenderer.filter_on = mParent.mPrefScaleFilterOn;
     }
+
     private Rect mSrcRect = new Rect();
     private Rect mDstRect = new Rect();
     private Rect mDirtyRect = new Rect();
     private int mDirtyCount = 0;
+
     private void canvasDraw(
-        Bitmap bitmap,
-        int src_width,
-        int src_height,
-        int startLine,
-        int endLine
+        final Bitmap bitmap,
+        final int src_width,
+        final int src_height,
+        final int startLine,
+        final int endLine
     ) {
         SurfaceHolder surfaceHolder = getHolder();
         Surface surface = surfaceHolder.getSurface();
         Canvas canvas = null;
 
         try {
-            synchronized (surfaceHolder)
-            {
-
+            synchronized (surfaceHolder) {
                 boolean isDirty = false;
+                int newStartLine;
+                int newEndLine;
 
                 if (mDirtyCount < 3) {
                     mDirtyCount++;
                     isDirty = true;
-                    startLine = 0;
-                    endLine = src_height;
+                    newStartLine = 0;
+                    newEndLine = src_height;
+                } else {
+                    newStartLine = startLine;
+                    newEndLine = endLine;
                 }
 
                 if (mScale) {
@@ -468,9 +465,9 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
 
                     mDirtyRect.set(
                         0,
-                        startLine * mRenderer.height / src_height,
+                        newStartLine * mRenderer.height / src_height,
                         mRenderer.width,
-                        endLine * mRenderer.height / src_height + 1
+                        newEndLine * mRenderer.height / src_height + 1
                     );
 
                     // locnet, 2011-04-21, a strip on right side not updated
@@ -479,14 +476,11 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                     // L,T,R,B
                     mSrcRect.set(
                         -mScroll_x,
-                        Math.max(
-                            -mScroll_y,
-                            startLine
-                        ),
+                        Math.max(-mScroll_y, newStartLine),
                         mRenderer.mCropWorkspace[2],
                         Math.min(
                             Math.min(getHeight() - mScroll_y, src_height),
-                            endLine
+                            newEndLine
                         )
                     );
                     mDstRect.set(
@@ -496,14 +490,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                         mSrcRect.top + mScroll_y + mSrcRect.height()
                     );
 
-                    if (isLandscape) {
-                        mDstRect.offset((getWidth() - mSrcRect.width()) / 2, 0);
-                    } else {
-                        mDstRect.offset(
-                            (getWidth() - mSrcRect.width()) / 2,
-                            mActionBarHeight
-                        );
-                    }
+                    mDstRect.offset((getWidth() - mSrcRect.width()) / 2, 0);
 
                     mDirtyRect.set(mDstRect);
                 }
