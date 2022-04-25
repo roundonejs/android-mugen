@@ -87,14 +87,10 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     private int mScroll_y = 0;
 
     final AtomicBoolean mDirty = new AtomicBoolean(false);
-    boolean isLandscape = false;
+    private boolean isLandscape = false;
     int mStartLine = 0;
     int mEndLine = 0;
-    boolean mFilterLongClick = false;
 
-    boolean mModifierCtrl = false;
-    boolean mModifierAlt = false;
-    boolean mModifierShift = false;
     public int mActionBarHeight;
     public OpenGLRenderer mRenderer;
     private Map<Integer, Integer> keyEventToMugenButton;
@@ -827,7 +823,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
         return false;
     }
 
-    private boolean handleKey(int keyCode, final KeyEvent event) {
+    private boolean handleKey(final int keyCode, final KeyEvent event) {
         int tKeyCode = 0;
 
         // check for xperia play back case
@@ -839,9 +835,9 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                 DosBoxControl.sendNativeKey(
                     backval,
                     (event.getAction() == KeyEvent.ACTION_DOWN),
-                    mModifierCtrl,
-                    mModifierAlt,
-                    mModifierShift
+                    false,
+                    false,
+                    false
                 );
 
                 return true;                            // consume event
@@ -861,9 +857,9 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                 DosBoxControl.sendNativeKey(
                     tKeyCode,
                     (event.getAction() == KeyEvent.ACTION_DOWN),
-                    mModifierCtrl,
-                    mModifierAlt,
-                    mModifierShift
+                    false,
+                    false,
+                    false
                 );
 
                 return true;                 // consume KeyEvent
@@ -906,34 +902,28 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                         break;
                     }
 
-                    keyCode = keyCode | (unicode << 8);
+                    int newKeyCode = keyCode | (unicode << 8);
 
                     long diff = event.getEventTime() - event.getDownTime();
 
                     if (!down && (diff < 50)) {
-                        mKeyHandler.removeMessages(keyCode);
+                        mKeyHandler.removeMessages(newKeyCode);
                         mKeyHandler.sendEmptyMessageDelayed(
-                            keyCode,
+                            newKeyCode,
                             BUTTON_REPEAT_DELAY -
                             diff
                         );
                     } else if (
                         down &&
-                        mKeyHandler.hasMessages(keyCode)
+                        mKeyHandler.hasMessages(newKeyCode)
                     ) { } else {
                         boolean result = DosBoxControl.sendNativeKey(
-                            keyCode,
+                            newKeyCode,
                             down,
-                            mModifierCtrl,
-                            mModifierAlt,
-                            mModifierShift
+                            false,
+                            false,
+                            false
                         );
-
-                        if (!down) {
-                            mModifierCtrl = false;
-                            mModifierAlt = false;
-                            mModifierShift = false;
-                        }
 
                         return result;
                     }

@@ -25,7 +25,6 @@ import android.os.Message;
 
 public class KeyHandler extends Handler {
     private final WeakReference<DBGLSurfaceView> mSurface;
-    private boolean mReCheck = false;
 
     public KeyHandler(final DBGLSurfaceView surface) {
         mSurface = new WeakReference<DBGLSurfaceView>(surface);
@@ -33,22 +32,11 @@ public class KeyHandler extends Handler {
 
     @Override
     public void handleMessage(final Message msg) {
-        DBGLSurfaceView surf = mSurface.get();
-
         if (msg.what == DBMain.SPLASH_TIMEOUT_MESSAGE) {
+            DBGLSurfaceView surf = mSurface.get();
             surf.setBackgroundResource(0);
-        } else if (
-            DosBoxControl.sendNativeKey(
-                msg.what,
-                false,
-                surf.mModifierCtrl,
-                surf.mModifierAlt,
-                surf.mModifierShift
-            )
-        ) {
-            surf.mModifierCtrl = false;
-            surf.mModifierAlt = false;
-            surf.mModifierShift = false;
+        } else {
+            DosBoxControl.sendNativeKey(msg.what, false, false, false, false);
         }
     }
 }

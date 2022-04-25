@@ -60,10 +60,6 @@ public class DBMenuSystem {
 
     public static final int KEYCODE_F1 = 131;
 
-    private final static int MENU_KEYBOARD_CTRL = 61;
-    private final static int MENU_KEYBOARD_ALT = 62;
-    private final static int MENU_KEYBOARD_SHIFT = 63;
-
     private final static int MENU_KEYBOARD_ESC = 65;
     private final static int MENU_KEYBOARD_TAB = 66;
     private final static int MENU_KEYBOARD_DEL = 67;
@@ -619,42 +615,21 @@ public class DBMenuSystem {
         builder.create().show();
     }
 
-    public static void doSendDownUpKey(DBMain context, int keyCode) {
-        DosBoxControl.sendNativeKey(
-            keyCode,
-            true,
-            context.mSurfaceView.mModifierCtrl,
-            context.mSurfaceView.mModifierAlt,
-            context.mSurfaceView.mModifierShift
-        );
-        DosBoxControl.sendNativeKey(
-            keyCode,
-            false,
-            context.mSurfaceView.mModifierCtrl,
-            context.mSurfaceView.mModifierAlt,
-            context.mSurfaceView.mModifierShift
-        );
-        context.mSurfaceView.mModifierCtrl = false;
-        context.mSurfaceView.mModifierAlt = false;
-        context.mSurfaceView.mModifierShift = false;
+    public static void doSendDownUpKey(
+        final DBMain context,
+        final int keyCode
+    ) {
+        DosBoxControl.sendNativeKey(keyCode, true, false, false, false);
+        DosBoxControl.sendNativeKey(keyCode, false, false, false, false);
     }
 
-    public static boolean doContextItemSelected(DBMain context, MenuItem item) {
+    public static boolean doContextItemSelected(
+        final DBMain context,
+        final MenuItem item
+    ) {
         int itemID = item.getItemId();
 
         switch (itemID) {
-            case MENU_KEYBOARD_CTRL:
-                context.mSurfaceView.mModifierCtrl =
-                    !context.mSurfaceView.mModifierCtrl;
-                break;
-            case MENU_KEYBOARD_ALT:
-                context.mSurfaceView.mModifierAlt =
-                    !context.mSurfaceView.mModifierAlt;
-                break;
-            case MENU_KEYBOARD_SHIFT:
-                context.mSurfaceView.mModifierShift =
-                    !context.mSurfaceView.mModifierShift;
-                break;
             case MENU_KEYBOARD_TAB:
                 doSendDownUpKey(context, KeyEvent.KEYCODE_TAB);
                 break;
