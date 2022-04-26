@@ -58,7 +58,6 @@ import android.widget.Toast;
 import com.fishstix.dosboxfree.dosboxprefs.DosBoxPreferences;
 import com.fishstix.dosboxfree.joystick.JoystickView;
 
-
 public class DBMain extends Activity {
     public static final int SPLASH_TIMEOUT_MESSAGE = -1;
     public static final String START_COMMAND_ID = "start_command";
@@ -255,20 +254,6 @@ public class DBMain extends Activity {
                     R.string.fastforward,
                     Toast.LENGTH_SHORT
                 ).show();
-            } else {
-                if (DosBoxControl.nativeGetAutoAdjust()) {
-                    Toast.makeText(
-                        this,
-                        "Auto Cycles [" + DosBoxControl.nativeGetCycleCount() + "%]",
-                        Toast.LENGTH_SHORT
-                    ).show();
-                } else {
-                    Toast.makeText(
-                        this,
-                        "DosBox Cycles: " + DosBoxControl.nativeGetCycleCount(),
-                        Toast.LENGTH_SHORT
-                    ).show();
-                }
             }
         }
 

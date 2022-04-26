@@ -41,13 +41,9 @@ public class DosBoxControl {
         int shift
     );
 
-    public static native int nativeGetCycleCount();
-
     public static native int nativeGetFrameSkipCount();
 
     public static native int nativeGetMemSize();
-
-    public static native boolean nativeGetAutoAdjust();
 
     public static boolean sendNativeKey(
         final int keyCode,

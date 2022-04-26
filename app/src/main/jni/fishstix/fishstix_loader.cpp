@@ -54,7 +54,7 @@ JNIEXPORT void JNICALL Java_com_fishstix_dosboxfree_DBMain_nativeStart(JNIEnv * 
 	Android_Init(env, obj, bitmap, width, height);
 	const char * argv[] = { "dosbox", "-conf", (env)->GetStringUTFChars(confpath,NULL), "-c", arg_start_command  };
 	dosbox_main((!arg_start_command[0])?3:5, argv);
-	
+
 	Android_ShutDown();
 }
 
@@ -181,24 +181,8 @@ JNIEXPORT jint JNICALL Java_com_fishstix_dosboxfree_DosBoxControl_nativeGetMemSi
 }
 
 extern "C"
-JNIEXPORT jint JNICALL Java_com_fishstix_dosboxfree_DosBoxControl_nativeGetCycleCount(JNIEnv * env, jobject obj) {
-	if (CPU_CycleAutoAdjust) {
-		return CPU_CyclePercUsed;
-	}
-	return CPU_CycleMax;
-}
-
-extern "C"
 JNIEXPORT jint JNICALL Java_com_fishstix_dosboxfree_DosBoxControl_nativeGetFrameSkipCount(JNIEnv * env, jobject obj) {
 	return render.frameskip.max;
-}
-
-extern "C"
-JNIEXPORT jboolean JNICALL Java_com_fishstix_dosboxfree_DosBoxControl_nativeGetAutoAdjust(JNIEnv * env, jobject obj) {
-	CPU_CycleLimit = CPU_CycleLimit;
-	CPU_CycleMax = CPU_CycleMax;
-
-	return (jboolean)CPU_CycleAutoAdjust;
 }
 
 extern "C"

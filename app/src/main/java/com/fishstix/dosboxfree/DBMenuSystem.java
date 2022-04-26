@@ -45,7 +45,6 @@ import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.Toast;
 
 import com.fishstix.dosboxfree.dosboxprefs.DosBoxPreferences;
 import com.fishstix.dosboxfree.dosboxprefs.preference.GamePreference;
@@ -707,20 +706,6 @@ public class DBMenuSystem {
                         null,
                         true
                     );
-
-                    if (DosBoxControl.nativeGetAutoAdjust()) {
-                        Toast.makeText(
-                            context,
-                            "Auto Cycles [" + DosBoxControl.nativeGetCycleCount() + "%]",
-                            Toast.LENGTH_SHORT
-                        ).show();
-                    } else {
-                        Toast.makeText(
-                            context,
-                            "DosBox Cycles: " + DosBoxControl.nativeGetCycleCount(),
-                            Toast.LENGTH_SHORT
-                        ).show();
-                    }
                 } else if (
                     (itemID >= MENU_FRAMESKIP_0) &&
                     (itemID <= MENU_FRAMESKIP_10)

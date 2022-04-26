@@ -48,7 +48,6 @@ import android.view.View;
 import android.view.inputmethod.BaseInputConnection;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
-import android.widget.Toast;
 
 import com.fishstix.dosboxfree.dosboxprefs.DosBoxPreferences;
 import com.fishstix.dosboxfree.input.JoystickHandleListener;
@@ -671,20 +670,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                         null,
                         true
                     );
-
-                    if (DosBoxControl.nativeGetAutoAdjust()) {
-                        Toast.makeText(
-                            mParent,
-                            "Auto Cycles [" + DosBoxControl.nativeGetCycleCount() + "%]",
-                            Toast.LENGTH_SHORT
-                        ).show();
-                    } else {
-                        Toast.makeText(
-                            mParent,
-                            "DosBox Cycles: " + DosBoxControl.nativeGetCycleCount(),
-                            Toast.LENGTH_SHORT
-                        ).show();
-                    }
                 }
 
                 return MAP_EVENT_CONSUMED;
@@ -707,20 +692,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                         null,
                         true
                     );
-
-                    if (DosBoxControl.nativeGetAutoAdjust()) {
-                        Toast.makeText(
-                            mParent,
-                            "Auto Cycles [" + DosBoxControl.nativeGetCycleCount() + "%]",
-                            Toast.LENGTH_SHORT
-                        ).show();
-                    } else {
-                        Toast.makeText(
-                            mParent,
-                            "DosBox Cycles: " + DosBoxControl.nativeGetCycleCount(),
-                            Toast.LENGTH_SHORT
-                        ).show();
-                    }
                 }
 
                 return MAP_EVENT_CONSUMED;
