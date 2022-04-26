@@ -90,7 +90,6 @@ public class DBMenuSystem {
     public final static int DOSBOX_OPTION_ID_MIXER_HACK_ON = 14;
     public final static int DOSBOX_OPTION_ID_AUTO_CPU_ON = 15;
     public final static int DOSBOX_OPTION_ID_TURBO_ON = 16;
-    public final static int DOSBOX_OPTION_ID_CYCLE_ADJUST = 17;
     public final static int DOSBOX_OPTION_ID_JOYSTICK_ENABLE = 18;
     public final static int DOSBOX_OPTION_ID_GLIDE_ENABLE = 19;
     public final static int DOSBOX_OPTION_ID_SWAP_MEDIA = 21;

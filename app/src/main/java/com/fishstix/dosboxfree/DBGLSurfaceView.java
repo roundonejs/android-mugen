@@ -638,92 +638,10 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
         return false;
     }
 
-    private final static int MAP_EVENT_CONSUMED = -1;
-    private final static int MAP_NONE = 0;
-    private final static int MAP_CYCLEUP = 20002;
-    private final static int MAP_CYCLEDOWN = 20003;
-    private final static int MAP_UNLOCK_SPEED = 20008;
-
     // Map of Custom Maps
     public SparseIntArray customMap = new SparseIntArray(
         DosBoxPreferences.NUM_USB_MAPPINGS
     );
-
-    private final int getMappedKeyCode(final int button, final KeyEvent event) {
-        switch (button) {
-            case MAP_CYCLEUP:
-
-                if (event.getAction() == KeyEvent.ACTION_UP) {
-                    if (mParent.mTurboOn) {
-                        mParent.mTurboOn = false;
-                        DBMain.nativeSetOption(
-                            DBMenuSystem.DOSBOX_OPTION_ID_TURBO_ON,
-                            mParent.mTurboOn ? 1 : 0,
-                            null,
-                            true
-                        );
-                    }
-
-                    DBMain.nativeSetOption(
-                        DBMenuSystem.DOSBOX_OPTION_ID_CYCLE_ADJUST,
-                        1,
-                        null,
-                        true
-                    );
-                }
-
-                return MAP_EVENT_CONSUMED;
-            case MAP_CYCLEDOWN:
-
-                if (event.getAction() == KeyEvent.ACTION_UP) {
-                    if (mParent.mTurboOn) {
-                        mParent.mTurboOn = false;
-                        DBMain.nativeSetOption(
-                            DBMenuSystem.DOSBOX_OPTION_ID_TURBO_ON,
-                            mParent.mTurboOn ? 1 : 0,
-                            null,
-                            true
-                        );
-                    }
-
-                    DBMain.nativeSetOption(
-                        DBMenuSystem.DOSBOX_OPTION_ID_CYCLE_ADJUST,
-                        0,
-                        null,
-                        true
-                    );
-                }
-
-                return MAP_EVENT_CONSUMED;
-            case MAP_UNLOCK_SPEED:
-
-                if (mParent.mTurboOn) {
-                    if (event.getAction() == KeyEvent.ACTION_UP) {
-                        DBMain.nativeSetOption(
-                            DBMenuSystem.DOSBOX_OPTION_ID_TURBO_ON,
-                            0,
-                            null,
-                            true
-                        );                                                                                              // turn off
-                        mParent.mTurboOn = false;
-                    }
-                } else {
-                    if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                        DBMain.nativeSetOption(
-                            DBMenuSystem.DOSBOX_OPTION_ID_TURBO_ON,
-                            1,
-                            null,
-                            true
-                        );                                                                                              // turn on
-                        mParent.mTurboOn = true;
-                    }
-                }
-
-                return MAP_EVENT_CONSUMED;
-            default:
-                return button;
-        }
-    }
 
     @Override
     public boolean onKeyDown(final int keyCode, final KeyEvent event) {
@@ -772,28 +690,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
             }
 
             return true;                // consume event
-        }
-
-        // Handle all other keyevents
-        int value = customMap.get(keyCode);
-
-        if (value > 0) {
-            // found a valid mapping
-            tKeyCode = getMappedKeyCode(value, event);
-
-            if (tKeyCode > MAP_NONE) {
-                DosBoxControl.sendNativeKey(
-                    tKeyCode,
-                    (event.getAction() == KeyEvent.ACTION_DOWN),
-                    false,
-                    false,
-                    false
-                );
-
-                return true;                 // consume KeyEvent
-            } else if (tKeyCode == MAP_EVENT_CONSUMED) {
-                return true;
-            }
         }
 
         if (keyCode == KeyEvent.KEYCODE_BACK) {
