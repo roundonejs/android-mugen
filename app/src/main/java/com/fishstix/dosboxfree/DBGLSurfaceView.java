@@ -55,16 +55,10 @@ import com.fishstix.dosboxfree.touchevent.TouchEventWrapper;
 
 public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     Callback {
-    private final static int DEFAULT_WIDTH = 512;    // 800;
-    private final static int DEFAULT_HEIGHT = 512;    // 600;
-
+    private final static int DEFAULT_WIDTH = 512;
+    private final static int DEFAULT_HEIGHT = 512;
     private final static int BUTTON_REPEAT_DELAY = 100;
     private final static int EVENT_THRESHOLD_DECAY = 100;
-    private final static int DEADZONE = 8;
-
-    public final static int PIXEL_BYTES = 2;
-
-    private static final int MAX_POINT_CNT = 4;
 
     private DBMain mParent = null;
     private boolean mSurfaceViewRunning = false;
@@ -77,7 +71,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
 
     Bitmap mBitmap = null;
     private Paint mBitmapPaint = null;
-    private Paint mTextPaint = null;
 
     int mSrc_width = 0;
     int mSrc_height = 0;
@@ -331,12 +324,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
 
         mBitmapPaint = new Paint();
         mBitmapPaint.setFilterBitmap(true);
-        mTextPaint = new Paint();
-        mTextPaint.setTextSize(15 * getResources().getDisplayMetrics().density);
-        mTextPaint.setTypeface(Typeface.DEFAULT_BOLD);
-        mTextPaint.setTextAlign(Paint.Align.CENTER);
-        mTextPaint.setStyle(Paint.Style.FILL);
-        mTextPaint.setSubpixelText(false);
 
         mBitmap = Bitmap.createBitmap(
             DEFAULT_WIDTH,
@@ -515,10 +502,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
 
         surfaceHolder = null;
     }
-
-    private int[] mButtonDown = new int[MAX_POINT_CNT];
-
-    boolean[] virtButton = new boolean[MAX_POINT_CNT];
 
     private TouchEventWrapper mWrap = TouchEventWrapper.newInstance();
 
