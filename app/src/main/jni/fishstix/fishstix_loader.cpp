@@ -176,16 +176,6 @@ JNIEXPORT void JNICALL Java_com_fishstix_dosboxfree_DBMain_nativeSetOption(JNIEn
 }
 
 extern "C"
-JNIEXPORT jint JNICALL Java_com_fishstix_dosboxfree_DosBoxControl_nativeGetMemSize(JNIEnv * env, jobject obj) {
-	return MEM_TotalPages()/256;
-}
-
-extern "C"
-JNIEXPORT jint JNICALL Java_com_fishstix_dosboxfree_DosBoxControl_nativeGetFrameSkipCount(JNIEnv * env, jobject obj) {
-	return render.frameskip.max;
-}
-
-extern "C"
 JNIEXPORT void JNICALL Java_com_fishstix_dosboxfree_DBMain_nativeInit(JNIEnv * env, jobject obj, jobject ctx)
 {
 	// continue
