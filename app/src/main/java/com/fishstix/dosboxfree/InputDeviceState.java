@@ -20,36 +20,19 @@ package com.fishstix.dosboxfree;
 
 import android.annotation.TargetApi;
 import android.os.Build;
-import android.util.SparseIntArray;
 import android.view.InputDevice;
 import android.view.InputDevice.MotionRange;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
 public class InputDeviceState {
-    private final InputDevice mDevice;
-    private final int[] mAxes;
-    private final float[] mAxisValues;
-    private final SparseIntArray mKeys;
-
     public InputDeviceState(final InputDevice device) {
-        mDevice = device;
-        int numAxes = 0;
-
         for (MotionRange range : device.getMotionRanges()) {
-            if ((range.getSource() & InputDevice.SOURCE_CLASS_JOYSTICK) != 0) {
-                numAxes += 1;
-            }
+            range.getSource();
         }
 
-        mAxes = new int[numAxes];
-        mAxisValues = new float[numAxes];
-        mKeys = new SparseIntArray();
-
-        int i = 0;
-
         for (MotionRange range : device.getMotionRanges()) {
             if ((range.getSource() & InputDevice.SOURCE_CLASS_JOYSTICK) != 0) {
-                mAxes[i++] = range.getAxis();
+                range.getAxis();
             }
         }
     }
