@@ -319,7 +319,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     }
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-    private void setup(Context context) {
+    private void setup(final Context context) {
         mParent = (DBMain) context;
 
         mBitmapPaint = new Paint();
@@ -331,7 +331,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
             Bitmap.Config.RGB_565
         );
 
-        // setEGLContextClientVersion(1);
         mRenderer = new OpenGLRenderer(mParent);
         mRenderer.setBitmap(mBitmap);
         setRenderer(mRenderer);
@@ -371,7 +370,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     private class MySystemUiVisibilityChangeListener implements View.
         OnSystemUiVisibilityChangeListener {
         @Override
-        public void onSystemUiVisibilityChange(int visibility) {
+        public void onSystemUiVisibilityChange(final int visibility) {
             Timer timer = new Timer();
             timer.schedule(
                 new TimerTask() {
@@ -383,8 +382,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                         public void run() {
                             if (Build.VERSION.SDK_INT >= 14) {
                                 setSystemUiVisibility(
-                                    View.
-                                    SYSTEM_UI_FLAG_LOW_PROFILE
+                                    View.SYSTEM_UI_FLAG_LOW_PROFILE
                                 );
                             } else if (Build.VERSION.SDK_INT >= 11) {
                                 setSystemUiVisibility(View.STATUS_BAR_HIDDEN);
@@ -784,10 +782,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     @Override
     public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
         return new BaseInputConnection(this, false) {
-                   @Override
-                   public boolean sendKeyEvent(KeyEvent event) {
-                       return super.sendKeyEvent(event);
-                   }
                    @Override
                    public boolean deleteSurroundingText(
                        int beforeLength,
