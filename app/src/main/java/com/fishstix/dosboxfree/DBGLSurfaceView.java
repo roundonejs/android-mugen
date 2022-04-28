@@ -661,56 +661,48 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
             return true;
         }
 
-        switch (keyCode) {
-            case KeyEvent.KEYCODE_UNKNOWN:
-                break;
+        if (keyCode == KeyEvent.KEYCODE_UNKNOWN) {
+            return false;
+        }
 
-            default:
-                boolean down = (event.getAction() == KeyEvent.ACTION_DOWN);
+        boolean down = (event.getAction() == KeyEvent.ACTION_DOWN);
 
-                if (!down || (event.getRepeatCount() == 0)) {
-                    int unicode = event.getUnicodeChar();
+        if (!down || (event.getRepeatCount() == 0)) {
+            int unicode = event.getUnicodeChar();
 
-                    // filter system generated keys, but not hardware keypresses
-                    if (
-                        (event.isAltPressed() || event.isShiftPressed()) &&
-                        (unicode == 0) &&
-                        ((event.getFlags() & KeyEvent.FLAG_FROM_SYSTEM) == 0)
-                    ) {
-                        break;
-                    }
+            // filter system generated keys, but not hardware keypresses
+            if (
+                (event.isAltPressed() || event.isShiftPressed())
+                && (unicode == 0)
+                && ((event.getFlags() & KeyEvent.FLAG_FROM_SYSTEM) == 0)
+            ) {
+                return false;
+            }
 
-                    if ((keyCode > 255) || (unicode > 255)) {
-                        // unknown keys
-                        break;
-                    }
+            if ((keyCode > 255) || (unicode > 255)) {
+                // unknown keys
+                return false;
+            }
 
-                    int newKeyCode = keyCode | (unicode << 8);
+            int newKeyCode = keyCode | (unicode << 8);
 
-                    long diff = event.getEventTime() - event.getDownTime();
+            long diff = event.getEventTime() - event.getDownTime();
 
-                    if (!down && (diff < 50)) {
-                        mKeyHandler.removeMessages(newKeyCode);
-                        mKeyHandler.sendEmptyMessageDelayed(
-                            newKeyCode,
-                            BUTTON_REPEAT_DELAY -
-                            diff
-                        );
-                    } else if (
-                        down &&
-                        mKeyHandler.hasMessages(newKeyCode)
-                    ) { } else {
-                        boolean result = DosBoxControl.sendNativeKey(
-                            newKeyCode,
-                            down,
-                            false,
-                            false,
-                            false
-                        );
-
-                        return result;
-                    }
-                }
+            if (!down && (diff < 50)) {
+                mKeyHandler.removeMessages(newKeyCode);
+                mKeyHandler.sendEmptyMessageDelayed(
+                    newKeyCode,
+                    BUTTON_REPEAT_DELAY - diff
+                );
+            } else if (!(down && mKeyHandler.hasMessages(newKeyCode))) {
+                return DosBoxControl.sendNativeKey(
+                    newKeyCode,
+                    down,
+                    false,
+                    false,
+                    false
+                );
+            }
         }
 
         return false;
