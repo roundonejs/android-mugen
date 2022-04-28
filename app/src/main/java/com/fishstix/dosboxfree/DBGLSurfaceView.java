@@ -653,31 +653,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     }
 
     private boolean handleKey(final int keyCode, final KeyEvent event) {
-        int tKeyCode = 0;
-
-        // check for xperia play back case
-        if ((keyCode == KeyEvent.KEYCODE_BACK) && event.isAltPressed()) {
-            int backval = customMap.get(DosBoxPreferences.XPERIA_BACK_BUTTON);
-
-            if (backval > 0) {
-                // sony xperia play O (circle) button
-                DosBoxControl.sendNativeKey(
-                    backval,
-                    (event.getAction() == KeyEvent.ACTION_DOWN),
-                    false,
-                    false,
-                    false
-                );
-
-                return true;                            // consume event
-            }
-
-            return true;                // consume event
-        }
-
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            // fishstix, allow remap of Android back button
-            // catch no mapping
             if (event.getAction() == KeyEvent.ACTION_UP) {
                 DBMenuSystem.doConfirmQuit(mParent);
             }
