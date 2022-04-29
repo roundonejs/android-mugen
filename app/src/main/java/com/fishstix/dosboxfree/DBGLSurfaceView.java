@@ -712,7 +712,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
         mDirty.set(true);
     }
 
-    public void resetScreen(boolean redraw) {
+    public void resetScreen(final boolean redraw) {
         setDirty();
         mScroll_x = 0;
         mScroll_y = 0;
@@ -749,11 +749,12 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
         }
     }
 
+    @Override
     public void surfaceChanged(
-        SurfaceHolder holder,
-        int format,
-        int width,
-        int height
+        final SurfaceHolder holder,
+        final int format,
+        final int width,
+        final int height
     ) {
         resetScreen(true);
 
@@ -762,7 +763,8 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
         }
     }
 
-    public void surfaceCreated(SurfaceHolder holder) {
+    @Override
+    public void surfaceCreated(final SurfaceHolder holder) {
         mSurfaceViewRunning = true;
 
         if (mGPURendering) {
@@ -770,7 +772,8 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
         }
     }
 
-    public void surfaceDestroyed(SurfaceHolder holder) {
+    @Override
+    public void surfaceDestroyed(final SurfaceHolder holder) {
         mSurfaceViewRunning = false;
 
         if (mGPURendering) {
@@ -780,12 +783,12 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
 
     // Fix for Motorola Keyboards!!! - fishstix
     @Override
-    public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
+    public InputConnection onCreateInputConnection(final EditorInfo outAttrs) {
         return new BaseInputConnection(this, false) {
                    @Override
                    public boolean deleteSurroundingText(
-                       int beforeLength,
-                       int afterLength
+                       final int beforeLength,
+                       final int afterLength
                    ) {
                        // magic: in latest Android, deleteSurroundingText(1, 0) will be called for backspace
                        if ((beforeLength == 1) && (afterLength == 0)) {
