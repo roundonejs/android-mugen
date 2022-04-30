@@ -161,7 +161,7 @@
     <CheckBoxPreference
         android:key="confgpu"
         android:title="GPU Rendering"
-        android:defaultValue="false"
+        android:defaultValue="true"
         android:summary="Offload graphics rendering to GPU" />
       <ListPreference
        android:key="confrotation"

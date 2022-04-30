@@ -137,7 +137,7 @@ public class DBMain extends Activity {
         mJoystickView.setVisibility(View.GONE);
         registerForContextMenu(mSurfaceView);
 
-        mSurfaceView.mGPURendering = true;
+        mSurfaceView.mGPURendering = prefs.getBoolean("confgpu", true);
         mugenDirectoryCreator.createMugenDirectory();
         DBMenuSystem.loadPreference(this, prefs);
 
