@@ -47,7 +47,6 @@ import android.widget.Toast;
 
 import com.fishstix.dosboxfree.R;
 import com.fishstix.dosboxfree.dosboxprefs.DosBoxPreferences;
-import com.fishstix.dosboxfree.dosboxprefs.preference.GamePreference;
 import com.fishstix.dosboxfree.dosboxprefs.preference.HardCodeWrapper;
 
 public class DosBoxPreferences extends PreferenceActivity implements
@@ -75,22 +74,15 @@ public class DosBoxPreferences extends PreferenceActivity implements
     private Preference doscputype = null;
     private Preference dosmanualconf_file = null;
     private Preference doseditconf_file = null;
-    private Preference confcustom_add = null;
-    private Preference confcustom_clear = null;
-    private PreferenceScreen dpad_mappings = null;
     private Preference confgpu = null;
     private Preference confreset = null;
     private Preference version = null;
 
-    public static final int NUM_USB_MAPPINGS = 30;
     public static final int XPERIA_BACK_BUTTON = 72617;
 
     public static final String CONFIG_FILE = "dosbox.conf";
     public String CONFIG_PATH;
     public String STORAGE_PATH;
-    // mappings
-    private GamePreference confmap_custom[] =
-        new GamePreference[NUM_USB_MAPPINGS];
 
     private PreferenceCategory prefCatOther = null;
 
@@ -158,22 +150,8 @@ public class DosBoxPreferences extends PreferenceActivity implements
         confgpu = (Preference) findPreference("confgpu");
         confreset.setOnPreferenceClickListener(this);
         dosmanualconf_file = (Preference) findPreference("dosmanualconf_file");
-        dpad_mappings = (PreferenceScreen) findPreference("dpad_mappings");
-        confcustom_add = (Preference) findPreference("confcustom_add");
-        confcustom_clear = (Preference) findPreference("confcustom_clear");
         version = (Preference) findPreference("version");
         version.setOnPreferenceClickListener(this);
-        confcustom_add.setOnPreferenceClickListener(this);
-        confcustom_clear.setOnPreferenceClickListener(this);
-
-        // get Custom Mappings
-        for (short i = 0; i < NUM_USB_MAPPINGS; i++) {
-            confmap_custom[i] = (GamePreference) findPreference(
-                "confmap_custom" + String.valueOf(
-                    i
-                )
-            );
-        }
 
         prefCatOther = (PreferenceCategory) findPreference("prefCatOther");
         InputFilter[] filterArray = new InputFilter[2];
@@ -260,8 +238,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
 
         versionPref.setSummary(versionName);
 
-        // update button mapping summary
-        updateMapSummary();
         prefs.registerOnSharedPreferenceChangeListener(this);
     }
 
@@ -314,8 +290,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
             (key.contentEquals("dosglide"))
         ) {
             Toast.makeText(ctx, R.string.restart, Toast.LENGTH_SHORT).show();
-        } else {
-            updateMapSummary();
         }
     }
 
@@ -379,161 +353,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
         }
 
         dosmanualconf_file.setSummary(configFile);
-    }
-
-    private void updateMapSummary() {
-        try {
-            // set button mapping descriptions
-            for (short i = 0; i < NUM_USB_MAPPINGS; i++) {
-                confmap_custom[i].setSummary(
-                    getMapKey(
-                        Integer.valueOf(
-                            confmap_custom[i].getDosCode()
-                        )
-                    )
-                );
-                int hardcode = Integer.valueOf(confmap_custom[i].getHardCode());
-
-                if (hardcode > 0) {
-                    confmap_custom[i].setTitle(hardCodeToString(hardcode));
-                }
-
-                if (Build.VERSION.SDK_INT > 9) {
-                    if (
-                        (Integer.valueOf(confmap_custom[i].getHardCode()) <=
-                        0) ||
-                        (Integer.valueOf(confmap_custom[i].getDosCode()) <=
-                        0)
-                    ) {
-                        dpad_mappings.removePreference(confmap_custom[i]);
-                    }
-                } else {
-                    dpad_mappings.removePreference(confcustom_add);
-                }
-            }
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    public static String getMapKey(int value) {
-        switch (value) {
-            case    0:         return "NONE";
-            case    23:        return "DPAD CENTER";
-            case    20:        return "DPAD DOWN";
-            case    21:        return "DPAD LEFT";
-            case    22:        return "DPAD RIGHT";
-            case    19:        return "DPAD UP";
-            case    113:    return "L.CTRL";
-            case    114:    return "R.CTRL";
-            case    57:        return "L.ALT";
-            case    58:        return "R.ALT";
-            case     59:        return "L. SHIFT";
-            case    60:        return "R. SHIFT";
-            case    111:    return "ESC";
-            case    61:        return "TAB";
-            case    66:        return "ENTER";
-            case    62:        return "SPACE";
-            case    131:
-            case    132:
-            case    133:
-            case    134:
-            case    135:
-            case    136:
-            case    137:
-            case    138:
-            case    139:
-            case    140:
-            case    141:
-            case    142:    return "F" + String.valueOf(value - 130);
-            case    29:        return "a";
-            case    30:        return "b";
-            case    31:        return "c";
-            case    32:        return "d";
-            case    33:        return "e";
-            case    34:        return "f";
-            case    35:        return "g";
-            case    36:        return "h";
-            case    37:        return "i";
-            case    38:        return "j";
-            case    39:        return "k";
-            case    40:        return "l";
-            case    41:        return "m";
-            case    42:        return "n";
-            case    43:        return "o";
-            case    44:        return "p";
-            case    45:        return "q";
-            case    46:        return "r";
-            case    47:        return "s";
-            case    48:        return "t";
-            case    49:        return "u";
-            case    50:        return "v";
-            case    51:        return "w";
-            case    52:        return "x";
-            case    53:        return "y";
-            case    54:        return "z";
-            case    7:
-            case    8:
-            case    9:
-            case    10:
-            case    11:
-            case    12:
-            case    13:
-            case    14:
-            case    15:
-            case    16:        return String.valueOf(value - 7);
-
-            case    74:        return "SEMICOLON";
-            case    75:        return "APOSTROPHE";
-            case    55:        return "COMMA";
-            case    56:        return "PERIOD";
-            case    76:        return "SLASH";
-            case    67:        return "BACKSPACE";
-            case    112:    return "DELETE";
-            case    71:        return "L.BRACKET";
-            case    72:        return "R.BRACKET";
-            case    81:        return "PLUS";
-            case    69:        return "MINUS";
-
-            case    144:    return "NUMPAD_0";
-            case    145:    return "NUMPAD_1";
-            case    146:    return "NUMPAD_2";
-            case    147:    return "NUMPAD_3";
-            case    148:    return "NUMPAD_4";
-            case    149:    return "NUMPAD_5";
-            case    150:    return "NUMPAD_6";
-            case    151:    return "NUMPAD_7";
-            case    152:    return "NUMPAD_8";
-            case    153:    return "NUMPAD_9";
-            case    157:    return "NUMPAD_ADD";
-            case    154:    return "NUMPAD_DIVIDE";
-            case    158:    return "NUMPAD_DOT";
-            case    160:    return "NUMPAD_ENTER";
-            case    155:    return "NUMPAD_MULTIPLY";
-            case    156:    return "NUMPAD_SUBTRACT";
-            case    143:    return "NUMPAD_NUMLOCK";
-
-            case    92:        return "PAGE_UP";
-            case    93:        return "PAGE_DOWN";
-            case    122:    return "NUMPAD_HOME";
-            case    123:    return "NUMPAD_END";
-            case    124:    return "INSERT";
-
-            case    20000:    return "LEFT MOUSE BTN";
-            case    20001:    return "RIGHT MOUSE BTN";
-            case    20002:    return "CYCLE UP";
-            case    20003:    return "CYCLE DOWN";
-            case    20004:  return "SHOW KEYBOARD";
-            case    20005:    return "SHOW SPECIAL KEYS";
-            case    20006:    return "SHOW CYCLES MENU";
-            case    20007:    return "SHOW FRAMESKIP MENU";
-            case    20008:  return "FAST FORWARD";
-            case    20009:  return "JOY BTN A";
-            case    20010:    return "JOY BTN B";
-
-            default:    return "<undefined>";
-        }
     }
 
     public static String hardCodeToString(int keycode) {
@@ -721,78 +540,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
                     Toast.LENGTH_SHORT
                 ).show();
             }
-        } else if (preference == confcustom_add) {
-            // add new custom mapping
-            int mapcnt = 0;
-
-            for (short i = 0; i < NUM_USB_MAPPINGS; i++) {
-                int hardcode = Integer.valueOf(confmap_custom[i].getHardCode());
-
-                if (hardcode > 0) {
-                    if (
-                        (Integer.valueOf(confmap_custom[i].getHardCode()) <=
-                        0) ||
-                        (Integer.valueOf(confmap_custom[i].getDosCode()) <=
-                        0)
-                    ) {
-                        // found an unassigned mapping
-                        dpad_mappings.addPreference(confmap_custom[i]);
-                        confcustom_add.setSummary(confcustom_add.getSummary());
-
-                        return true;
-                    } else {
-                        mapcnt++;
-                    }
-                } else {
-                    // found an unassigned mapping
-                    dpad_mappings.addPreference(confmap_custom[i]);
-                    confcustom_add.setSummary(confcustom_add.getSummary());
-
-                    return true;
-                }
-            }
-
-            if (mapcnt == NUM_USB_MAPPINGS - 1) {
-                // no available mappings
-                Toast.makeText(
-                    this,
-                    R.string.nomoremaps,
-                    Toast.LENGTH_SHORT
-                ).show();
-            }
-        } else if (preference == confcustom_clear) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage(R.string.confirmclear)
-            .setCancelable(false)
-            .setPositiveButton(
-                "Yes",
-                new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    // reset prefs
-                    for (short i = 0; i < NUM_USB_MAPPINGS; i++) {
-                        confmap_custom[i].setHardCode("0");
-                        confmap_custom[i].setDosCode("0");
-                        confmap_custom[i].commit();
-
-                        if (Build.VERSION.SDK_INT > 9) {
-                            dpad_mappings.removePreference(confmap_custom[i]);
-                        }
-                    }
-
-                    confcustom_add.setSummary(confcustom_add.getSummary());
-                }
-            }
-            )
-            .setNegativeButton(
-                "No",
-                new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.cancel();
-                }
-            }
-            );
-            AlertDialog alert = builder.create();
-            alert.show();
         }
 
         return false;

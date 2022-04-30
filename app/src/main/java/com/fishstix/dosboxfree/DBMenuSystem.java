@@ -47,7 +47,6 @@ import android.view.MenuItem;
 import android.view.ViewGroup.LayoutParams;
 
 import com.fishstix.dosboxfree.dosboxprefs.DosBoxPreferences;
-import com.fishstix.dosboxfree.dosboxprefs.preference.GamePreference;
 import com.fishstix.dosboxfree.touchevent.TouchEventWrapper;
 
 public class DBMenuSystem {
@@ -454,40 +453,6 @@ public class DBMenuSystem {
             context.mSurfaceView.mInputLowLatency = false;
         } else {
             context.mSurfaceView.mInputLowLatency = true;
-        }
-
-        // OS 2.1 - 2.3 < > key fix
-        // context.mSurfaceView.mEnableLTKeyFix = prefs.getBoolean("conffixgingerkey", false);
-
-
-        // Add custom mappings to ArrayList
-        // context.mSurfaceView.customMapList.clear();
-        context.mSurfaceView.customMap.clear();
-
-        for (short i = 0; i < DosBoxPreferences.NUM_USB_MAPPINGS; i++) {
-            int hardkey =
-                Integer.valueOf(
-                prefs.getString(
-                    "confmap_custom" +
-                    String.valueOf(i) + GamePreference.HARDCODE_KEY,
-                    "-1"
-                )
-                );
-
-            if (hardkey > 0) {
-                int doskey =
-                    Integer.valueOf(
-                    prefs.getString(
-                        "confmap_custom" +
-                        String.valueOf(i) + GamePreference.DOSCODE_KEY,
-                        "-1"
-                    )
-                    );
-
-                if (doskey > 0) {
-                    context.mSurfaceView.customMap.put(hardkey, doskey);
-                }
-            }
         }
 
         // SOUND

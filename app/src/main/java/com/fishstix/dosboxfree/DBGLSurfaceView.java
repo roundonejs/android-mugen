@@ -31,13 +31,11 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
-import android.graphics.Typeface;
 import android.opengl.GLSurfaceView;
 import android.os.Build;
 import android.os.SystemClock;
 import android.support.v4.view.MotionEventCompat;
 import android.util.AttributeSet;
-import android.util.SparseIntArray;
 import android.view.InputDevice;
 import android.view.InputDevice.MotionRange;
 import android.view.KeyEvent;
@@ -49,7 +47,6 @@ import android.view.inputmethod.BaseInputConnection;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 
-import com.fishstix.dosboxfree.dosboxprefs.DosBoxPreferences;
 import com.fishstix.dosboxfree.input.JoystickHandleListener;
 import com.fishstix.dosboxfree.touchevent.TouchEventWrapper;
 
@@ -90,11 +87,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     private Rect mDstRect = new Rect();
     private Rect mDirtyRect = new Rect();
     private int mDirtyCount = 0;
-
-    // Map of Custom Maps
-    public SparseIntArray customMap = new SparseIntArray(
-        DosBoxPreferences.NUM_USB_MAPPINGS
-    );
 
     class DosBoxVideoThread extends Thread {
         private static final int UPDATE_INTERVAL = 40;
