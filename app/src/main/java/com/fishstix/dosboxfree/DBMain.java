@@ -111,6 +111,7 @@ public class DBMain extends Activity {
     static {
         System.loadLibrary("fishstix_util");
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -180,6 +181,7 @@ public class DBMain extends Activity {
         ViewTreeObserver observer = mSurfaceView.getViewTreeObserver();
         observer.addOnGlobalLayoutListener(
             new OnGlobalLayoutListener() {
+            @Override
             public void onGlobalLayout() {
                 // re-calculate joystick constants
                 mSurfaceView.setDirty();
@@ -192,6 +194,49 @@ public class DBMain extends Activity {
         );
     }
 
+    private void initDosBox() {
+        mAudioDevice = new DosBoxAudio(this);
+
+        nativeInit(mDosBoxLauncher);
+
+        String argStartCommand = getIntent().getStringExtra(START_COMMAND_ID);
+
+        if (argStartCommand == null) {
+            argStartCommand = "";
+        }
+
+        nativeSetOption(
+            DBMenuSystem.DOSBOX_OPTION_ID_START_COMMAND,
+            0,
+            argStartCommand,
+            true
+        );
+        nativeSetOption(
+            DBMenuSystem.DOSBOX_OPTION_ID_MIXER_HACK_ON,
+            (mPrefMixerHackOn) ? 1 : 0,
+            null,
+            true
+        );
+        nativeSetOption(
+            DBMenuSystem.DOSBOX_OPTION_ID_SOUND_MODULE_ON,
+            (mPrefSoundModuleOn) ? 1 : 0,
+            null,
+            true
+        );
+
+        mDosBoxThread = new DosBoxThread(this);
+    }
+
+    private void startDosBox() {
+        if (mDosBoxThread != null) {
+            mDosBoxThread.start();
+        }
+
+        if ((mSurfaceView != null) && (mSurfaceView.mVideoThread != null)) {
+            mSurfaceView.mVideoThread.start();
+        }
+    }
+
     @Override
     protected void onDestroy() {
         stopDosBox();
@@ -201,16 +246,60 @@ public class DBMain extends Activity {
         super.onDestroy();
     }
 
+    void stopDosBox() {
+        nativePause(0);        // it won't die if not running
+
+        // stop audio AFTER above
+        if (mAudioDevice != null) {
+            mAudioDevice.pause();
+        }
+
+        mSurfaceView.mVideoThread.setRunning(false);
+
+        nativeStop();
+    }
+
+    private void shutDownDosBox() {
+        boolean retry;
+        retry = true;
+
+        while (retry) {
+            try {
+                mDosBoxThread.join();
+                retry = false;
+            } catch (InterruptedException e) { }
+        }
+
+        nativeShutDown();
+
+        if (mAudioDevice != null) {
+            mAudioDevice.shutDownAudio();
+            mAudioDevice = null;
+        }
+
+        mDosBoxThread = null;
+    }
+
     @Override
     protected void onPause() {
-        pauseDosBox(true);
+        pauseDosBox();
         super.onPause();
+    }
+
+    private void pauseDosBox() {
+        mDosBoxThread.mDosBoxRunning = false;
+
+        nativePause(1);
+
+        if (mAudioDevice != null) {
+            mAudioDevice.pause();
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        pauseDosBox(false);
+        resumeDosBox();
 
         DBMenuSystem.loadPreference(this, prefs);
 
@@ -253,6 +342,11 @@ public class DBMain extends Activity {
         mSurfaceView.mDirty.set(true);
     }
 
+    private void resumeDosBox() {
+        nativePause(0);
+        mDosBoxThread.mDosBoxRunning = true;
+    }
+
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         if (DBMenuSystem.doContextItemSelected(this, item)) {
@@ -260,103 +354,6 @@ public class DBMain extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    void pauseDosBox(boolean pause) {
-        if (pause) {
-            mDosBoxThread.mDosBoxRunning = false;
-
-            nativePause(1);
-
-            if (mAudioDevice != null) {
-                mAudioDevice.pause();
-            }
-        }
-        else {
-            nativePause(0);
-            mDosBoxThread.mDosBoxRunning = true;
-            // will auto play audio when have data
-            // if (mAudioDevice != null)
-            // mAudioDevice.play();
-        }
-    }
-
-    void initDosBox() {
-        mAudioDevice = new DosBoxAudio(this);
-
-        nativeInit(mDosBoxLauncher);
-
-        String argStartCommand = getIntent().getStringExtra(START_COMMAND_ID);
-
-        if (argStartCommand == null) {
-            argStartCommand = "";
-        }
-
-        nativeSetOption(
-            DBMenuSystem.DOSBOX_OPTION_ID_START_COMMAND,
-            0,
-            argStartCommand,
-            true
-        );
-        nativeSetOption(
-            DBMenuSystem.DOSBOX_OPTION_ID_MIXER_HACK_ON,
-            (mPrefMixerHackOn) ? 1 : 0,
-            null,
-            true
-        );
-        nativeSetOption(
-            DBMenuSystem.DOSBOX_OPTION_ID_SOUND_MODULE_ON,
-            (mPrefSoundModuleOn) ? 1 : 0,
-            null,
-            true
-        );
-
-        mDosBoxThread = new DosBoxThread(this);
-    }
-
-    void shutDownDosBox() {
-        boolean retry;
-        retry = true;
-
-        while (retry) {
-            try {
-                mDosBoxThread.join();
-                retry = false;
-            } catch (InterruptedException e) {           // try again shutting down the thread
-            }
-        }
-
-        nativeShutDown();
-
-        if (mAudioDevice != null) {
-            mAudioDevice.shutDownAudio();
-            mAudioDevice = null;
-        }
-
-        mDosBoxThread = null;
-    }
-
-    void startDosBox() {
-        if (mDosBoxThread != null) {
-            mDosBoxThread.start();
-        }
-
-        if ((mSurfaceView != null) && (mSurfaceView.mVideoThread != null)) {
-            mSurfaceView.mVideoThread.start();
-        }
-    }
-
-    void stopDosBox() {
-        nativePause(0);        // it won't die if not running
-
-        // stop audio AFTER above
-        if (mAudioDevice != null) {
-            mAudioDevice.pause();
-        }
-
-        mSurfaceView.mVideoThread.setRunning(false);
-
-        nativeStop();
     }
 
     public void callbackExit() {
@@ -508,7 +505,7 @@ public class DBMain extends Activity {
         }
     };
 
-    public boolean getMIDIRoms() {
+    private boolean getMIDIRoms() {
         File ctrlrom = new File(getFilesDir().toString() + "/MT32_CONTROL.ROM");
         File pcmrom = new File(getFilesDir().toString() + "/MT32_PCM.ROM");
 
