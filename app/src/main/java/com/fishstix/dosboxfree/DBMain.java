@@ -104,10 +104,6 @@ public class DBMain extends Activity {
     // Private Views
     public JoystickView mJoystickView = null;
 
-    static {
-        System.loadLibrary("fishstix_util");
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
