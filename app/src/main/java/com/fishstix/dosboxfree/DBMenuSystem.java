@@ -68,7 +68,6 @@ public class DBMenuSystem {
     private final static int MENU_KEYBOARD_F1 = 70;
     private final static int MENU_KEYBOARD_F12 = 81;
     private final static int MENU_KEYBOARD_SWAP_MEDIA = 91;
-    private final static int MENU_KEYBOARD_TURBO = 92;
 
     private final static int MENU_CYCLE_AUTO = 150;
     private final static int MENU_CYCLE_55000 = 205;
@@ -88,7 +87,6 @@ public class DBMenuSystem {
     public final static int DOSBOX_OPTION_ID_CYCLE_HACK_ON = 13;
     public final static int DOSBOX_OPTION_ID_MIXER_HACK_ON = 14;
     public final static int DOSBOX_OPTION_ID_AUTO_CPU_ON = 15;
-    public final static int DOSBOX_OPTION_ID_TURBO_ON = 16;
     public final static int DOSBOX_OPTION_ID_JOYSTICK_ENABLE = 18;
     public final static int DOSBOX_OPTION_ID_GLIDE_ENABLE = 19;
     public final static int DOSBOX_OPTION_ID_SWAP_MEDIA = 21;
@@ -607,14 +605,6 @@ public class DBMenuSystem {
             case MENU_KEYBOARD_SCROLL_LOCK:
                 doSendDownUpKey(context, TouchEventWrapper.KEYCODE_SCROLL_LOCK);
                 break;
-            case MENU_KEYBOARD_TURBO:
-                context.mTurboOn = !context.mTurboOn;
-                DBMain.nativeSetOption(
-                    DOSBOX_OPTION_ID_TURBO_ON,
-                    context.mTurboOn ? 1 : 0,
-                    null,
-                    true
-                );
             case MENU_KEYBOARD_SWAP_MEDIA:
                 DBMain.nativeSetOption(
                     DOSBOX_OPTION_ID_SWAP_MEDIA,
@@ -634,19 +624,9 @@ public class DBMenuSystem {
                         KEYCODE_F1 + (itemID - MENU_KEYBOARD_F1)
                     );
                 } else if (
-                    (itemID >= MENU_CYCLE_AUTO) &&
-                    (itemID <= MENU_CYCLE_55000)
+                    (itemID >= MENU_CYCLE_AUTO)
+                    && (itemID <= MENU_CYCLE_55000)
                 ) {
-                    if (context.mTurboOn) {
-                        context.mTurboOn = false;
-                        DBMain.nativeSetOption(
-                            DBMenuSystem.DOSBOX_OPTION_ID_TURBO_ON,
-                            context.mTurboOn ? 1 : 0,
-                            null,
-                            true
-                        );
-                    }
-
                     int cycles = -1;
 
                     if (itemID == MENU_CYCLE_AUTO) {

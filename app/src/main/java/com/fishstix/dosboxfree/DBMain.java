@@ -96,7 +96,6 @@ public class DBMain extends Activity {
     public boolean mPrefScaleFilterOn = false;
     public boolean mPrefSoundModuleOn = true;
     public boolean mPrefMixerHackOn = true;
-    public boolean mTurboOn = false;
     public String mPID = null;
     public int mPrefScaleFactor = 100;
     private Context mContext;
@@ -320,15 +319,6 @@ public class DBMain extends Activity {
                 R.string.dontkeepactivities,
                 Toast.LENGTH_SHORT
             ).show();
-        } else {
-
-            if (mTurboOn) {
-                Toast.makeText(
-                    this,
-                    R.string.fastforward,
-                    Toast.LENGTH_SHORT
-                ).show();
-            }
         }
 
         mSurfaceView.mDirty.set(true);

@@ -61,7 +61,6 @@ JNIEXPORT void JNICALL Java_com_fishstix_dosboxfree_DBMain_nativeStart(JNIEnv * 
 extern Render_t render;
 extern bool CPU_CycleAutoAdjust;
 extern bool CPU_SkipCycleAutoAdjust;
-//bool fastforward_on = false;
 //extern Bit32s CPU_Cycles;
 extern Bit32s CPU_CycleMax;
 extern Bit32s CPU_CycleLimit;
