@@ -66,7 +66,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
     private Preference dosumb = null;
     private Preference dosipx = null;
     private Preference dospnp = null;
-    private Preference dosglide = null;
     private Preference dosmt32 = null;
     private Preference dospcspeaker = null;
     private Preference dostimedjoy = null;
@@ -143,7 +142,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
         dosumb = (Preference) findPreference("dosumb");
         dosipx = (Preference) findPreference("dosipx");
         dospnp = (Preference) findPreference("dospnp");
-        dosglide = (Preference) findPreference("dosglide");
         dosmt32 = (Preference) findPreference("dosmt32");
         doseditconf_file = (Preference) findPreference("doseditconf_file");
         confreset = (Preference) findPreference("confreset");
@@ -269,25 +267,26 @@ public class DosBoxPreferences extends PreferenceActivity implements
             // turn on cpuauto and disable it
             Toast.makeText(ctx, R.string.restart, Toast.LENGTH_SHORT).show();
         } else if (
-            (key.contentEquals("doscpu")) ||
-            (key.contentEquals("dosmemsize")) ||
-            (key.contentEquals("dossbtype")) ||
-            (key.contentEquals("dosautoexec")) ||
-            (key.contentEquals("dossbrate")) ||
-            (key.contentEquals("confoptimization")) ||
-            (key.contentEquals("doskblayout")) ||
-            (key.contentEquals("dosems")) || (key.contentEquals("dosxms")) ||
-            (key.contentEquals("dosumb")) ||
-            (key.contentEquals("dospcspeaker")) ||
-            (key.contentEquals("dosmixerprebuffer")) ||
-            (key.contentEquals("dosipx")) ||
-            (key.contentEquals("dosmixerblocksize")) ||
-            (key.contentEquals("confgpu")) ||
-            (key.contentEquals("conftimedjoy")) ||
-            (key.contentEquals("dosmachine")) ||
-            (key.contentEquals("doscputype")) ||
-            (key.contentEquals("dosmt32")) || (key.contentEquals("dospnp")) ||
-            (key.contentEquals("dosglide"))
+            (key.contentEquals("doscpu"))
+            || (key.contentEquals("dosmemsize"))
+            || (key.contentEquals("dossbtype"))
+            || (key.contentEquals("dosautoexec"))
+            || (key.contentEquals("dossbrate"))
+            || (key.contentEquals("confoptimization"))
+            || (key.contentEquals("doskblayout"))
+            || (key.contentEquals("dosems"))
+            || (key.contentEquals("dosxms"))
+            || (key.contentEquals("dosumb"))
+            || (key.contentEquals("dospcspeaker"))
+            || (key.contentEquals("dosmixerprebuffer"))
+            || (key.contentEquals("dosipx"))
+            || (key.contentEquals("dosmixerblocksize"))
+            || (key.contentEquals("confgpu"))
+            || (key.contentEquals("conftimedjoy"))
+            || (key.contentEquals("dosmachine"))
+            || (key.contentEquals("doscputype"))
+            || (key.contentEquals("dosmt32"))
+            || (key.contentEquals("dospnp"))
         ) {
             Toast.makeText(ctx, R.string.restart, Toast.LENGTH_SHORT).show();
         }

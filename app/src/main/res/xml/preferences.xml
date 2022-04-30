@@ -131,11 +131,6 @@
           android:defaultValue="false"
           android:summary="Emulate ISA Plug &amp; Play BIOS. Enable if booting Win 9x" />
       <CheckBoxPreference
-          android:key="dosglide"
-          android:title="3DFX Glide Suppport"
-          android:defaultValue="false"
-          android:summary="Voodoo 1 Glide Emulation (Warning: Experimental!)" />
-      <CheckBoxPreference
           android:key="dosipx"
           android:title="IPX Networking"
           android:defaultValue="false"

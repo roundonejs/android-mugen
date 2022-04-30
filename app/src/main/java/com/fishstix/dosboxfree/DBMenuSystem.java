@@ -386,10 +386,7 @@ public class DBMenuSystem {
         // 3DFX (GLIDE) EMULATION
         DBMain.nativeSetOption(
             DBMenuSystem.DOSBOX_OPTION_ID_GLIDE_ENABLE,
-            prefs.getBoolean(
-                "dosglide",
-                false
-            ) ? 1 : 0,
+            0,
             null,
             true
         );
