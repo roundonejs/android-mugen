@@ -35,7 +35,6 @@ import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.net.Uri;
@@ -43,11 +42,9 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.TypedValue;
 import android.view.KeyEvent;
-import android.view.MenuItem;
 import android.view.ViewGroup.LayoutParams;
 
 import com.fishstix.dosboxfree.dosboxprefs.DosBoxPreferences;
-import com.fishstix.dosboxfree.touchevent.TouchEventWrapper;
 
 public class DBMenuSystem {
     private static final String mPrefCycleString = "max";       // default slow system
@@ -55,28 +52,6 @@ public class DBMenuSystem {
         "content://com.fishstix.dosboxlauncher.files/"
     );
     private static final int MAX_MEMORY = 128;
-
-    public static final int KEYCODE_F1 = 131;
-
-    private final static int MENU_KEYBOARD_ESC = 65;
-    private final static int MENU_KEYBOARD_TAB = 66;
-    private final static int MENU_KEYBOARD_DEL = 67;
-    private final static int MENU_KEYBOARD_INSERT = 68;
-    private final static int MENU_KEYBOARD_PAUSE_BREAK = 82;
-    private final static int MENU_KEYBOARD_SCROLL_LOCK = 83;
-
-    private final static int MENU_KEYBOARD_F1 = 70;
-    private final static int MENU_KEYBOARD_F12 = 81;
-    private final static int MENU_KEYBOARD_SWAP_MEDIA = 91;
-
-    private final static int MENU_CYCLE_AUTO = 150;
-    private final static int MENU_CYCLE_55000 = 205;
-
-    private final static int MENU_FRAMESKIP_0 = 206;
-    private final static int MENU_FRAMESKIP_10 = 216;
-
-    private final static String PREF_KEY_FRAMESKIP = "dosframeskip";
-    private final static String PREF_KEY_CYCLES = "doscycles";
 
     // following must sync with AndroidOSfunc.cpp
     public final static int DOSBOX_OPTION_ID_SOUND_MODULE_ON = 1;
@@ -89,7 +64,6 @@ public class DBMenuSystem {
     public final static int DOSBOX_OPTION_ID_AUTO_CPU_ON = 15;
     public final static int DOSBOX_OPTION_ID_JOYSTICK_ENABLE = 18;
     public final static int DOSBOX_OPTION_ID_GLIDE_ENABLE = 19;
-    public final static int DOSBOX_OPTION_ID_SWAP_MEDIA = 21;
     public final static int DOSBOX_OPTION_ID_START_COMMAND = 50;
 
     public static void loadPreference(
@@ -102,16 +76,13 @@ public class DBMenuSystem {
             myInput =
                 context.getAssets().open(DosBoxPreferences.CONFIG_FILE);
             Scanner scanner = new Scanner(myInput);
-            out =
-                new PrintStream(
-                new FileOutputStream(
-                    context.mConfPath +
-                    context.mConfFile
-                )
-                );
+            out = new PrintStream(
+                new FileOutputStream(context.mConfPath + context.mConfFile)
+            );
             // Write text to file
             out.println("[dosbox]");
-            out.println("memsize=" + getMaxMemorySize(context));
+            out.print("memsize=");
+            out.println(getMemorySize(context));
 
             out.println("vmemsize=16");
             out.println(
@@ -397,7 +368,7 @@ public class DBMenuSystem {
         context.mSurfaceView.forceRedraw();
     }
 
-    private static int getMaxMemorySize(final DBMain context) {
+    private static int getMemorySize(final DBMain context) {
         Runtime rt = Runtime.getRuntime();
         long maxMemory = rt.maxMemory();
         ActivityManager am = (ActivityManager) context.getSystemService(
@@ -527,96 +498,6 @@ public class DBMenuSystem {
     ) {
         DosBoxControl.pressNativeKey(keyCode);
         DosBoxControl.releaseNativeKey(keyCode);
-    }
-
-    public static boolean doContextItemSelected(
-        final DBMain context,
-        final MenuItem item
-    ) {
-        int itemID = item.getItemId();
-
-        switch (itemID) {
-            case MENU_KEYBOARD_TAB:
-                doSendDownUpKey(context, KeyEvent.KEYCODE_TAB);
-                break;
-            case MENU_KEYBOARD_ESC:
-                doSendDownUpKey(context, TouchEventWrapper.KEYCODE_ESCAPE);
-                break;
-            case MENU_KEYBOARD_DEL:
-                doSendDownUpKey(context, TouchEventWrapper.KEYCODE_FORWARD_DEL);
-                break;
-            case MENU_KEYBOARD_INSERT:
-                doSendDownUpKey(context, TouchEventWrapper.KEYCODE_INSERT);
-                break;
-            case MENU_KEYBOARD_PAUSE_BREAK:
-                doSendDownUpKey(context, TouchEventWrapper.KEYCODE_PAUSE_BREAK);
-                break;
-            case MENU_KEYBOARD_SCROLL_LOCK:
-                doSendDownUpKey(context, TouchEventWrapper.KEYCODE_SCROLL_LOCK);
-                break;
-            case MENU_KEYBOARD_SWAP_MEDIA:
-                DBMain.nativeSetOption(
-                    DOSBOX_OPTION_ID_SWAP_MEDIA,
-                    1,
-                    null,
-                    true
-                );
-                break;
-            default:
-
-                if (
-                    (itemID >= MENU_KEYBOARD_F1) &&
-                    (itemID <= MENU_KEYBOARD_F12)
-                ) {
-                    doSendDownUpKey(
-                        context,
-                        KEYCODE_F1 + (itemID - MENU_KEYBOARD_F1)
-                    );
-                } else if (
-                    (itemID >= MENU_CYCLE_AUTO)
-                    && (itemID <= MENU_CYCLE_55000)
-                ) {
-                    int cycles = -1;
-
-                    if (itemID == MENU_CYCLE_AUTO) {
-                        cycles = -1;
-                    } else {
-                        cycles = (itemID - MENU_CYCLE_AUTO) * 1000;
-                    }
-
-                    savePreference(
-                        context,
-                        PREF_KEY_CYCLES,
-                        String.valueOf(cycles)
-                    );
-                    DBMain.nativeSetOption(
-                        DOSBOX_OPTION_ID_CYCLES,
-                        cycles,
-                        null,
-                        true
-                    );
-                } else if (
-                    (itemID >= MENU_FRAMESKIP_0) &&
-                    (itemID <= MENU_FRAMESKIP_10)
-                ) {
-                    int frameskip = (itemID - MENU_FRAMESKIP_0);
-                    savePreference(
-                        context,
-                        PREF_KEY_FRAMESKIP,
-                        String.valueOf(frameskip)
-                    );
-                    DBMain.nativeSetOption(
-                        DOSBOX_OPTION_ID_FRAMESKIP,
-                        frameskip,
-                        null,
-                        true
-                    );
-                }
-
-                break;
-        }
-
-        return true;
     }
 
     public static void getData(DBMain context, String pid) {

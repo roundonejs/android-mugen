@@ -41,7 +41,6 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.view.Display;
 import android.view.KeyEvent;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
@@ -310,15 +309,6 @@ public class DBMain extends Activity {
     private void resumeDosBox() {
         nativePause(0);
         mDosBoxThread.mDosBoxRunning = true;
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        if (DBMenuSystem.doContextItemSelected(this, item)) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     public void callbackExit() {
