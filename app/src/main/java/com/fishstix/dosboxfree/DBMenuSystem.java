@@ -92,22 +92,10 @@ public class DBMenuSystem {
     public final static int DOSBOX_OPTION_ID_SWAP_MEDIA = 21;
     public final static int DOSBOX_OPTION_ID_START_COMMAND = 50;
 
-    static public void loadPreference(
-        DBMain context,
+    public static void loadPreference(
+        final DBMain context,
         final SharedPreferences prefs
     ) {
-        // gracefully handle upgrade from previous versions, fishstix
-        /*if (Integer.valueOf(prefs.getString("confcontroller", "-1")) >= 0) {
-                DosBoxPreferences.upgrade(prefs);
-           }*/
-        Runtime rt = Runtime.getRuntime();
-        long maxMemory = rt.maxMemory();
-        ActivityManager am = (ActivityManager) context.getSystemService(
-            Context.ACTIVITY_SERVICE
-        );
-        int memoryClass = am.getMemoryClass();
-        int maxMem = (int) Math.max(maxMemory / 1024, memoryClass) * 4;
-
         if (!prefs.getBoolean("dosmanualconf", false)) {          // only write conf if not in manual config mode
             // Build DosBox config
             // Set Application Prefs
@@ -126,12 +114,7 @@ public class DBMenuSystem {
                     );
                 // Write text to file
                 out.println("[dosbox]");
-
-                if (MAX_MEMORY < maxMem) {
-                    out.println("memsize=" + MAX_MEMORY);
-                } else {
-                    out.println("memsize=" + maxMem);
-                }
+                out.println("memsize=" + getMaxMemorySize(context));
 
                 out.println("vmemsize=16");
                 out.println(
@@ -425,6 +408,18 @@ public class DBMenuSystem {
         context.mJoystickView.invalidate();
 
         context.mSurfaceView.forceRedraw();
+    }
+
+    private static int getMaxMemorySize(final DBMain context) {
+        Runtime rt = Runtime.getRuntime();
+        long maxMemory = rt.maxMemory();
+        ActivityManager am = (ActivityManager) context.getSystemService(
+            Context.ACTIVITY_SERVICE
+        );
+        int memoryClass = am.getMemoryClass();
+        int maxMem = (int) Math.max(maxMemory / 1024, memoryClass) * 4;
+
+        return Math.min(MAX_MEMORY, maxMem);
     }
 
     public static void copyConfigFile(final DBMain context) {
