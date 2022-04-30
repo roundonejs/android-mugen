@@ -62,8 +62,6 @@
 	<!-- Preferences -->
 	<string name="pref_advconfig">Advanced DosBox Config</string>
 	<string name="pref_dbsettings">DosBox Settings</string>
-	<string name="pref_memtitle">Memory Size</string>
-	<string name="pref_memsum">Set the amount of memory available to DOS</string>
 	<string name="pref_frameskip">Set the FrameSkip amount</string>
 	<string name="pref_cycles">DosBox Cycles (setting too high may cause lag)</string>
 	<string name="pref_machine">DosBox Machine Emulation Setting</string>
@@ -76,36 +74,7 @@
 	<string name="pref_kblayout">Choose the Locale for the Keyboard Layout</string>
 
 	<string name="pref_mousejoymode">Use Joystick to control Mouse Pointer</string>
-<!--    <string name="absdefault">Absolute Tracking Calibration Reset</string>
-    <string name="abscalibrate">Tap visible DOS pointer to calibrate</string>
-    <string name="abscalibrate_success">Mouse Pointer Calibrated</string> -->
     <!--  DOSBOX SETTINGS  -->
-    <string-array name="dosmemsize">
-  		<item>1 MB</item>
-  		<item>2 MB</item>
-  		<item>4 MB</item>
-  		<item>8 MB</item>
-  		<item>12 MB</item>
-  		<item>16 MB</item>
-  		<item>24 MB</item>
-  		<item>32 MB</item>
-  		<item>64 MB</item>
-  		<item>128 MB</item>
-  		<item>256 MB</item>
-  	</string-array>
-  	<string-array name="dosmemsize_values">
-  		<item>1</item>
-  		<item>2</item>
-  		<item>4</item>
-  		<item>8</item>
-  		<item>12</item>
-  		<item>16</item>
-  		<item>24</item>
-  		<item>32</item>
-  		<item>64</item>
-  		<item>128</item>
-  		<item>256</item>
-  	</string-array>
     <string-array name="dosframeskip">
   		<item>0</item>
   		<item>1</item>

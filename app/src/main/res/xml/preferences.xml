@@ -9,13 +9,6 @@
     android:title="@string/pref_dbsettings"
     android:summary="@string/pref_advconfig">
       <ListPreference
-        android:key="dosmemsize"
-          android:title="@string/pref_memtitle"
-          android:entries="@array/dosmemsize"
-        android:entryValues="@array/dosmemsize_values"
-        android:defaultValue="8"
-          android:summary="@string/pref_memsum" />
-      <ListPreference
         android:key="dosframeskip"
           android:title="Frame Skip"
           android:entries="@array/dosframeskip"

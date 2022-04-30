@@ -54,7 +54,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
     private Preference doscpu = null;
     private Preference doscycles = null;
     private Preference dosframeskip = null;
-    private Preference dosmemsize = null;
     private Preference dossbtype = null;
     private Preference dossbrate = null;
     private Preference dosmixerprebuffer = null;
@@ -117,7 +116,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
         doscputype = (Preference) findPreference("doscputype");
         doscycles = (Preference) findPreference("doscycles");
         dosframeskip = (Preference) findPreference("dosframeskip");
-        dosmemsize = (Preference) findPreference("dosmemsize");
         dossbtype = (Preference) findPreference("dossbtype");
         dossbrate = (Preference) findPreference("dossbrate");
         dosmixerprebuffer = (Preference) findPreference("dosmixerprebuffer");
@@ -241,7 +239,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
             Toast.makeText(ctx, R.string.restart, Toast.LENGTH_SHORT).show();
         } else if (
             (key.contentEquals("doscpu"))
-            || (key.contentEquals("dosmemsize"))
             || (key.contentEquals("dossbtype"))
             || (key.contentEquals("dosautoexec"))
             || (key.contentEquals("dossbrate"))
