@@ -208,11 +208,6 @@ public class DBMain extends Activity {
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
         pauseDosBox(false);
@@ -256,11 +251,6 @@ public class DBMain extends Activity {
         }
 
         mSurfaceView.mDirty.set(true);
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
     }
 
     @Override
