@@ -131,11 +131,6 @@
           android:defaultValue="false"
           android:summary="Emulate ISA Plug &amp; Play BIOS. Enable if booting Win 9x" />
       <CheckBoxPreference
-          android:key="dosipx"
-          android:title="IPX Networking"
-          android:defaultValue="false"
-          android:summary="Enable IPX Network Emulation" />
-      <CheckBoxPreference
           android:key="dosmanualconf"
           android:title="Manual Mode"
           android:defaultValue="false"

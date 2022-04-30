@@ -64,7 +64,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
     private Preference dosems = null;
     private Preference dosxms = null;
     private Preference dosumb = null;
-    private Preference dosipx = null;
     private Preference dospnp = null;
     private Preference dosmt32 = null;
     private Preference dospcspeaker = null;
@@ -140,7 +139,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
         dosxms = (Preference) findPreference("dosxms");
         dosems = (Preference) findPreference("dosems");
         dosumb = (Preference) findPreference("dosumb");
-        dosipx = (Preference) findPreference("dosipx");
         dospnp = (Preference) findPreference("dospnp");
         dosmt32 = (Preference) findPreference("dosmt32");
         doseditconf_file = (Preference) findPreference("doseditconf_file");
@@ -279,7 +277,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
             || (key.contentEquals("dosumb"))
             || (key.contentEquals("dospcspeaker"))
             || (key.contentEquals("dosmixerprebuffer"))
-            || (key.contentEquals("dosipx"))
             || (key.contentEquals("dosmixerblocksize"))
             || (key.contentEquals("confgpu"))
             || (key.contentEquals("conftimedjoy"))
@@ -314,7 +311,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
             dosxms.setEnabled(false);
             dosems.setEnabled(false);
             dosumb.setEnabled(false);
-            dosipx.setEnabled(false);
             dospnp.setEnabled(false);
             dospcspeaker.setEnabled(false);
             doseditconf_file.setEnabled(true);
@@ -344,7 +340,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
             dosxms.setEnabled(true);
             dosems.setEnabled(true);
             dosumb.setEnabled(true);
-            dosipx.setEnabled(true);
             dospnp.setEnabled(true);
             dospcspeaker.setEnabled(true);
 

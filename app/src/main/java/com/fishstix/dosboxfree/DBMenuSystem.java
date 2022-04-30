@@ -221,13 +221,7 @@ public class DBMenuSystem {
                 );
                 out.println();
                 out.println("[ipx]");
-                out.print("ipx=");
-
-                if (prefs.getBoolean("dosipx", false)) {
-                    out.println("true");
-                } else {
-                    out.println("false");
-                }
+                out.println("ipx=false");
 
                 out.println();
                 out.println("[joystick]");
