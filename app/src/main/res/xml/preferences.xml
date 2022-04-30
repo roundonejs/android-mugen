@@ -157,13 +157,6 @@
    </PreferenceScreen>
   </PreferenceCategory>
   <PreferenceCategory android:title="Input Preferences">
-      <ListPreference
-        android:key="confinputlatency"
-        android:title="Input Latency"
-      android:entries="@array/confinputlatency"
-        android:entryValues="@array/confinputlatency_values"
-        android:defaultValue="0"
-        android:summary="Select Latency of input devices" />
       <CheckBoxPreference
         android:key="confjoyoverlay"
         android:title="Overlay Joystick"

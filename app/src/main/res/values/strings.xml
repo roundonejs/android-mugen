@@ -417,14 +417,6 @@
   		<item>0</item>
   		<item>1</item>
   	</string-array>
-    <string-array name="confinputlatency">
-  		<item>Normal (default)</item>
-  		<item>Accurate (slow)</item>
-  	</string-array>
-  	<string-array name="confinputlatency_values">
-  		<item>0</item>
-  		<item>1</item>
-   	</string-array>
    	<string-array name="confanalog_maps">
    	    <item>Right Joy, Left Mouse</item>
    	    <item>Left Joy, Right Mouse</item>

@@ -64,7 +64,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     private TouchEventWrapper mWrap = TouchEventWrapper.newInstance();
 
     boolean mScale = false;
-    boolean mInputLowLatency = false;
     public boolean mGPURendering = false;
 
     Bitmap mBitmap = null;

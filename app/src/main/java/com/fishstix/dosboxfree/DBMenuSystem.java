@@ -433,14 +433,6 @@ public class DBMenuSystem {
         );
         context.mJoystickView.invalidate();
 
-        // Input Resolution
-        if (Integer.valueOf(prefs.getString("confinputlatency", "0")) == 0) {
-            // absolute tracking
-            context.mSurfaceView.mInputLowLatency = false;
-        } else {
-            context.mSurfaceView.mInputLowLatency = true;
-        }
-
         context.mSurfaceView.forceRedraw();
     }
 
