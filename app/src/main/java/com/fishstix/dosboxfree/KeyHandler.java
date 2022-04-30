@@ -24,6 +24,7 @@ import android.os.Handler;
 import android.os.Message;
 
 public class KeyHandler extends Handler {
+    private static final int SPLASH_TIMEOUT_MESSAGE = -1;
     private final WeakReference<DBGLSurfaceView> mSurface;
 
     public KeyHandler(final DBGLSurfaceView surface) {
@@ -32,7 +33,7 @@ public class KeyHandler extends Handler {
 
     @Override
     public void handleMessage(final Message msg) {
-        if (msg.what == DBMain.SPLASH_TIMEOUT_MESSAGE) {
+        if (msg.what == SPLASH_TIMEOUT_MESSAGE) {
             DBGLSurfaceView surf = mSurface.get();
             surf.setBackgroundResource(0);
         } else {

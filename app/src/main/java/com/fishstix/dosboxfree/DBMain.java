@@ -57,7 +57,6 @@ import com.fishstix.dosboxfree.dosboxprefs.DosBoxPreferences;
 import com.fishstix.dosboxfree.joystick.JoystickView;
 
 public class DBMain extends Activity {
-    public static final int SPLASH_TIMEOUT_MESSAGE = -1;
     public static final String START_COMMAND_ID = "start_command";
     public String mConfFile = DosBoxPreferences.CONFIG_FILE;
     public String mConfPath;
