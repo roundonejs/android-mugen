@@ -20,8 +20,6 @@
 package com.fishstix.dosboxfree;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.nio.Buffer;
 
 import android.app.Activity;
@@ -258,38 +256,6 @@ public class DBMain extends Activity {
         }
 
         mSurfaceView.mDirty.set(true);
-    }
-
-    private String ReadCPUgovernor() {
-        ProcessBuilder cmd;
-        String result = "";
-
-        try {
-            String[] args =
-            {"/system/bin/cat",
-             "/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor"};
-            cmd = new ProcessBuilder(args);
-
-            Process process = cmd.start();
-            InputStream in = process.getInputStream();
-            byte[] re = new byte[1024];
-
-            while (in.read(re) != -1) {
-                // System.out.println(new String(re));
-                result = result + new String(re);
-            }
-
-            in.close();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            result = "unknown";
-        }
-
-        if (result.length() == 0) {
-            result = "unknown";
-        }
-
-        return result;
     }
 
     @Override
