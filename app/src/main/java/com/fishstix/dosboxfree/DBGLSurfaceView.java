@@ -557,10 +557,25 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                 axisValue = event.getAxisValue(axisCode);
             }
 
-            return (int) (InputDeviceState.ProcessAxis(range, axisValue) * 100);
+            return (int) (processAxis(range, axisValue) * 100);
         }
 
         return 0;
+    }
+
+    private float processAxis(final MotionRange range, final float axisvalue) {
+        float absaxisvalue = Math.abs(axisvalue);
+        float deadzone = range.getFlat();
+
+        if (absaxisvalue <= deadzone) {
+            return 0.0f;
+        }
+
+        if (axisvalue < 0.0f) {
+            return absaxisvalue / range.getMin();
+        }
+
+        return absaxisvalue / range.getMax();
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
