@@ -89,14 +89,14 @@ public class JoystickButton extends JoystickViewObject {
     public void click(final int newPointerId) {
         super.click(newPointerId);
 
-        DosBoxControl.sendNativeKey(key, true, false, false, false);
+        DosBoxControl.pressNativeKey(key);
     }
 
     @Override
     public void release() {
         super.release();
 
-        DosBoxControl.sendNativeKey(key, false, false, false, false);
+        DosBoxControl.releaseNativeKey(key);
     }
 
     public boolean inButton(final int positionX, final int positionY) {

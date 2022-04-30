@@ -41,18 +41,11 @@ public class DosBoxControl {
         int shift
     );
 
-    public static boolean sendNativeKey(
-        final int keyCode,
-        final boolean down,
-        final boolean ctrl,
-        final boolean alt,
-        final boolean shift
-    ) {
-        int intDown = (down) ? 1 : 0;
-        int intCtrl = (ctrl) ? 1 : 0;
-        int intAlt = (alt) ? 1 : 0;
-        int intShift = (shift) ? 1 : 0;
+    public static boolean pressNativeKey(final int keyCode) {
+        return nativeKey(keyCode, 1, 0, 0, 0) != 0;
+    }
 
-        return nativeKey(keyCode, intDown, intCtrl, intAlt, intShift) != 0;
+    public static boolean releaseNativeKey(final int keyCode) {
+        return nativeKey(keyCode, 0, 0, 0, 0) != 0;
     }
 }

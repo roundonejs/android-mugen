@@ -576,8 +576,8 @@ public class DBMenuSystem {
         final DBMain context,
         final int keyCode
     ) {
-        DosBoxControl.sendNativeKey(keyCode, true, false, false, false);
-        DosBoxControl.sendNativeKey(keyCode, false, false, false, false);
+        DosBoxControl.pressNativeKey(keyCode);
+        DosBoxControl.releaseNativeKey(keyCode);
     }
 
     public static boolean doContextItemSelected(

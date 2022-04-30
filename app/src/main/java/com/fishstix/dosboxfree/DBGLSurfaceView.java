@@ -632,23 +632,27 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
 
     @Override
     public boolean onKeyDown(final int keyCode, final KeyEvent event) {
-        return handleMugenKey(keyCode, true) || handleKey(keyCode, event);
+        return pressMugenKey(keyCode) || handleKey(keyCode, event);
+    }
+
+    private boolean pressMugenKey(final int keyCode) {
+        if (keyEventToMugenButton.containsKey(keyCode)) {
+            DosBoxControl.pressNativeKey(keyEventToMugenButton.get(keyCode));
+
+            return true;
+        }
+
+        return false;
     }
 
     @Override
     public boolean onKeyUp(final int keyCode, final KeyEvent event) {
-        return handleMugenKey(keyCode, false) || handleKey(keyCode, event);
+        return releaseMugenKey(keyCode) || handleKey(keyCode, event);
     }
 
-    private boolean handleMugenKey(final int keyCode, final boolean down) {
+    private boolean releaseMugenKey(final int keyCode) {
         if (keyEventToMugenButton.containsKey(keyCode)) {
-            DosBoxControl.sendNativeKey(
-                keyEventToMugenButton.get(keyCode),
-                down,
-                false,
-                false,
-                false
-            );
+            DosBoxControl.releaseNativeKey(keyEventToMugenButton.get(keyCode));
 
             return true;
         }
@@ -699,13 +703,11 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                     BUTTON_REPEAT_DELAY - diff
                 );
             } else if (!(down && mKeyHandler.hasMessages(newKeyCode))) {
-                return DosBoxControl.sendNativeKey(
-                    newKeyCode,
-                    down,
-                    false,
-                    false,
-                    false
-                );
+                if (down) {
+                    return DosBoxControl.pressNativeKey(newKeyCode);
+                }
+
+                return DosBoxControl.releaseNativeKey(newKeyCode);
             }
         }
 

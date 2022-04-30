@@ -71,14 +71,14 @@ public class JoystickHandleListener {
 
     private static void press(final int key) {
         if (!pressedKeys.get(key).booleanValue()) {
-            DosBoxControl.sendNativeKey(key, true, false, false, false);
+            DosBoxControl.pressNativeKey(key);
             pressedKeys.put(key, true);
         }
     }
 
     private static void release(final int key) {
         if (pressedKeys.get(key).booleanValue()) {
-            DosBoxControl.sendNativeKey(key, false, false, false, false);
+            DosBoxControl.releaseNativeKey(key);
             pressedKeys.put(key, false);
         }
     }

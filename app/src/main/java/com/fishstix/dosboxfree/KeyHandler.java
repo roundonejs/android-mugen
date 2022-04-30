@@ -37,7 +37,7 @@ public class KeyHandler extends Handler {
             DBGLSurfaceView surf = mSurface.get();
             surf.setBackgroundResource(0);
         } else {
-            DosBoxControl.sendNativeKey(msg.what, false, false, false, false);
+            DosBoxControl.releaseNativeKey(msg.what);
         }
     }
 }
