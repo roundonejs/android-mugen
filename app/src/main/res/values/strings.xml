@@ -74,8 +74,6 @@
 	<string name="pref_mixerblocksize">Audio Mixer Blocksize (larger values may reduce skipping)</string>
 	<string name="pref_mixerprebuffer">Audio Mixer Pre-Buffer (larger values may reduce skipping)</string>
 	<string name="pref_kblayout">Choose the Locale for the Keyboard Layout</string>
-	<string name="pref_manualconf_file">Choose name/location of the dosbox config file</string>
-	<string name="pref_editconf_file">Edit with system text editor (if installed)</string>
 
 	<string name="pref_mousejoymode">Use Joystick to control Mouse Pointer</string>
 <!--    <string name="absdefault">Absolute Tracking Calibration Reset</string>

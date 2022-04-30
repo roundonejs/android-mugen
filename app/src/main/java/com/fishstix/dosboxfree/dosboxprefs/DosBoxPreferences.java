@@ -70,8 +70,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
     private Preference dostimedjoy = null;
     private Preference dosmachine = null;
     private Preference doscputype = null;
-    private Preference dosmanualconf_file = null;
-    private Preference doseditconf_file = null;
     private Preference confgpu = null;
     private Preference confreset = null;
     private Preference version = null;
@@ -114,13 +112,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
             ).commit();
         }
 
-        if (prefs.getString("dosmanualconf_file", "-1").contentEquals("-1")) {
-            prefs.edit().putString(
-                "dosmanualconf_file",
-                CONFIG_PATH + CONFIG_FILE
-            ).commit();
-        }
-
         addPreferencesFromResource(R.xml.preferences);
         doscpu = (Preference) findPreference("doscpu");
         doscputype = (Preference) findPreference("doscputype");
@@ -141,11 +132,9 @@ public class DosBoxPreferences extends PreferenceActivity implements
         dosumb = (Preference) findPreference("dosumb");
         dospnp = (Preference) findPreference("dospnp");
         dosmt32 = (Preference) findPreference("dosmt32");
-        doseditconf_file = (Preference) findPreference("doseditconf_file");
         confreset = (Preference) findPreference("confreset");
         confgpu = (Preference) findPreference("confgpu");
         confreset.setOnPreferenceClickListener(this);
-        dosmanualconf_file = (Preference) findPreference("dosmanualconf_file");
         version = (Preference) findPreference("version");
         version.setOnPreferenceClickListener(this);
 
@@ -193,8 +182,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
     public void onResume() {
         super.onResume();
 
-        // make updated for dosbox.conf manual mode
-        update_dosmanualconf();
         final int sdkVersion = Build.VERSION.SDK_INT;
 
         // update MT32 config
@@ -220,7 +207,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
         // get the two custom preferences
         Preference versionPref = (Preference) findPreference("version");
         Preference helpPref = (Preference) findPreference("help");
-        doseditconf_file.setOnPreferenceClickListener(this);
         String versionName = "";
         try {
             versionName =
@@ -247,18 +233,7 @@ public class DosBoxPreferences extends PreferenceActivity implements
         SharedPreferences preference,
         String key
     ) {
-        if (key.contentEquals("dosmanualconf")) {
-            update_dosmanualconf();
-            Toast.makeText(ctx, R.string.restart, Toast.LENGTH_SHORT).show();
-        } else if (key.contentEquals("dosmanualconf_file")) {
-            dosmanualconf_file.setSummary(
-                preference.getString(
-                    "dosmanualconf_file",
-                    ""
-                )
-            );
-            Toast.makeText(ctx, R.string.restart, Toast.LENGTH_SHORT).show();
-        } else if (
+        if (
             key.contentEquals("doscycles") &&
             prefs.getString("doscycles", "").contentEquals("auto")
         ) {
@@ -287,66 +262,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
         ) {
             Toast.makeText(ctx, R.string.restart, Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private void update_dosmanualconf() {
-        String configFile;
-
-        if (prefs.getBoolean("dosmanualconf", false)) {
-            doscpu.setEnabled(false);
-            doscputype.setEnabled(false);
-            doscycles.setEnabled(false);
-            dosframeskip.setEnabled(false);
-            dosmemsize.setEnabled(false);
-            dossbtype.setEnabled(false);
-            dossbrate.setEnabled(false);
-            dosmt32.setEnabled(false);
-            dosmachine.setEnabled(false);
-            dostimedjoy.setEnabled(false);
-            dosmixerprebuffer.setEnabled(false);
-            dosmixerblocksize.setEnabled(false);
-            dosautoexec.setEnabled(false);
-
-            doskblayout.setEnabled(false);
-            dosxms.setEnabled(false);
-            dosems.setEnabled(false);
-            dosumb.setEnabled(false);
-            dospnp.setEnabled(false);
-            dospcspeaker.setEnabled(false);
-            doseditconf_file.setEnabled(true);
-
-            dosmanualconf_file.setEnabled(true);
-            configFile = prefs.getString(
-                "dosmanualconf_file",
-                CONFIG_PATH + CONFIG_FILE
-            );
-        } else {
-            doscpu.setEnabled(true);
-            doscputype.setEnabled(true);
-            doscycles.setEnabled(true);
-            dosframeskip.setEnabled(true);
-            dosmemsize.setEnabled(true);
-            dossbtype.setEnabled(true);
-            dossbrate.setEnabled(true);
-            dosmt32.setEnabled(true);
-            dosmachine.setEnabled(true);
-            dostimedjoy.setEnabled(true);
-            dosmixerprebuffer.setEnabled(true);
-            dosmixerblocksize.setEnabled(true);
-            dosautoexec.setEnabled(true);
-            dosmanualconf_file.setEnabled(false);
-            doseditconf_file.setEnabled(false);
-            doskblayout.setEnabled(true);
-            dosxms.setEnabled(true);
-            dosems.setEnabled(true);
-            dosumb.setEnabled(true);
-            dospnp.setEnabled(true);
-            dospcspeaker.setEnabled(true);
-
-            configFile = CONFIG_PATH + CONFIG_FILE;
-        }
-
-        dosmanualconf_file.setSummary(configFile);
     }
 
     public static String hardCodeToString(int keycode) {
@@ -491,49 +406,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
             );
             AlertDialog alert = builder.create();
             alert.show();
-        } else if (preference == doseditconf_file) {
-            // setup intent
-            Intent intent = new Intent(Intent.ACTION_EDIT);
-            Uri uri =
-                Uri.parse(
-                "file://" +
-                prefs.getString("dosmanualconf_file", "")
-                );
-            intent.setDataAndType(uri, "text/plain");
-            // Check if file exists, if not, copy template
-            File f = new File(prefs.getString("dosmanualconf_file", ""));
-
-            if (!f.exists()) {
-                try {
-                    InputStream in = getApplicationContext().getAssets().open(
-                        "template.conf"
-                    );
-                    FileOutputStream out = new FileOutputStream(f);
-                    byte[] buffer = new byte[1024];
-                    int len = in.read(buffer);
-
-                    while (len != -1) {
-                        out.write(buffer, 0, len);
-                        len = in.read(buffer);
-                    }
-
-                    in.close();
-                    out.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            // launch editor
-            try {
-                startActivity(intent);
-            } catch (ActivityNotFoundException e) {
-                Toast.makeText(
-                    this,
-                    R.string.noeditor,
-                    Toast.LENGTH_SHORT
-                ).show();
-            }
         }
 
         return false;

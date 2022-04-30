@@ -96,186 +96,182 @@ public class DBMenuSystem {
         final DBMain context,
         final SharedPreferences prefs
     ) {
-        if (!prefs.getBoolean("dosmanualconf", false)) {          // only write conf if not in manual config mode
-            // Build DosBox config
-            // Set Application Prefs
-            PrintStream out;
-            InputStream myInput;
+        PrintStream out;
+        InputStream myInput;
+        try {
+            myInput =
+                context.getAssets().open(DosBoxPreferences.CONFIG_FILE);
+            Scanner scanner = new Scanner(myInput);
+            out =
+                new PrintStream(
+                new FileOutputStream(
+                    context.mConfPath +
+                    context.mConfFile
+                )
+                );
+            // Write text to file
+            out.println("[dosbox]");
+            out.println("memsize=" + getMaxMemorySize(context));
+
+            out.println("vmemsize=16");
+            out.println(
+                "machine=" + prefs.getString(
+                    "dosmachine",
+                    "svga_s3"
+                )
+            );
+            out.println();
+            out.println("[render]");
+            out.println("frameskip=0");
+            out.println();
+            out.println("[cpu]");
+            out.println("core=" + prefs.getString("doscpu", "dynamic"));
+            out.println("cputype=" + prefs.getString("doscputype", "auto"));
+
+            if (prefs.getString("doscycles", "-1").contentEquals("-1")) {
+                out.println("cycles=" + mPrefCycleString);                              // auto performance
+            } else {
+                out.println(
+                    "cycles=" +
+                    prefs.getString("doscycles", "3000")
+                );
+            }
+
+            out.println("cycleup=500");
+            out.println("cycledown=500");
+            out.print("isapnpbios=");
+
+            if (prefs.getBoolean("dospnp", true)) {
+                out.println("true");
+            } else {
+                out.println("false");
+            }
+
+            out.println();
+            out.println("[sblaster]");
+            out.println("sbtype=" + prefs.getString("dossbtype", "sb16"));
+            out.println("mixer=true");
+            out.println("oplmode=auto");
+            out.println("oplemu=fast");
+            out.println("oplrate=" + prefs.getString("dossbrate", "22050"));
+            out.println();
+            out.println("[mixer]");
             try {
-                myInput =
-                    context.getAssets().open(DosBoxPreferences.CONFIG_FILE);
-                Scanner scanner = new Scanner(myInput);
-                out =
-                    new PrintStream(
-                    new FileOutputStream(
-                        context.mConfPath +
-                        context.mConfFile
-                    )
-                    );
-                // Write text to file
-                out.println("[dosbox]");
-                out.println("memsize=" + getMaxMemorySize(context));
-
-                out.println("vmemsize=16");
                 out.println(
-                    "machine=" + prefs.getString(
-                        "dosmachine",
-                        "svga_s3"
-                    )
+                    "prebuffer=" +
+                    prefs.getInt("dosmixerprebuffer", 15)
                 );
-                out.println();
-                out.println("[render]");
-                out.println("frameskip=0");
-                out.println();
-                out.println("[cpu]");
-                out.println("core=" + prefs.getString("doscpu", "dynamic"));
-                out.println("cputype=" + prefs.getString("doscputype", "auto"));
+            } catch (Exception e) {
+                out.println("prebuffer=15");
+            }
+            out.println("rate=" + prefs.getString("dossbrate", "22050"));
+            out.println(
+                "blocksize=" +
+                prefs.getString("dosmixerblocksize", "1024")
+            );
+            out.println();
+            out.println("[dos]");
+            out.print("xms=");
 
-                if (prefs.getString("doscycles", "-1").contentEquals("-1")) {
-                    out.println("cycles=" + mPrefCycleString);                          // auto performance
-                } else {
-                    out.println(
-                        "cycles=" +
-                        prefs.getString("doscycles", "3000")
-                    );
-                }
+            if (prefs.getBoolean("dosxms", true)) {
+                out.println("true");
+            } else {
+                out.println("false");
+            }
 
-                out.println("cycleup=500");
-                out.println("cycledown=500");
-                out.print("isapnpbios=");
+            out.print("ems=");
 
-                if (prefs.getBoolean("dospnp", true)) {
-                    out.println("true");
-                } else {
-                    out.println("false");
-                }
+            if (prefs.getBoolean("dosems", true)) {
+                out.println("true");
+            } else {
+                out.println("false");
+            }
 
-                out.println();
-                out.println("[sblaster]");
-                out.println("sbtype=" + prefs.getString("dossbtype", "sb16"));
-                out.println("mixer=true");
-                out.println("oplmode=auto");
-                out.println("oplemu=fast");
-                out.println("oplrate=" + prefs.getString("dossbrate", "22050"));
-                out.println();
-                out.println("[mixer]");
-                try {
-                    out.println(
-                        "prebuffer=" +
-                        prefs.getInt("dosmixerprebuffer", 15)
-                    );
-                } catch (Exception e) {
-                    out.println("prebuffer=15");
-                }
-                out.println("rate=" + prefs.getString("dossbrate", "22050"));
+            out.print("umb=");
+
+            if (prefs.getBoolean("dosumb", true)) {
+                out.println("true");
+            } else {
+                out.println("false");
+            }
+
+            out.println(
+                "keyboardlayout=" +
+                prefs.getString("doskblayout", "auto")
+            );
+            out.println();
+            out.println("[ipx]");
+            out.println("ipx=false");
+
+            out.println();
+            out.println("[joystick]");
+            out.println("joysticktype=2axis");
+            out.print("timed=");
+
+            if (prefs.getBoolean("dostimedjoy", false)) {
+                out.println("true");
+            } else {
+                out.println("false");
+            }
+
+            out.println();
+            out.println("[midi]");
+
+            if (prefs.getBoolean("dosmt32", false)) {
+                out.println("mpu401=intelligent");
+                out.println("mididevice=mt32");
+                out.println("mt32.thread=on");
+                out.println("mt32.verbose=off");
+            } else {
+                out.println("mpu401=none");
+                out.println("mididevice=none");
+            }
+
+            out.println();
+            out.println("[speaker]");
+            out.print("pcspeaker=");
+
+            if (prefs.getBoolean("dospcspeaker", false)) {
+                out.println("true");
+            } else {
+                out.println("false");
+            }
+
+            out.println(
+                "tandyrate=" +
+                prefs.getString("dossbrate", "22050")
+            );
+
+            // concat dosbox conf
+            while (scanner.hasNextLine()) {
+                out.println(scanner.nextLine());
+            }
+
+            // handle autoexec
+            if (prefs.getString("dosautoexec", "-1").contains("-1")) {
                 out.println(
-                    "blocksize=" +
-                    prefs.getString("dosmixerblocksize", "1024")
+                    "mount c: "
+                    + context.mugenDirectoryCreator.getMugenDataPath()
+                    + " \nc:"
                 );
-                out.println();
-                out.println("[dos]");
-                out.print("xms=");
-
-                if (prefs.getBoolean("dosxms", true)) {
-                    out.println("true");
-                } else {
-                    out.println("false");
-                }
-
-                out.print("ems=");
-
-                if (prefs.getBoolean("dosems", true)) {
-                    out.println("true");
-                } else {
-                    out.println("false");
-                }
-
-                out.print("umb=");
-
-                if (prefs.getBoolean("dosumb", true)) {
-                    out.println("true");
-                } else {
-                    out.println("false");
-                }
-
+            } else {
                 out.println(
-                    "keyboardlayout=" +
-                    prefs.getString("doskblayout", "auto")
-                );
-                out.println();
-                out.println("[ipx]");
-                out.println("ipx=false");
-
-                out.println();
-                out.println("[joystick]");
-                out.println("joysticktype=2axis");
-                out.print("timed=");
-
-                if (prefs.getBoolean("dostimedjoy", false)) {
-                    out.println("true");
-                } else {
-                    out.println("false");
-                }
-
-                out.println();
-                out.println("[midi]");
-
-                if (prefs.getBoolean("dosmt32", false)) {
-                    out.println("mpu401=intelligent");
-                    out.println("mididevice=mt32");
-                    out.println("mt32.thread=on");
-                    out.println("mt32.verbose=off");
-                } else {
-                    out.println("mpu401=none");
-                    out.println("mididevice=none");
-                }
-
-                out.println();
-                out.println("[speaker]");
-                out.print("pcspeaker=");
-
-                if (prefs.getBoolean("dospcspeaker", false)) {
-                    out.println("true");
-                } else {
-                    out.println("false");
-                }
-
-                out.println(
-                    "tandyrate=" +
-                    prefs.getString("dossbrate", "22050")
-                );
-
-                // concat dosbox conf
-                while (scanner.hasNextLine()) {
-                    out.println(scanner.nextLine());
-                }
-
-                // handle autoexec
-                if (prefs.getString("dosautoexec", "-1").contains("-1")) {
-                    out.println(
+                    prefs.getString(
+                        "dosautoexec",
                         "mount c: "
                         + context.mugenDirectoryCreator.getMugenDataPath()
                         + " \nc:"
-                    );
-                } else {
-                    out.println(
-                        prefs.getString(
-                            "dosautoexec",
-                            "mount c: "
-                            + context.mugenDirectoryCreator.getMugenDataPath()
-                            + " \nc:"
-                        )
-                    );
-                }
-
-                out.println("MUGEN.EXE");
-                out.flush();
-                out.close();
-                myInput.close();
-                scanner.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+                    )
+                );
             }
+
+            out.println("MUGEN.EXE");
+            out.flush();
+            out.close();
+            myInput.close();
+            scanner.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         // SCALE SCREEN
@@ -291,36 +287,27 @@ public class DBMenuSystem {
             context.mPrefScaleFilterOn = true;
         }
 
-        // SET Cycles
-        if (!prefs.getBoolean("dosmanualconf", false)) {
-            try {
-                DBMain.nativeSetOption(
-                    DBMenuSystem.DOSBOX_OPTION_ID_CYCLES,
-                    Integer.valueOf(
-                        prefs.getString(
-                            "doscycles",
-                            "5000"
-                        )
-                    ),
-                    null,
-                    true
-                );
-            } catch (NumberFormatException e) {
-                // set default to 5000 cycles on exception
-                DBMain.nativeSetOption(
-                    DBMenuSystem.DOSBOX_OPTION_ID_CYCLES,
-                    2000,
-                    null,
-                    true
-                );
-            }
+        try {
+            DBMain.nativeSetOption(
+                DBMenuSystem.DOSBOX_OPTION_ID_CYCLES,
+                Integer.valueOf(
+                    prefs.getString(
+                        "doscycles",
+                        "5000"
+                    )
+                ),
+                null,
+                true
+            );
+        } catch (NumberFormatException e) {
+            // set default to 5000 cycles on exception
+            DBMain.nativeSetOption(
+                DBMenuSystem.DOSBOX_OPTION_ID_CYCLES,
+                2000,
+                null,
+                true
+            );
         }
-
-        /*	if (!DBMain.mLicenseResult || !DBMain.mSignatureResult) {
-                        prefs.edit().putString("doscycles", "2000").commit();
-                        DBMain.nativeSetOption(DBMenuSystem.DOSBOX_OPTION_ID_CYCLES, 5000 ,null, DBMain.getLicResult());
-                } */
-
 
         // Set Frameskip
         DBMain.nativeSetOption(

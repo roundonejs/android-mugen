@@ -130,20 +130,6 @@
           android:title="ISA PnP Support"
           android:defaultValue="false"
           android:summary="Emulate ISA Plug &amp; Play BIOS. Enable if booting Win 9x" />
-      <CheckBoxPreference
-          android:key="dosmanualconf"
-          android:title="Manual Mode"
-          android:defaultValue="false"
-          android:summary="Disable over-write of dosbox.conf" />
-      <EditTextPreference
-          android:key="dosmanualconf_file"
-          android:title="Config Location"
-          android:defaultValue="-1"
-          android:summary="@string/pref_manualconf_file" />
-      <Preference
-          android:key="doseditconf_file"
-          android:title="Edit Config File"
-          android:summary="@string/pref_editconf_file" />
    </PreferenceScreen>
   </PreferenceCategory>
   <PreferenceCategory android:title="Input Preferences">

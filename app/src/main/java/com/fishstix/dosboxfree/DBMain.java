@@ -138,21 +138,6 @@ public class DBMain extends Activity {
         mJoystickView.setVisibility(View.GONE);
         registerForContextMenu(mSurfaceView);
 
-        if (prefs.getBoolean("dosmanualconf", false)) {
-            File f;
-            f =
-                new File(
-                prefs.getString(
-                    "dosmanualconf_file",
-                    DosBoxPreferences.getExternalDosBoxDir(mContext) +
-                    DosBoxPreferences.CONFIG_FILE
-                )
-                );
-
-            mConfPath = f.getParent() + "/";
-            mConfFile = f.getName();
-        }
-
         mSurfaceView.mGPURendering = true;
         mugenDirectoryCreator.createMugenDirectory();
         DBMenuSystem.loadPreference(this, prefs);
