@@ -61,9 +61,10 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     private final static int EVENT_THRESHOLD_DECAY = 100;
 
     private DBMain mParent = null;
-    private boolean mSurfaceViewRunning = false;
     public DosBoxVideoThread mVideoThread = null;
-    public KeyHandler mKeyHandler = null;
+    private boolean mSurfaceViewRunning = false;
+    private KeyHandler mKeyHandler = null;
+    private TouchEventWrapper mWrap = TouchEventWrapper.newInstance();
 
     boolean mScale = false;
     boolean mInputLowLatency = false;
@@ -82,8 +83,18 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     int mStartLine = 0;
     int mEndLine = 0;
 
-    public OpenGLRenderer mRenderer;
+    private OpenGLRenderer mRenderer;
     private Map<Integer, Integer> keyEventToMugenButton;
+
+    private Rect mSrcRect = new Rect();
+    private Rect mDstRect = new Rect();
+    private Rect mDirtyRect = new Rect();
+    private int mDirtyCount = 0;
+
+    // Map of Custom Maps
+    public SparseIntArray customMap = new SparseIntArray(
+        DosBoxPreferences.NUM_USB_MAPPINGS
+    );
 
     class DosBoxVideoThread extends Thread {
         private static final int UPDATE_INTERVAL = 40;
@@ -403,11 +414,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
         mKeyHandler = null;
     }
 
-    private Rect mSrcRect = new Rect();
-    private Rect mDstRect = new Rect();
-    private Rect mDirtyRect = new Rect();
-    private int mDirtyCount = 0;
-
     private void canvasDraw(
         final Bitmap bitmap,
         final int src_width,
@@ -500,8 +506,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
 
         surfaceHolder = null;
     }
-
-    private TouchEventWrapper mWrap = TouchEventWrapper.newInstance();
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
     private void processJoystickInput(
@@ -633,11 +637,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
 
         return false;
     }
-
-    // Map of Custom Maps
-    public SparseIntArray customMap = new SparseIntArray(
-        DosBoxPreferences.NUM_USB_MAPPINGS
-    );
 
     @Override
     public boolean onKeyDown(final int keyCode, final KeyEvent event) {
