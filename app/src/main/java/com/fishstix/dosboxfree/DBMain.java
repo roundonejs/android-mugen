@@ -93,7 +93,6 @@ public class DBMain extends Activity {
     public MugenDirectoryCreator mugenDirectoryCreator;
 
     public boolean mPrefScaleFilterOn = false;
-    public boolean mPrefSoundModuleOn = true;
     public boolean mPrefMixerHackOn = true;
     public String mPID = null;
     public int mPrefScaleFactor = 100;
@@ -209,7 +208,7 @@ public class DBMain extends Activity {
         );
         nativeSetOption(
             DBMenuSystem.DOSBOX_OPTION_ID_SOUND_MODULE_ON,
-            (mPrefSoundModuleOn) ? 1 : 0,
+            1,
             null,
             true
         );

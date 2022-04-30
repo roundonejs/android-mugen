@@ -393,14 +393,6 @@ public class DBMenuSystem {
             null,
             true
         );
-        // SOUND
-        context.mPrefSoundModuleOn = prefs.getBoolean("confsound", true);
-        DBMain.nativeSetOption(
-            DBMenuSystem.DOSBOX_OPTION_ID_SOUND_MODULE_ON,
-            context.mPrefSoundModuleOn ? 1 : 0,
-            null,
-            true
-        );
         // AUTO CPU
         // context.mPrefAutoCPUOn = prefs.getBoolean("dosautocpu", false);
         // DBMain.nativeSetOption(DBMenuSystem.DOSBOX_OPTION_ID_AUTO_CPU_ON, context.mPrefAutoCPUOn?1:0,null,DBMain.getLicResult());
@@ -448,14 +440,6 @@ public class DBMenuSystem {
         } else {
             context.mSurfaceView.mInputLowLatency = true;
         }
-
-        // SOUND
-        DBMain.nativeSetOption(
-            DBMenuSystem.DOSBOX_OPTION_ID_SOUND_MODULE_ON,
-            (prefs.getBoolean("confsound", true)) ? 1 : 0,
-            null,
-            true
-        );
 
         context.mSurfaceView.forceRedraw();
     }
