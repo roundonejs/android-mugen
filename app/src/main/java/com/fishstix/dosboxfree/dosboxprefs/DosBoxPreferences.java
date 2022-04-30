@@ -17,20 +17,15 @@
  */
 
 package com.fishstix.dosboxfree.dosboxprefs;
+
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
 import android.app.AlertDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -38,13 +33,9 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
-import android.preference.PreferenceScreen;
-import android.text.InputFilter;
-import android.text.Spanned;
 import android.widget.Toast;
 
 import com.fishstix.dosboxfree.R;
-import com.fishstix.dosboxfree.dosboxprefs.DosBoxPreferences;
 
 public class DosBoxPreferences extends PreferenceActivity implements
     OnSharedPreferenceChangeListener, OnPreferenceClickListener {
@@ -130,35 +121,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
         version.setOnPreferenceClickListener(this);
 
         prefCatOther = (PreferenceCategory) findPreference("prefCatOther");
-        InputFilter[] filterArray = new InputFilter[2];
-        filterArray[0] = new InputFilter() {
-            @Override
-            public CharSequence filter(
-                CharSequence source,
-                int start,
-                int end,
-                Spanned dest,
-                int dstart,
-                int dend
-            ) {
-                for (int i = start; i < end; i++) {
-                    char c = source.charAt(i);
-
-                    if (!Character.isLetterOrDigit(c)) {
-                        return "";
-                    }
-
-                    if (Character.isLetter(c)) {
-                        if (!Character.isLowerCase(c)) {
-                            return "";
-                        }
-                    }
-                }
-
-                return null;
-            }
-        };
-        filterArray[1] = new InputFilter.LengthFilter(1);
     }
 
     @Override
