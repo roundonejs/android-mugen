@@ -84,10 +84,6 @@ public class DBMain extends Activity {
     public static native void nativePause(int state);
     public static native void nativeStop();
     public static native void nativePrefs();
-    public static native boolean nativeHasNEON(Object ctx);
-    public static native boolean nativeIsARMv7(Object ctx);
-    public static native boolean nativeIsARMv15(Object ctx);
-    public static native int nativeGetCPUFamily();
 
     public DBGLSurfaceView mSurfaceView = null;
     public DosBoxAudio mAudioDevice = null;

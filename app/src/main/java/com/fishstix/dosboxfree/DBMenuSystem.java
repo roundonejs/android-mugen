@@ -147,11 +147,7 @@ public class DBMenuSystem {
                 out.println("frameskip=0");
                 out.println();
                 out.println("[cpu]");
-                // if (DBMain.nativeGetCPUFamily() == 3) { // mips cpu - disable dynamic core
-                // out.println("core=normal");
-                // } else {
                 out.println("core=" + prefs.getString("doscpu", "dynamic"));
-                // }
                 out.println("cputype=" + prefs.getString("doscputype", "auto"));
 
                 if (prefs.getString("doscycles", "-1").contentEquals("-1")) {
