@@ -1,6 +1,6 @@
 /*
  *  Copyright (C) 2012 Fishstix (Gene Ruebsamen - ruebsamen.gene@gmail.com)
- *  
+ *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
@@ -23,16 +23,10 @@ import android.view.InputDevice;
 
 import com.fishstix.dosboxfree.dosboxprefs.preference.HardCodeWrapper;
 
-
-public class GingerbreadEvent extends HardCodeWrapper{
-	@Override
-	public String hardCodeToString(int keycode) {
-		return "KEYCODE_" + String.valueOf(keycode);
-	}
-	
-	@SuppressLint("NewApi")
-	@Override
-	public int[] getDeviceIds() {
-		return InputDevice.getDeviceIds();
-	}
+public class GingerbreadEvent extends HardCodeWrapper {
+    @SuppressLint("NewApi")
+    @Override
+    public int[] getDeviceIds() {
+        return InputDevice.getDeviceIds();
+    }
 }

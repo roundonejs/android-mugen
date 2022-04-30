@@ -41,13 +41,10 @@ import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.text.InputFilter;
 import android.text.Spanned;
-import android.view.KeyCharacterMap;
-import android.view.KeyEvent;
 import android.widget.Toast;
 
 import com.fishstix.dosboxfree.R;
 import com.fishstix.dosboxfree.dosboxprefs.DosBoxPreferences;
-import com.fishstix.dosboxfree.dosboxprefs.preference.HardCodeWrapper;
 
 public class DosBoxPreferences extends PreferenceActivity implements
     OnSharedPreferenceChangeListener, OnPreferenceClickListener {
@@ -73,8 +70,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
     private Preference confreset = null;
     private Preference version = null;
 
-    public static final int XPERIA_BACK_BUTTON = 72617;
-
     public static final String CONFIG_FILE = "dosbox.conf";
     public String CONFIG_PATH;
     public String STORAGE_PATH;
@@ -82,10 +77,8 @@ public class DosBoxPreferences extends PreferenceActivity implements
     private PreferenceCategory prefCatOther = null;
 
     private SharedPreferences prefs;
-    private static HardCodeWrapper kw = HardCodeWrapper.newInstance();
 
     private Context ctx = null;
-    private static boolean isExperiaPlay = false;
 
     private static final int TOUCHSCREEN_MOUSE = 0;
     private static final int TOUCHSCREEN_JOY = 1;
@@ -166,14 +159,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
             }
         };
         filterArray[1] = new InputFilter.LengthFilter(1);
-
-        // check for Xperia Play
-        if (
-            android.os.Build.DEVICE.equalsIgnoreCase("zeus") ||
-            android.os.Build.DEVICE.contains("R800")
-        ) {
-            isExperiaPlay = true;
-        }
     }
 
     @Override
@@ -259,115 +244,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
         ) {
             Toast.makeText(ctx, R.string.restart, Toast.LENGTH_SHORT).show();
         }
-    }
-
-    public static String hardCodeToString(int keycode) {
-        switch (keycode) {
-            case KeyEvent.KEYCODE_DPAD_UP:         return "KEYCODE_DPAD_UP";
-            case KeyEvent.KEYCODE_DPAD_DOWN:     return "KEYCODE_DPAD_DOWN";
-            case KeyEvent.KEYCODE_DPAD_LEFT:     return "KEYCODE_DPAD_LEFT";
-            case KeyEvent.KEYCODE_DPAD_RIGHT:    return "KEYCODE_DPAD_RIGHT";
-            case KeyEvent.KEYCODE_DPAD_CENTER:
-
-                if (isExperiaPlay) {
-                    if (isXOkeysSwapped()) {
-                        return "KEYCODE_SONY_O";
-                    } else {
-                        return "KEYCODE_SONY_X";
-                    }
-                } else {
-                    return "KEYCODE_DPAD_CENTER";
-                }
-
-            case KeyEvent.KEYCODE_CAMERA:        return "KEYCODE_CAMERA";
-            case KeyEvent.KEYCODE_MEDIA_PREVIOUS: return
-                    "KEYCODE_MEDIA_PREVIOUS";
-            case KeyEvent.KEYCODE_MEDIA_NEXT:    return "KEYCODE_MEDIA_NEXT";
-            case KeyEvent.KEYCODE_MEDIA_REWIND:    return "KEYCODE_MEDIA_REWIND";
-            case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:    return
-                    "KEYCODE_MEDIA_FAST_FORWARD";
-            case KeyEvent.KEYCODE_MEDIA_STOP:    return "KEYCODE_MEDIA_STOP";
-            case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE: return
-                    "KEYCODE_MEDIA_PLAY_PAUSE";
-            case KeyEvent.KEYCODE_MUTE:            return "KEYCODE_MUTE";
-            case KeyEvent.KEYCODE_ALT_LEFT:        return "KEYCODE_ALT_LEFT";
-            case KeyEvent.KEYCODE_ALT_RIGHT:    return "KEYCODE_ALT_RIGHT";
-            case KeyEvent.KEYCODE_CLEAR:        return "KEYCODE_CLEAR";
-            case KeyEvent.KEYCODE_ENVELOPE:        return "KEYCODE_ENVELOPE";
-            case KeyEvent.KEYCODE_EXPLORER:        return "KEYCODE_EXPLORER";
-            case KeyEvent.KEYCODE_FOCUS:        return "KEYCODE_FOCUS";
-            case KeyEvent.KEYCODE_BACK:         return "KEYCODE_BACK";
-            case KeyEvent.KEYCODE_VOLUME_UP:    return "KEYCODE_VOLUME_UP";
-            case KeyEvent.KEYCODE_VOLUME_DOWN:    return "KEYCODE_VOLUME_DOWN";
-            // handle virtual buttons
-            case HardCodeWrapper.KEYCODE_VIRTUAL_A:    return
-                    "KEYCODE_VIRTUAL_A";
-            case HardCodeWrapper.KEYCODE_VIRTUAL_B:    return
-                    "KEYCODE_VIRTUAL_B";
-            case HardCodeWrapper.KEYCODE_VIRTUAL_C:    return
-                    "KEYCODE_VIRTUAL_C";
-            case HardCodeWrapper.KEYCODE_VIRTUAL_D:    return
-                    "KEYCODE_VIRTUAL_D";
-
-            // handle gamepad diagonals
-            case HardCodeWrapper.KEYCODE_DPAD_UP_RIGHT: return
-                    "KEYCODE_DPAD_UP_RIGHT";
-            case HardCodeWrapper.KEYCODE_DPAD_UP_LEFT: return
-                    "KEYCODE_DPAD_UP_LEFT";
-            case HardCodeWrapper.KEYCODE_DPAD_DOWN_RIGHT: return
-                    "KEYCODE_DPAD_DOWN_RIGHT";
-            case HardCodeWrapper.KEYCODE_DPAD_DOWN_LEFT: return
-                    "KEYCODE_DPAD_DOWN_LEFT";
-
-            case XPERIA_BACK_BUTTON:
-
-                if (isXOkeysSwapped()) {
-                    return "KEYCODE_SONY_X";
-                } else {
-                    return "KEYCODE_SONY_O";
-                }
-
-            case HardCodeWrapper.KEYCODE_BUTTON_X:
-
-                if (isExperiaPlay) {
-                    return "KEYCODE_SONY_SQUARE";
-                }
-                else {
-                    return "KEYCODE_BUTTON_X";
-                }
-
-            case HardCodeWrapper.KEYCODE_BUTTON_Y:
-
-                if (isExperiaPlay) {
-                    return "KEYCODE_SONY_TRIANGLE";
-                }
-                else {
-                    return "KEYCODE_BUTTON_Y";
-                }
-
-            default:
-                return kw.hardCodeToString(keycode);
-        }
-    }
-
-    private static final char DEFAULT_O_BUTTON_LABEL = 0x25CB;   // hex for WHITE_CIRCLE
-    private static boolean isXOkeysSwapped() {
-        boolean flag = false;
-        int[] ids = kw.getDeviceIds();
-
-        for (int i = 0; ids != null && i < ids.length; i++) {
-            KeyCharacterMap kcm = KeyCharacterMap.load(ids[i]);
-
-            if (
-                (kcm != null) && (DEFAULT_O_BUTTON_LABEL ==
-                kcm.getDisplayLabel(KeyEvent.KEYCODE_DPAD_CENTER))
-            ) {
-                flag = true;
-                break;
-            }
-        }
-
-        return flag;
     }
 
     @Override

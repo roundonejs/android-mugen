@@ -1,6 +1,6 @@
 /*
  *  Copyright (C) 2012 Fishstix (Gene Ruebsamen - ruebsamen.gene@gmail.com)
- *  
+ *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
@@ -24,17 +24,10 @@ import android.view.KeyEvent;
 
 import com.fishstix.dosboxfree.dosboxprefs.preference.HardCodeWrapper;
 
-
 @SuppressLint("NewApi")
-public class ICSKeyEvent extends HardCodeWrapper{
-	@SuppressLint("NewApi")
-	@Override
-	public String hardCodeToString(int keycode) {
-		return KeyEvent.keyCodeToString(keycode);
-	}
-	
-	@Override
-	public int[] getDeviceIds() {
-		return InputDevice.getDeviceIds();
-	}
+public class ICSKeyEvent extends HardCodeWrapper {
+    @Override
+    public int[] getDeviceIds() {
+        return InputDevice.getDeviceIds();
+    }
 }
