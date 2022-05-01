@@ -107,8 +107,7 @@ public class SeekBarPreference extends DialogPreference implements SeekBar.
 
         if (restore) {
             mValue = shouldPersist() ? getPersistedInt(mDefault) : 0;
-        }
-        else {
+        } else {
             mValue = (Integer) defaultValue;
         }
     }

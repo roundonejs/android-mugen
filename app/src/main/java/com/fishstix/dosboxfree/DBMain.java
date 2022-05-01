@@ -128,7 +128,6 @@ public class DBMain extends Activity {
 
         System.loadLibrary("dosbox");
 
-
         mFrameLayout = (FrameLayout) findViewById(R.id.mFrame);
         mSurfaceView = (DBGLSurfaceView) findViewById(R.id.mSurf);
         mJoystickView = (JoystickView) findViewById(R.id.mJoystickView);
@@ -230,8 +229,7 @@ public class DBMain extends Activity {
     }
 
     private void shutDownDosBox() {
-        boolean retry;
-        retry = true;
+        boolean retry = true;
 
         while (retry) {
             try {
@@ -323,8 +321,7 @@ public class DBMain extends Activity {
             if (mSurfaceView.mDirty.get()) {
                 mSurfaceView.mStartLine = Math.min(mSurfaceView.mStartLine, s);
                 mSurfaceView.mEndLine = Math.max(mSurfaceView.mEndLine, e);
-            }
-            else {
+            } else {
                 mSurfaceView.mStartLine = s;
                 mSurfaceView.mEndLine = e;
             }
@@ -369,9 +366,8 @@ public class DBMain extends Activity {
         if (mAudioDevice != null) {
             return mAudioDevice.initAudio(rate, channels, encoding, bufSize);
         }
-        else {
-            return 0;
-        }
+
+        return 0;
     }
 
     public void callbackAudioShutdown() {
@@ -390,9 +386,8 @@ public class DBMain extends Activity {
         if (mAudioDevice != null) {
             return mAudioDevice.mAudioBuffer;
         }
-        else {
-            return null;
-        }
+
+        return null;
     }
 
     public Handler mHandler = new Handler() {

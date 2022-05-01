@@ -44,11 +44,17 @@ public abstract class TouchEventWrapper {
 
         if (sdkVersion < Build.VERSION_CODES.ECLAIR) {
             return new CupcakeTouchEvent();
-        } else if (sdkVersion < Build.VERSION_CODES.GINGERBREAD) {
+        }
+
+        if (sdkVersion < Build.VERSION_CODES.GINGERBREAD) {
             return new FroyoTouchEvent();
-        } else if (sdkVersion < Build.VERSION_CODES.HONEYCOMB_MR1) {
+        }
+
+        if (sdkVersion < Build.VERSION_CODES.HONEYCOMB_MR1) {
             return new GingerbreadTouchEvent();
-        } else if (sdkVersion < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+        }
+
+        if (sdkVersion < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             return new HoneycombTouchEvent();
         }
 
