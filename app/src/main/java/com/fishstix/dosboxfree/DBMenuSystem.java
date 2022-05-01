@@ -22,7 +22,6 @@ package com.fishstix.dosboxfree;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,21 +35,14 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.content.res.AssetManager;
-import android.net.Uri;
-import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.TypedValue;
-import android.view.KeyEvent;
 import android.view.ViewGroup.LayoutParams;
 
 import com.fishstix.dosboxfree.dosboxprefs.DosBoxPreferences;
 
 public class DBMenuSystem {
     private static final String mPrefCycleString = "max";       // default slow system
-    private static final Uri CONTENT_URI = Uri.parse(
-        "content://com.fishstix.dosboxlauncher.files/"
-    );
     private static final int MAX_MEMORY = 128;
 
     // following must sync with AndroidOSfunc.cpp
@@ -378,55 +370,6 @@ public class DBMenuSystem {
         return Math.min(MAX_MEMORY, maxMem);
     }
 
-    public static void copyConfigFile(final DBMain context) {
-        try {
-
-            InputStream myInput = new FileInputStream(
-                context.mConfPath + context.mConfFile
-            );
-            myInput.close();
-            myInput = null;
-        } catch (FileNotFoundException f) {
-            try {
-                InputStream myInput =
-                    context.getAssets().open(context.mConfFile);
-                OutputStream myOutput = new FileOutputStream(
-                    context.mConfPath + context.mConfFile
-                );
-                byte[] buffer = new byte[1024];
-                int length;
-
-                while ((length = myInput.read(buffer)) > 0) {
-                    myOutput.write(buffer, 0, length);
-                }
-
-                myOutput.flush();
-                myOutput.close();
-                myInput.close();
-            } catch (IOException e) { }
-        } catch (IOException e) { }
-    }
-
-
-    static public void savePreference(
-        DBMain context,
-        String key,
-        String value
-    ) {
-        SharedPreferences sharedPrefs =
-            PreferenceManager.getDefaultSharedPreferences(context);
-
-        if (sharedPrefs != null) {
-            SharedPreferences.Editor editor = sharedPrefs.edit();
-
-            if (editor != null) {
-                editor.putString(key, value);
-
-                editor.commit();
-            }
-        }
-    }
-
     static public void saveBooleanPreference(
         Context context,
         String key,
@@ -445,21 +388,6 @@ public class DBMenuSystem {
         }
     }
 
-    static public boolean getBooleanPreference(Context context, String key) {
-        SharedPreferences sharedPrefs =
-            PreferenceManager.getDefaultSharedPreferences(context);
-
-        return sharedPrefs.getBoolean(key, false);
-    }
-
-    static public void doShowMenu(DBMain context) {
-        context.openOptionsMenu();
-    }
-
-    static public void doHideMenu(DBMain context) {
-        context.closeOptionsMenu();
-    }
-
     static public void doConfirmQuit(final DBMain context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(R.string.app_name);
@@ -475,85 +403,6 @@ public class DBMenuSystem {
         );
         builder.setNegativeButton("Cancel", null);
         builder.create().show();
-    }
-
-    static public void doShowTextDialog(final DBMain context, String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(R.string.app_name);
-        builder.setMessage(message);
-
-        builder.setPositiveButton("OK", null);
-
-        builder.create().show();
-    }
-
-    public static void doSendDownUpKey(
-        final DBMain context,
-        final int keyCode
-    ) {
-        DosBoxControl.pressNativeKey(keyCode);
-        DosBoxControl.releaseNativeKey(keyCode);
-    }
-
-    public static void getData(DBMain context, String pid) {
-        try {
-            InputStream is = context.getContentResolver().openInputStream(
-                Uri.parse(
-                    CONTENT_URI + pid + ".xml"
-                )
-            );
-            FileOutputStream fostream;
-            // Samsung workaround:
-            File file = new File(
-                "/dbdata/databases/com.fishstix.dosbox/shared_prefs/"
-            );
-
-            if (file.isDirectory() && file.exists()) {
-                // samsung
-                fostream = new FileOutputStream(
-                    "/dbdata/databases/com.fishstix.dosbox/shared_prefs/" + pid +
-                    ".xml"
-                );
-            } else {
-                // every one else.
-                fostream = new FileOutputStream(
-                    context.getFilesDir() + "/../shared_prefs/" + pid + ".xml"
-                );
-            }
-
-            PrintStream out = new PrintStream(fostream);
-            Scanner scanner = new Scanner(is);
-
-            while (scanner.hasNextLine()) {
-                out.println(scanner.nextLine());
-            }
-
-            out.flush();
-            is.close();
-            out.close();
-            scanner.close();
-        } catch (FileNotFoundException e1) {
-            e1.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void CopyAsset(DBMain ctx, String assetfile) {
-        AssetManager assetManager = ctx.getAssets();
-
-        InputStream in = null;
-        OutputStream out = null;
-        try {
-            in = assetManager.open(assetfile);       // if files resides inside the "Files" directory itself
-            out = ctx.openFileOutput(assetfile, Context.MODE_PRIVATE);
-            copyFile(in, out);
-            in.close();
-            in = null;
-            out.flush();
-            out.close();
-            out = null;
-        } catch (Exception e) { }
     }
 
     public static void CopyROM(DBMain ctx, File infile) {
