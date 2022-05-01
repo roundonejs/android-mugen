@@ -62,11 +62,149 @@ public class DBMenuSystem {
         final DBMain context,
         final SharedPreferences prefs
     ) {
+        loadDosBoxConfiguration(context, prefs);
+        // SCALE SCREEN
+        context.mSurfaceView.mScale = prefs.getBoolean("confscale", false);
+
+        // SCREEN SCALE FACTOR
+        context.mPrefScaleFactor = prefs.getInt("confresizefactor", 100);
+
+        // SCALE MODE
+        if (Integer.valueOf(prefs.getString("confscalemode", "0")) == 0) {
+            context.mPrefScaleFilterOn = false;
+        } else {
+            context.mPrefScaleFilterOn = true;
+        }
+
+        try {
+            DBMain.nativeSetOption(
+                DBMenuSystem.DOSBOX_OPTION_ID_CYCLES,
+                Integer.valueOf(
+                    prefs.getString(
+                        "doscycles",
+                        "5000"
+                    )
+                ),
+                null,
+                true
+            );
+        } catch (NumberFormatException e) {
+            // set default to 5000 cycles on exception
+            DBMain.nativeSetOption(
+                DBMenuSystem.DOSBOX_OPTION_ID_CYCLES,
+                2000,
+                null,
+                true
+            );
+        }
+
+        // Set Frameskip
+        DBMain.nativeSetOption(
+            DBMenuSystem.DOSBOX_OPTION_ID_FRAMESKIP,
+            Integer.valueOf(
+                prefs.getString(
+                    "dosframeskip",
+                    "2"
+                )
+            ),
+            null,
+            true
+        );
+
+        // TURBO CYCLE
+        DBMain.nativeSetOption(
+            DOSBOX_OPTION_ID_CYCLE_HACK_ON,
+            prefs.getBoolean("confturbocycle", false) ? 1 : 0,
+            null,
+            true
+        );
+        // TURBO VGA
+        DBMain.nativeSetOption(
+            DOSBOX_OPTION_ID_REFRESH_HACK_ON,
+            prefs.getBoolean(
+                "confturbovga",
+                false
+            ) ? 1 : 0,
+            null,
+            true
+        );
+        // TURBO AUDIO
+        context.mPrefMixerHackOn = prefs.getBoolean("confturbomixer", true);
+        DBMain.nativeSetOption(
+            DOSBOX_OPTION_ID_MIXER_HACK_ON,
+            context.mPrefMixerHackOn ? 1 : 0,
+            null,
+            true
+        );
+        // 3DFX (GLIDE) EMULATION
+        DBMain.nativeSetOption(
+            DBMenuSystem.DOSBOX_OPTION_ID_GLIDE_ENABLE,
+            0,
+            null,
+            true
+        );
+        // AUTO CPU
+        DBMain.nativeSetOption(
+            DBMenuSystem.DOSBOX_OPTION_ID_AUTO_CPU_ON,
+            0,
+            null,
+            true
+        );
+
+        // VIRTUAL JOYSTICK
+        // test enabled
+        if (prefs.getBoolean("confjoyoverlay", false)) {
+            context.mHandler.sendMessage(
+                context.mHandler.obtainMessage(
+                    DBMain.
+                    HANDLER_ADD_JOYSTICK,
+                    0,
+                    0
+                )
+            );
+        } else {
+            context.mHandler.sendMessage(
+                context.mHandler.obtainMessage(
+                    DBMain.
+                    HANDLER_REMOVE_JOYSTICK,
+                    0,
+                    0
+                )
+            );
+        }
+
+        LayoutParams params = context.mJoystickView.getLayoutParams();
+        params.height = (int) TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            175,
+            context.getResources().getDisplayMetrics()
+        );
+        context.mJoystickView.invalidate();
+
+        context.mSurfaceView.forceRedraw();
+    }
+
+    private static void loadDosBoxConfiguration(
+        final DBMain context,
+        final SharedPreferences prefs
+    ) {
+        File configurationFile = new File(
+            context.mConfPath + context.mConfFile
+        );
+
+        if (!configurationFile.exists()) {
+            writeDosBoxConfigurationFile(context, prefs);
+        }
+    }
+
+    private static void writeDosBoxConfigurationFile(
+        final DBMain context,
+        final SharedPreferences prefs
+    ) {
         PrintStream out;
         InputStream myInput;
         try {
-            myInput =
-                context.getAssets().open(DosBoxPreferences.CONFIG_FILE);
+            myInput = context.getAssets().open(DosBoxPreferences.CONFIG_FILE);
             Scanner scanner = new Scanner(myInput);
             out = new PrintStream(
                 new FileOutputStream(context.mConfPath + context.mConfFile)
@@ -236,126 +374,6 @@ public class DBMenuSystem {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        // SCALE SCREEN
-        context.mSurfaceView.mScale = prefs.getBoolean("confscale", false);
-
-        // SCREEN SCALE FACTOR
-        context.mPrefScaleFactor = prefs.getInt("confresizefactor", 100);
-
-        // SCALE MODE
-        if (Integer.valueOf(prefs.getString("confscalemode", "0")) == 0) {
-            context.mPrefScaleFilterOn = false;
-        } else {
-            context.mPrefScaleFilterOn = true;
-        }
-
-        try {
-            DBMain.nativeSetOption(
-                DBMenuSystem.DOSBOX_OPTION_ID_CYCLES,
-                Integer.valueOf(
-                    prefs.getString(
-                        "doscycles",
-                        "5000"
-                    )
-                ),
-                null,
-                true
-            );
-        } catch (NumberFormatException e) {
-            // set default to 5000 cycles on exception
-            DBMain.nativeSetOption(
-                DBMenuSystem.DOSBOX_OPTION_ID_CYCLES,
-                2000,
-                null,
-                true
-            );
-        }
-
-        // Set Frameskip
-        DBMain.nativeSetOption(
-            DBMenuSystem.DOSBOX_OPTION_ID_FRAMESKIP,
-            Integer.valueOf(
-                prefs.getString(
-                    "dosframeskip",
-                    "2"
-                )
-            ),
-            null,
-            true
-        );
-
-        // TURBO CYCLE
-        DBMain.nativeSetOption(
-            DOSBOX_OPTION_ID_CYCLE_HACK_ON,
-            prefs.getBoolean("confturbocycle", false) ? 1 : 0,
-            null,
-            true
-        );
-        // TURBO VGA
-        DBMain.nativeSetOption(
-            DOSBOX_OPTION_ID_REFRESH_HACK_ON,
-            prefs.getBoolean(
-                "confturbovga",
-                false
-            ) ? 1 : 0,
-            null,
-            true
-        );
-        // TURBO AUDIO
-        context.mPrefMixerHackOn = prefs.getBoolean("confturbomixer", true);
-        DBMain.nativeSetOption(
-            DOSBOX_OPTION_ID_MIXER_HACK_ON,
-            context.mPrefMixerHackOn ? 1 : 0,
-            null,
-            true
-        );
-        // 3DFX (GLIDE) EMULATION
-        DBMain.nativeSetOption(
-            DBMenuSystem.DOSBOX_OPTION_ID_GLIDE_ENABLE,
-            0,
-            null,
-            true
-        );
-        // AUTO CPU
-        DBMain.nativeSetOption(
-            DBMenuSystem.DOSBOX_OPTION_ID_AUTO_CPU_ON,
-            0,
-            null,
-            true
-        );
-
-        // VIRTUAL JOYSTICK
-        // test enabled
-        if (prefs.getBoolean("confjoyoverlay", false)) {
-            context.mHandler.sendMessage(
-                context.mHandler.obtainMessage(
-                    DBMain.
-                    HANDLER_ADD_JOYSTICK,
-                    0,
-                    0
-                )
-            );
-        } else {
-            context.mHandler.sendMessage(
-                context.mHandler.obtainMessage(
-                    DBMain.
-                    HANDLER_REMOVE_JOYSTICK,
-                    0,
-                    0
-                )
-            );
-        }
-
-        LayoutParams params = context.mJoystickView.getLayoutParams();
-        params.height = (int) TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP,
-            175,
-            context.getResources().getDisplayMetrics()
-        );
-        context.mJoystickView.invalidate();
-
-        context.mSurfaceView.forceRedraw();
     }
 
     private static int getMemorySize(final DBMain context) {
