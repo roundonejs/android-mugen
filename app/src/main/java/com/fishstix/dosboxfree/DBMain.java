@@ -97,7 +97,6 @@ public class DBMain extends Activity {
     public int mPrefScaleFactor = 100;
     private Context mContext;
 
-    // Private Views
     public JoystickView mJoystickView = null;
 
     @Override
@@ -123,7 +122,6 @@ public class DBMain extends Activity {
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        // copy mt32 libs (if necessary)
         if (!DBMenuSystem.MT32_ROM_exists(this)) {
             getMIDIRoms();
         }
@@ -222,7 +220,6 @@ public class DBMain extends Activity {
     void stopDosBox() {
         nativePause(0);        // it won't die if not running
 
-        // stop audio AFTER above
         if (mAudioDevice != null) {
             mAudioDevice.pause();
         }
@@ -276,12 +273,9 @@ public class DBMain extends Activity {
 
         DBMenuSystem.loadPreference(this, prefs);
 
-        // set rotation
         if (Integer.valueOf(prefs.getString("confrotation", "0")) == 0) {
-            // auto
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
         } else if (Integer.valueOf(prefs.getString("confrotation", "0")) == 1) {
-            // portrait
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -350,15 +344,11 @@ public class DBMain extends Activity {
         Bitmap newBitmap = null;
         newBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.RGB_565);
 
-        // newBitmap = Bitmap.createBitmap(OpenGLRenderer.getNearestPowerOfTwoWithShifts(w), OpenGLRenderer.getNearestPowerOfTwoWithShifts(h), Bitmap.Config.RGB_565);
         if (newBitmap != null) {
             mSurfaceView.mBitmap = null;
             mSurfaceView.mBitmap = newBitmap;
 
             // locnet, 2011-04-28, support 2.1 or below
-            // mSurfaceView.mVideoBuffer = null;
-            // mSurfaceView.mVideoBuffer = ByteBuffer.allocateDirect(w * h * DBGLSurfaceView.PIXEL_BYTES);
-            // mSurfaceView.mVideoBuffer = ByteBuffer.allocateDirect(OpenGLRenderer.getNearestPowerOfTwoWithShifts(w) * OpenGLRenderer.getNearestPowerOfTwoWithShifts(h) * DBGLSurfaceView.PIXEL_BYTES);
             return mSurfaceView.mBitmap;
         }
 
@@ -455,7 +445,6 @@ public class DBMain extends Activity {
                         msg.getData().getString("msg"),
                         Toast.LENGTH_LONG
                     ).show();
-                    // do something in the user interface to display data from message
             }
         }
     };
@@ -466,16 +455,13 @@ public class DBMain extends Activity {
 
         File romdir = getExternalFilesDir(null);
 
-        // File rom = null;
         if (romdir != null) {
             for (File f : romdir.listFiles()) {
                 if (f.getName().equalsIgnoreCase("MT32_CONTROL.ROM")) {
-                    // found ROM
                     ctrlrom = f;
                 }
 
                 if (f.getName().equalsIgnoreCase("MT32_PCM.ROM")) {
-                    // found ROM
                     pcmrom = f;
                 }
             }
@@ -500,12 +486,10 @@ public class DBMain extends Activity {
 
             for (File f : romdir.listFiles()) {
                 if (f.getName().equalsIgnoreCase("MT32_CONTROL.ROM")) {
-                    // found ROM
                     ctrlrom = f;
                 }
 
                 if (f.getName().equalsIgnoreCase("MT32_PCM.ROM")) {
-                    // found ROM
                     pcmrom = f;
                 }
             }

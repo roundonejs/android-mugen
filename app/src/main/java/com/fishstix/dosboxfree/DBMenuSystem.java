@@ -326,8 +326,6 @@ public class DBMenuSystem {
             true
         );
         // AUTO CPU
-        // context.mPrefAutoCPUOn = prefs.getBoolean("dosautocpu", false);
-        // DBMain.nativeSetOption(DBMenuSystem.DOSBOX_OPTION_ID_AUTO_CPU_ON, context.mPrefAutoCPUOn?1:0,null,DBMain.getLicResult());
         DBMain.nativeSetOption(
             DBMenuSystem.DOSBOX_OPTION_ID_AUTO_CPU_ON,
             0,
@@ -422,9 +420,6 @@ public class DBMenuSystem {
             SharedPreferences.Editor editor = sharedPrefs.edit();
 
             if (editor != null) {
-                // if (PREF_KEY_REFRESH_HACK_ON.equals(key)) {
-                // editor.putBoolean(PREF_KEY_REFRESH_HACK_ON, context.mPrefRefreshHackOn);
-                // }
                 editor.putString(key, value);
 
                 editor.commit();
@@ -538,10 +533,8 @@ public class DBMenuSystem {
             out.close();
             scanner.close();
         } catch (FileNotFoundException e1) {
-            // TODO Auto-generated catch block
             e1.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
