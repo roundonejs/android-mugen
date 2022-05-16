@@ -249,6 +249,8 @@ public class DBMenuSystem {
             }
 
             out.println("MUGEN.EXE");
+            printInformationOnDosBox(out);
+
             out.flush();
             out.close();
             myInput.close();
@@ -256,6 +258,43 @@ public class DBMenuSystem {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private static void printInformationOnDosBox(final PrintStream out) {
+        out.println("ECHO This game runs through a fork of DosBox Turbo.");
+        out.println("ECHO Fork: https://github.com/roundonejs/android-mugen");
+        out.println(
+            "ECHO DosBox Turbo: https://sites.google.com/site/dosboxturbo/"
+        );
+
+        out.println("ECHO DosBox Turbo licence:");
+        out.println(
+            "ECHO Copyright (C) 2012 Fishstix (ruebsamen.gene@gmail.com)"
+        );
+        out.println("ECHO.");
+        out.println(
+            "ECHO Copyright (C) 2011 Locnet (android.locnet@gmail.com)"
+        );
+        out.println("ECHO.");
+        out.println(
+            "ECHO This program is free software; you can redistribute it and/or modify"
+            + " it under the terms of the GNU General Public License as published by"
+            + " the Free Software Foundation; either version 2 of the License, or"
+            + " (at your option) any later version."
+        );
+        out.println("ECHO.");
+        out.println(
+            "ECHO This program is distributed in the hope that it will be useful,"
+            + " but WITHOUT ANY WARRANTY; without even the implied warranty of"
+            + " MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the"
+            + " GNU General Public License for more details."
+        );
+        out.println("ECHO.");
+        out.println(
+            "ECHO You should have received a copy of the GNU General Public License"
+            + " along with this program; if not, write to the Free Software"
+            + " Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA."
+        );
     }
 
     private static void loadAppConfiguration(
