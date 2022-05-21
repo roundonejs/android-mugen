@@ -90,8 +90,49 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer {
         return true;
     }
 
-    // Notice that I don't allocate the int[] at the beginning but use the one of the image
-    protected void loadSingleTexture(final GL10 gl, final Bitmap bmp) {
+    @Override
+    public void onDrawFrame(final GL10 gl) {
+        // Just clear the screen and depth buffer.
+        loadSingleTexture(gl, mBitmap);
+        gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
+        // Begin drawing
+        // --------------
+        // These function calls can be experimented with for various effects such as transparency
+        // although certain functionality maybe device specific.
+        gl.glShadeModel(GL10.GL_FLAT);
+        gl.glEnable(GL10.GL_BLEND);
+        gl.glBlendFunc(GL10.GL_ONE, GL10.GL_ONE_MINUS_SRC_ALPHA);
+        gl.glColor4x(0x10000, 0x10000, 0x10000, 0x10000);
+
+        // Setup correct projection matrix
+        gl.glMatrixMode(GL10.GL_PROJECTION);
+        gl.glPushMatrix();
+        gl.glLoadIdentity();
+        gl.glOrthof(0.0f, mViewWidth, 0.0f, mViewHeight, 0.0f, 1.0f);
+        gl.glMatrixMode(GL10.GL_MODELVIEW);
+        gl.glPushMatrix();
+        gl.glLoadIdentity();
+
+        gl.glEnable(GL10.GL_TEXTURE_2D);
+
+        gl.glBindTexture(GL10.GL_TEXTURE_2D, mTextureName[0]);
+        ((GL11Ext) gl).glDrawTexfOES(
+            mViewWidth - width - x,
+            mViewHeight - height - y,
+            0,
+            width,
+            height
+        );
+
+        // Finish drawing
+        gl.glDisable(GL10.GL_BLEND);
+        gl.glMatrixMode(GL10.GL_PROJECTION);
+        gl.glPopMatrix();
+        gl.glMatrixMode(GL10.GL_MODELVIEW);
+        gl.glPopMatrix();
+    }
+
+    private void loadSingleTexture(final GL10 gl, final Bitmap bmp) {
         gl.glBindTexture(GL10.GL_TEXTURE_2D, mTextureName[0]);
         gl.glTexParameterf(
             GL10.GL_TEXTURE_2D,
@@ -147,47 +188,5 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer {
                 mContext.mHandler.sendMessage(msg);
             }
         }
-    }
-
-    @Override
-    public void onDrawFrame(GL10 gl) {
-        // Just clear the screen and depth buffer.
-        loadSingleTexture(gl, mBitmap);
-        gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
-        // Begin drawing
-        // --------------
-        // These function calls can be experimented with for various effects such as transparency
-        // although certain functionality maybe device specific.
-        gl.glShadeModel(GL10.GL_FLAT);
-        gl.glEnable(GL10.GL_BLEND);
-        gl.glBlendFunc(GL10.GL_ONE, GL10.GL_ONE_MINUS_SRC_ALPHA);
-        gl.glColor4x(0x10000, 0x10000, 0x10000, 0x10000);
-
-        // Setup correct projection matrix
-        gl.glMatrixMode(GL10.GL_PROJECTION);
-        gl.glPushMatrix();
-        gl.glLoadIdentity();
-        gl.glOrthof(0.0f, mViewWidth, 0.0f, mViewHeight, 0.0f, 1.0f);
-        gl.glMatrixMode(GL10.GL_MODELVIEW);
-        gl.glPushMatrix();
-        gl.glLoadIdentity();
-
-        gl.glEnable(GL10.GL_TEXTURE_2D);
-
-        gl.glBindTexture(GL10.GL_TEXTURE_2D, mTextureName[0]);
-        ((GL11Ext) gl).glDrawTexfOES(
-            mViewWidth - width - x,
-            mViewHeight - height - y,
-            0,
-            width,
-            height
-        );
-
-        // Finish drawing
-        gl.glDisable(GL10.GL_BLEND);
-        gl.glMatrixMode(GL10.GL_PROJECTION);
-        gl.glPopMatrix();
-        gl.glMatrixMode(GL10.GL_MODELVIEW);
-        gl.glPopMatrix();
     }
 }
