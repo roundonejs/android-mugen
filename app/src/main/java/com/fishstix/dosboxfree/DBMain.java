@@ -77,10 +77,8 @@ public class DBMain extends Activity {
     private DosBoxAudio mAudioDevice = null;
     private DosBoxThread mDosBoxThread = null;
     private SharedPreferences prefs;
-    private static DBMain mDosBoxLauncher = null;
+    private DBMain mContext;
     public MugenDirectoryCreator mugenDirectoryCreator;
-
-    private Context mContext;
 
     public JoystickView mJoystickView = null;
 
@@ -91,12 +89,10 @@ public class DBMain extends Activity {
             getAssets(),
             getApplication().getApplicationInfo().dataDir
         );
-        mDosBoxLauncher = this;
+        mContext = this;
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(R.layout.main);
-        mContext = this;
-
 
         mConfPath = DosBoxPreferences.getExternalDosBoxDir(mContext);
         getWindow().setFlags(
@@ -151,7 +147,7 @@ public class DBMain extends Activity {
     private void initDosBox() {
         mAudioDevice = new DosBoxAudio();
 
-        nativeInit(mDosBoxLauncher);
+        nativeInit(mContext);
 
         String argStartCommand = getIntent().getStringExtra(START_COMMAND_ID);
 
@@ -410,14 +406,14 @@ public class DBMain extends Activity {
                         false
                     );
                     Toast.makeText(
-                        mDosBoxLauncher,
+                        mContext,
                         msg.getData().getString("msg"),
                         Toast.LENGTH_LONG
                     ).show();
                     break;
                 default:
                     Toast.makeText(
-                        mDosBoxLauncher,
+                        mContext,
                         msg.getData().getString("msg"),
                         Toast.LENGTH_LONG
                     ).show();
