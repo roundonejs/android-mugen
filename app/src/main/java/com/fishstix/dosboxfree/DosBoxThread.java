@@ -25,7 +25,6 @@ import android.view.inputmethod.InputMethodManager;
 public class DosBoxThread extends Thread {
     private final DBMain mParent;
     private final DBGLSurfaceView mSurfaceView;
-    public boolean mDosBoxRunning = false;
 
     public DosBoxThread(final DBMain parent) {
         mParent = parent;
@@ -34,7 +33,6 @@ public class DosBoxThread extends Thread {
 
     public void run() {
         String path = mParent.mConfPath + mParent.mConfFile;
-        mDosBoxRunning = true;
 
         mParent.nativeStart(
             mParent,
@@ -58,7 +56,6 @@ public class DosBoxThread extends Thread {
             }
         }
 
-        mDosBoxRunning = false;
         mParent.finish();
     }
 }

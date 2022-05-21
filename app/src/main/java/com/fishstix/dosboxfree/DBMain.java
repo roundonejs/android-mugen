@@ -254,8 +254,6 @@ public class DBMain extends Activity {
     }
 
     private void pauseDosBox() {
-        mDosBoxThread.mDosBoxRunning = false;
-
         nativePause(1);
 
         if (mAudioDevice != null) {
@@ -299,7 +297,6 @@ public class DBMain extends Activity {
 
     private void resumeDosBox() {
         nativePause(0);
-        mDosBoxThread.mDosBoxRunning = true;
     }
 
     public void callbackExit() {
