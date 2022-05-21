@@ -20,16 +20,13 @@ package com.fishstix.dosboxfree.dosboxprefs;
 
 import java.io.File;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
-import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
@@ -38,7 +35,7 @@ import android.widget.Toast;
 import com.fishstix.dosboxfree.R;
 
 public class DosBoxPreferences extends PreferenceActivity implements
-    OnSharedPreferenceChangeListener, OnPreferenceClickListener {
+    OnSharedPreferenceChangeListener {
     private Preference doscpu = null;
     private Preference doscycles = null;
     private Preference dossbtype = null;
@@ -50,7 +47,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
     private Preference dospcspeaker = null;
     private Preference dosmachine = null;
     private Preference doscputype = null;
-    private Preference confreset = null;
     private Preference version = null;
 
     public static final String CONFIG_FILE = "dosbox.conf";
@@ -87,10 +83,7 @@ public class DosBoxPreferences extends PreferenceActivity implements
         dosems = (Preference) findPreference("dosems");
         dosumb = (Preference) findPreference("dosumb");
         dosmt32 = (Preference) findPreference("dosmt32");
-        confreset = (Preference) findPreference("confreset");
-        confreset.setOnPreferenceClickListener(this);
         version = (Preference) findPreference("version");
-        version.setOnPreferenceClickListener(this);
 
         prefCatOther = (PreferenceCategory) findPreference("prefCatOther");
     }
@@ -171,44 +164,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
         ) {
             Toast.makeText(ctx, R.string.restart, Toast.LENGTH_SHORT).show();
         }
-    }
-
-    @Override
-    public boolean onPreferenceClick(Preference preference) {
-        if (preference == confreset) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage(R.string.confirmreset)
-            .setCancelable(false)
-            .setPositiveButton(
-                "Yes",
-                new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    // reset prefs
-                    PreferenceManager.getDefaultSharedPreferences(
-                        getApplicationContext()
-                    ).edit().clear().commit();
-                    PreferenceManager.setDefaultValues(
-                        getApplicationContext(),
-                        R.xml.preferences,
-                        true
-                    );
-                    finish();
-                }
-            }
-            )
-            .setNegativeButton(
-                "No",
-                new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.cancel();
-                }
-            }
-            );
-            AlertDialog alert = builder.create();
-            alert.show();
-        }
-
-        return false;
     }
 
     public static String getExternalDosBoxDir(final Context ctx) {

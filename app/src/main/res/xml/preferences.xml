@@ -109,10 +109,6 @@
   <PreferenceCategory
       android:key="prefCatOther"
       android:title="Other">
-    <Preference
-       android:key="confreset"
-       android:title="Reset to Default"
-       android:summary="Reset all preferences to default values" />
     <ListPreference
        android:key="confoptimization"
         android:title="Optimizations"

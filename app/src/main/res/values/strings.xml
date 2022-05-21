@@ -50,7 +50,6 @@
 	<string name="clear">Clear</string>
 	<string name="keyboard">Keyboard</string>
 	<string name="noeditor">No system text editor installed.</string>
-	<string name="confirmreset">Confirm reset to default?</string>
 	<string name="confirmclear">Confirm clear all button maps?</string>
 	<string name="duplicatemap">Error: Duplicate Button Map. Try again.</string>
 	<string name="nomoremaps">No more hardware keymaps available.</string>
