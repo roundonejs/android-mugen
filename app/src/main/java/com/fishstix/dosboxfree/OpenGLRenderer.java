@@ -38,7 +38,7 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer {
     private Bitmap mBitmap;
     public int[] mCropWorkspace = {0, 0, 0, 0};
     public int x, y, width, height;
-    public int error_cnt = 0;
+    private int errorCounter;
     public boolean filter_on = false;
     private Context mContext;
 
@@ -65,7 +65,7 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer {
 
         GLU.gluOrtho2D(gl10, 0, mViewWidth, mViewHeight, 0);
         gl10.glGenTextures(1, mTextureName, 0);
-        error_cnt = 0;
+        errorCounter = 0;
     }
 
     @Override
@@ -87,16 +87,6 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer {
         mBitmap = b;
 
         return true;
-    }
-
-    public static int getNearestPowerOfTwoWithShifts(int x) {
-        if ((x & (x - 1)) == 0) {return x;}
-
-        for (int i = 1; i < 32; i = i * 2) {
-            x |= (x >>> i);
-        }
-
-        return x + 1;
     }
 
     // Notice that I don't allocate the int[] at the beginning but use the one of the image
@@ -139,11 +129,10 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer {
 
         int error = gl.glGetError();
 
-        if (error != GL10.GL_NO_ERROR)
-        {
-            error_cnt++;
+        if (error != GL10.GL_NO_ERROR) {
+            errorCounter++;
 
-            if (error_cnt > 10) {
+            if (errorCounter > 10) {
                 // send msg
                 Message msg = new Message();
                 msg.what = DBMain.HANDLER_DISABLE_GPU;
