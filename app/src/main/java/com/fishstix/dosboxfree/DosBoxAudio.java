@@ -25,12 +25,7 @@ import android.media.AudioTrack;
 
 public class DosBoxAudio {
     private AudioTrack mAudio = null;
-    private final DBMain mParent;
     public short[] mAudioBuffer = null;
-
-    public DosBoxAudio(final DBMain ctx) {
-        mParent = ctx;
-    }
 
     @SuppressWarnings("deprecation")
     public int initAudio(
@@ -58,9 +53,7 @@ public class DosBoxAudio {
             androidAudioBufSize = Math.max(androidAudioBufSize, bufSize);
         }
 
-        mAudioBuffer =
-            new short[bufSize >>
-                ((mParent.mPrefMixerHackOn == true) ? 3 : 2)];
+        mAudioBuffer = new short[bufSize >> 3];
         mAudio = new AudioTrack(
             AudioManager.STREAM_MUSIC,
             rate,

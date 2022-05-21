@@ -92,7 +92,6 @@ public class DBMain extends Activity {
     public MugenDirectoryCreator mugenDirectoryCreator;
 
     public boolean mPrefScaleFilterOn = false;
-    public boolean mPrefMixerHackOn = true;
     public String mPID = null;
     public int mPrefScaleFactor = 100;
     private Context mContext;
@@ -165,7 +164,7 @@ public class DBMain extends Activity {
     }
 
     private void initDosBox() {
-        mAudioDevice = new DosBoxAudio(this);
+        mAudioDevice = new DosBoxAudio();
 
         nativeInit(mDosBoxLauncher);
 
@@ -183,7 +182,7 @@ public class DBMain extends Activity {
         );
         nativeSetOption(
             DBMenuSystem.DOSBOX_OPTION_ID_MIXER_HACK_ON,
-            (mPrefMixerHackOn) ? 1 : 0,
+            1,
             null,
             true
         );

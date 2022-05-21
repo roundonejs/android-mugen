@@ -367,10 +367,9 @@ public class DBMenuSystem {
             true
         );
         // TURBO AUDIO
-        context.mPrefMixerHackOn = prefs.getBoolean("confturbomixer", true);
         DBMain.nativeSetOption(
             DOSBOX_OPTION_ID_MIXER_HACK_ON,
-            context.mPrefMixerHackOn ? 1 : 0,
+            1,
             null,
             true
         );

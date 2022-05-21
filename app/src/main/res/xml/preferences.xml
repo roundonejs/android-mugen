@@ -190,11 +190,6 @@
         android:title="Turbo VGA"
         android:defaultValue="true"
         android:summary="Experimental Turbo VGA" />
-      <CheckBoxPreference
-        android:key="confturbomixer"
-        android:title="Turbo Audio"
-        android:defaultValue="true"
-        android:summary="Experimental Low Latency Audio" />
   </PreferenceCategory>
   <PreferenceCategory
       android:key="prefCatOther"
