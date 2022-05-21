@@ -176,13 +176,7 @@ public class DBMenuSystem {
             out.println();
             out.println("[joystick]");
             out.println("joysticktype=2axis");
-            out.print("timed=");
-
-            if (prefs.getBoolean("dostimedjoy", false)) {
-                out.println("true");
-            } else {
-                out.println("false");
-            }
+            out.println("timed=false");
 
             out.println();
             out.println("[midi]");

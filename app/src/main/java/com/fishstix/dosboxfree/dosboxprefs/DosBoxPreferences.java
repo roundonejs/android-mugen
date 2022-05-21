@@ -51,7 +51,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
     private Preference dosumb = null;
     private Preference dosmt32 = null;
     private Preference dospcspeaker = null;
-    private Preference dostimedjoy = null;
     private Preference dosmachine = null;
     private Preference doscputype = null;
     private Preference confreset = null;
@@ -90,7 +89,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
         doskblayout = (Preference) findPreference("doskblayout");
         dospcspeaker = (Preference) findPreference("dospcspeaker");
         dosmachine = (Preference) findPreference("dosmachine");
-        dostimedjoy = (Preference) findPreference("dostimedjoy");
         dosxms = (Preference) findPreference("dosxms");
         dosems = (Preference) findPreference("dosems");
         dosumb = (Preference) findPreference("dosumb");
@@ -175,7 +173,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
             || (key.contentEquals("dosumb"))
             || (key.contentEquals("dospcspeaker"))
             || (key.contentEquals("dosmixerblocksize"))
-            || (key.contentEquals("conftimedjoy"))
             || (key.contentEquals("dosmachine"))
             || (key.contentEquals("doscputype"))
             || (key.contentEquals("dosmt32"))
