@@ -41,7 +41,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
     OnSharedPreferenceChangeListener, OnPreferenceClickListener {
     private Preference doscpu = null;
     private Preference doscycles = null;
-    private Preference dosframeskip = null;
     private Preference dossbtype = null;
     private Preference dossbrate = null;
     private Preference dosmixerblocksize = null;
@@ -82,7 +81,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
         doscpu = (Preference) findPreference("doscpu");
         doscputype = (Preference) findPreference("doscputype");
         doscycles = (Preference) findPreference("doscycles");
-        dosframeskip = (Preference) findPreference("dosframeskip");
         dossbtype = (Preference) findPreference("dossbtype");
         dossbrate = (Preference) findPreference("dossbrate");
         dosmixerblocksize = (Preference) findPreference("dosmixerblocksize");

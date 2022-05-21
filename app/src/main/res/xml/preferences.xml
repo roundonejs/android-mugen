@@ -9,13 +9,6 @@
     android:title="@string/pref_dbsettings"
     android:summary="@string/pref_advconfig">
       <ListPreference
-        android:key="dosframeskip"
-          android:title="Frame Skip"
-          android:entries="@array/dosframeskip"
-        android:entryValues="@array/dosframeskip_values"
-        android:defaultValue="2"
-          android:summary="@string/pref_frameskip" />
-      <ListPreference
         android:key="doscycles"
           android:title="Cycles"
           android:entries="@array/doscycles"

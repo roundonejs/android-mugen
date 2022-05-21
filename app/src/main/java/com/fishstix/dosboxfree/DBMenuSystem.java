@@ -294,12 +294,7 @@ public class DBMenuSystem {
         // Set Frameskip
         DBMain.nativeSetOption(
             DBMenuSystem.DOSBOX_OPTION_ID_FRAMESKIP,
-            Integer.valueOf(
-                prefs.getString(
-                    "dosframeskip",
-                    "2"
-                )
-            ),
+            0,
             null,
             true
         );
