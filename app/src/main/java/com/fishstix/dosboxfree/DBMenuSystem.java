@@ -133,14 +133,7 @@ public class DBMenuSystem {
             out.println("oplrate=" + prefs.getString("dossbrate", "22050"));
             out.println();
             out.println("[mixer]");
-            try {
-                out.println(
-                    "prebuffer=" +
-                    prefs.getInt("dosmixerprebuffer", 15)
-                );
-            } catch (Exception e) {
-                out.println("prebuffer=15");
-            }
+            out.println("prebuffer=15");
             out.println("rate=" + prefs.getString("dossbrate", "22050"));
             out.println(
                 "blocksize=" +

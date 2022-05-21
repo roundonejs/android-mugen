@@ -44,7 +44,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
     private Preference dosframeskip = null;
     private Preference dossbtype = null;
     private Preference dossbrate = null;
-    private Preference dosmixerprebuffer = null;
     private Preference dosmixerblocksize = null;
     private Preference doskblayout = null;
     private Preference dosems = null;
@@ -88,7 +87,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
         dosframeskip = (Preference) findPreference("dosframeskip");
         dossbtype = (Preference) findPreference("dossbtype");
         dossbrate = (Preference) findPreference("dossbrate");
-        dosmixerprebuffer = (Preference) findPreference("dosmixerprebuffer");
         dosmixerblocksize = (Preference) findPreference("dosmixerblocksize");
         doskblayout = (Preference) findPreference("doskblayout");
         dospcspeaker = (Preference) findPreference("dospcspeaker");
@@ -178,7 +176,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
             || (key.contentEquals("dosxms"))
             || (key.contentEquals("dosumb"))
             || (key.contentEquals("dospcspeaker"))
-            || (key.contentEquals("dosmixerprebuffer"))
             || (key.contentEquals("dosmixerblocksize"))
             || (key.contentEquals("confgpu"))
             || (key.contentEquals("conftimedjoy"))

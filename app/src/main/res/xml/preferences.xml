@@ -64,12 +64,6 @@
           android:entryValues="@array/dosmixerblocksize_values"
           android:defaultValue="1024"
           android:summary="@string/pref_mixerblocksize" />
-      <com.fishstix.dosboxfree.dosboxprefs.preference.SeekBarPreference android:key="dosmixerprebuffer"
-          android:title="Audio Pre-Buffer"
-          android:summary="@string/pref_mixerprebuffer"
-          android:dialogMessage="Audio Pre-Buffer (default: 15)"
-          android:defaultValue="15"
-          android:max="100" />
       <CheckBoxPreference
           android:key="dosmt32"
           android:title="MT-32 Midi Emulation"

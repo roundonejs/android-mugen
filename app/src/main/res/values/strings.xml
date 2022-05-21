@@ -70,7 +70,6 @@
 	<string name="pref_sbtype">Choose Soundblaster Emulation</string>
 	<string name="pref_sbrate">Choose the Audio Sample Rate/Quality</string>
 	<string name="pref_mixerblocksize">Audio Mixer Blocksize (larger values may reduce skipping)</string>
-	<string name="pref_mixerprebuffer">Audio Mixer Pre-Buffer (larger values may reduce skipping)</string>
 	<string name="pref_kblayout">Choose the Locale for the Keyboard Layout</string>
 
 	<string name="pref_mousejoymode">Use Joystick to control Mouse Pointer</string>
