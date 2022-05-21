@@ -84,10 +84,8 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer {
         GLU.gluOrtho2D(gl10, 0, mViewWidth, mViewHeight, 0);
     }
 
-    public boolean setBitmap(Bitmap b) {
-        mBitmap = b;
-
-        return true;
+    public void setBitmap(final Bitmap newBitmap) {
+        mBitmap = newBitmap;
     }
 
     @Override
