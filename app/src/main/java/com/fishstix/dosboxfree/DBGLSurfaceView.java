@@ -177,8 +177,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                 mRenderer.x = (getWidth() - mRenderer.width) / 2;
 
                 if (isLandscape) {
-                    mRenderer.width *= (mParent.mPrefScaleFactor * 0.01f);
-                    mRenderer.height *= (mParent.mPrefScaleFactor * 0.01f);
                     mRenderer.x = (getWidth() - mRenderer.width) / 2;
 
                     mRenderer.y = (getHeight() - mRenderer.height) / 2;

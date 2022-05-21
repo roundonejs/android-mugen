@@ -145,12 +145,6 @@
         android:title="Screen Scaling"
         android:defaultValue="true"
         android:summary="Enable Screen Scaling" />
-    <com.fishstix.dosboxfree.dosboxprefs.preference.SeekBarPreference android:key="confresizefactor"
-        android:title="Screen Scale Factor"
-        android:summary="Scale Factor for Scale Mode (Landscape)"
-        android:dialogMessage="Landscape Scale Factor"
-        android:defaultValue="100"
-        android:max="100" />
     <ListPreference
         android:key="confscalemode"
         android:title="Scale Quality"

@@ -93,7 +93,6 @@ public class DBMain extends Activity {
 
     public boolean mPrefScaleFilterOn = false;
     public String mPID = null;
-    public int mPrefScaleFactor = 100;
     private Context mContext;
 
     public JoystickView mJoystickView = null;
