@@ -116,13 +116,5 @@
       android:entryValues="@array/confoptimization_values"
         android:defaultValue="2"
         android:summary="Change optimizations (bugfix for some ASUS devices)" />
-    <Preference
-        android:key="help"
-        android:title="Help"
-        android:summary="View the FAQ and get Help">
-        <intent
-          android:action="android.intent.action.VIEW"
-          android:data="http://sites.google.com/site/dosboxturbo/" />
-    </Preference>
   </PreferenceCategory>
 </PreferenceScreen>

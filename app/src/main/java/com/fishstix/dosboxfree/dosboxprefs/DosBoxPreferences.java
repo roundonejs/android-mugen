@@ -111,9 +111,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
             dosmt32.setEnabled(false);
         }
 
-        // get the two custom preferences
-        Preference helpPref = (Preference) findPreference("help");
-
         prefs.registerOnSharedPreferenceChangeListener(this);
     }
 
