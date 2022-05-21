@@ -140,11 +140,6 @@
         android:summary="Select location of Virtual On-Screen Buttons" />
   </PreferenceCategory>
   <PreferenceCategory android:title="Screen and Rotation Settings">
-      <CheckBoxPreference
-        android:key="confscale"
-        android:title="Screen Scaling"
-        android:defaultValue="true"
-        android:summary="Enable Screen Scaling" />
     <CheckBoxPreference
         android:key="confgpu"
         android:title="GPU Rendering"

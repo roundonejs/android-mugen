@@ -62,7 +62,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     private KeyHandler mKeyHandler = null;
     private TouchEventWrapper mWrap = TouchEventWrapper.newInstance();
 
-    boolean mScale = false;
     public boolean mGPURendering = false;
 
     Bitmap mBitmap = null;
@@ -70,8 +69,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     int mSrc_width = 0;
     int mSrc_height = 0;
     final AtomicBoolean bDirtyCoords = new AtomicBoolean(false);
-    private int mScroll_x = 0;
-    private int mScroll_y = 0;
 
     final AtomicBoolean mDirty = new AtomicBoolean(false);
     int mStartLine = 0;
@@ -163,63 +160,29 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
 
             boolean isLandscape = (mRenderer.width > mRenderer.height);
 
-            if (mScale) {
-                mRenderer.x = src_width * mRenderer.height / src_height;
+            mRenderer.x = src_width * mRenderer.height / src_height;
 
-                if (mRenderer.x < mRenderer.width) {
-                    mRenderer.width = mRenderer.x;
-                } else if (mRenderer.x > mRenderer.width) {
-                    mRenderer.height = src_height * mRenderer.width / src_width;
-                }
+            if (mRenderer.x < mRenderer.width) {
+                mRenderer.width = mRenderer.x;
+            } else if (mRenderer.x > mRenderer.width) {
+                mRenderer.height = src_height * mRenderer.width / src_width;
+            }
 
+            mRenderer.x = (getWidth() - mRenderer.width) / 2;
+
+            if (isLandscape) {
                 mRenderer.x = (getWidth() - mRenderer.width) / 2;
 
-                if (isLandscape) {
-                    mRenderer.x = (getWidth() - mRenderer.width) / 2;
-
-                    mRenderer.y = (getHeight() - mRenderer.height) / 2;
-                } else {
-                    mRenderer.y = 0;
-                }
-
-                // no power of two extenstion
-                mRenderer.mCropWorkspace[0] = 0;
-                mRenderer.mCropWorkspace[1] = src_height;
-                mRenderer.mCropWorkspace[2] = src_width;
-                mRenderer.mCropWorkspace[3] = -src_height;
+                mRenderer.y = (getHeight() - mRenderer.height) / 2;
             } else {
-                if ((mScroll_x + src_width) < mRenderer.width) {
-                    mScroll_x = mRenderer.width - src_width;
-                }
-
-                if ((mScroll_y + src_height) < mRenderer.height) {
-                    mScroll_y = mRenderer.height - src_height;
-                }
-
-                mScroll_x = Math.min(mScroll_x, 0);
-                mScroll_y = Math.min(mScroll_y, 0);
-                mRenderer.mCropWorkspace[0] = -mScroll_x; // left
-                mRenderer.mCropWorkspace[1] = Math.min(
-                    mRenderer.height - mScroll_y,
-                    src_height
-                    ) + mScroll_y; // bottom - top
-                mRenderer.mCropWorkspace[2] = Math.min(
-                    mRenderer.width - mScroll_x,
-                    src_width
-                ); // right
-                mRenderer.mCropWorkspace[3] = -mRenderer.mCropWorkspace[1]; // -(bottom - top)
-                mRenderer.width = mRenderer.mCropWorkspace[2] -
-                    mRenderer.mCropWorkspace[0];
-                mRenderer.height =
-                    (Math.max(
-                        -mScroll_y,
-                        0
-                    ) + mScroll_y + mRenderer.mCropWorkspace[1]) -
-                    (Math.max(-mScroll_y, 0) + mScroll_y);
-
-                mRenderer.x = (getWidth() - mRenderer.width) / 2;
                 mRenderer.y = 0;
             }
+
+            // no power of two extenstion
+            mRenderer.mCropWorkspace[0] = 0;
+            mRenderer.mCropWorkspace[1] = src_height;
+            mRenderer.mCropWorkspace[2] = src_width;
+            mRenderer.mCropWorkspace[3] = -src_height;
 
             bDirtyCoords.set(false);
         }
@@ -424,42 +387,19 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                     newEndLine = endLine;
                 }
 
-                if (mScale) {
-                    mDstRect.set(0, 0, mRenderer.width, mRenderer.height);
-                    mSrcRect.set(0, 0, src_width, src_height);
-                    mDstRect.offset(mRenderer.x, mRenderer.y);
+                mDstRect.set(0, 0, mRenderer.width, mRenderer.height);
+                mSrcRect.set(0, 0, src_width, src_height);
+                mDstRect.offset(mRenderer.x, mRenderer.y);
 
-                    mDirtyRect.set(
-                        0,
-                        newStartLine * mRenderer.height / src_height,
-                        mRenderer.width,
-                        newEndLine * mRenderer.height / src_height + 1
-                    );
+                mDirtyRect.set(
+                    0,
+                    newStartLine * mRenderer.height / src_height,
+                    mRenderer.width,
+                    newEndLine * mRenderer.height / src_height + 1
+                );
 
-                    // locnet, 2011-04-21, a strip on right side not updated
-                    mDirtyRect.offset(mRenderer.x, mRenderer.y);
-                } else {
-                    // L,T,R,B
-                    mSrcRect.set(
-                        -mScroll_x,
-                        Math.max(-mScroll_y, newStartLine),
-                        mRenderer.mCropWorkspace[2],
-                        Math.min(
-                            Math.min(getHeight() - mScroll_y, src_height),
-                            newEndLine
-                        )
-                    );
-                    mDstRect.set(
-                        0,
-                        mSrcRect.top + mScroll_y,
-                        mSrcRect.width(),
-                        mSrcRect.top + mScroll_y + mSrcRect.height()
-                    );
-
-                    mDstRect.offset((getWidth() - mSrcRect.width()) / 2, 0);
-
-                    mDirtyRect.set(mDstRect);
-                }
+                // locnet, 2011-04-21, a strip on right side not updated
+                mDirtyRect.offset(mRenderer.x, mRenderer.y);
 
                 if ((surface != null) && surface.isValid()) {
                     if (isDirty) {
@@ -704,8 +644,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
 
     public void resetScreen(final boolean redraw) {
         setDirty();
-        mScroll_x = 0;
-        mScroll_y = 0;
 
         if (redraw) {
             forceRedraw();

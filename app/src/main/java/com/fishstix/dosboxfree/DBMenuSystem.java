@@ -301,9 +301,6 @@ public class DBMenuSystem {
         final DBMain context,
         final SharedPreferences prefs
     ) {
-        // SCALE SCREEN
-        context.mSurfaceView.mScale = prefs.getBoolean("confscale", false);
-
         try {
             DBMain.nativeSetOption(
                 DBMenuSystem.DOSBOX_OPTION_ID_CYCLES,
