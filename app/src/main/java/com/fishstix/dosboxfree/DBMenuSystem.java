@@ -130,11 +130,11 @@ public class DBMenuSystem {
             out.println("mixer=true");
             out.println("oplmode=auto");
             out.println("oplemu=fast");
-            out.println("oplrate=" + prefs.getString("dossbrate", "22050"));
+            out.println("oplrate=22050");
             out.println();
             out.println("[mixer]");
             out.println("prebuffer=15");
-            out.println("rate=" + prefs.getString("dossbrate", "22050"));
+            out.println("rate=22050");
             out.println("blocksize=1024");
             out.println();
             out.println("[dos]");
@@ -198,10 +198,7 @@ public class DBMenuSystem {
                 out.println("false");
             }
 
-            out.println(
-                "tandyrate=" +
-                prefs.getString("dossbrate", "22050")
-            );
+            out.println("tandyrate=22050");
 
             // concat dosbox conf
             while (scanner.hasNextLine()) {

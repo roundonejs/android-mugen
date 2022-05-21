@@ -43,13 +43,6 @@
           android:entryValues="@array/dossbtype_values"
           android:defaultValue="sb16"
           android:summary="@string/pref_sbtype" />
-      <ListPreference
-          android:key="dossbrate"
-          android:title="Audio Freq Rate"
-        android:entries="@array/dossbrate"
-          android:entryValues="@array/dossbrate_values"
-          android:defaultValue="22050"
-          android:summary="@string/pref_sbrate" />
       <CheckBoxPreference
           android:key="dosmt32"
           android:title="MT-32 Midi Emulation"
