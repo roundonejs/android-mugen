@@ -24,32 +24,22 @@ import java.nio.Buffer;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.AssetManager;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.Rect;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.view.Display;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.FrameLayout;
-import android.widget.TableRow;
 import android.widget.Toast;
 
 import com.fishstix.dosboxfree.dosboxprefs.DosBoxPreferences;
@@ -84,20 +74,18 @@ public class DBMain extends Activity {
     public static native void nativePrefs();
 
     public DBGLSurfaceView mSurfaceView = null;
-    public DosBoxAudio mAudioDevice = null;
-    public DosBoxThread mDosBoxThread = null;
-    public SharedPreferences prefs;
+    private DosBoxAudio mAudioDevice = null;
+    private DosBoxThread mDosBoxThread = null;
+    private SharedPreferences prefs;
     private static DBMain mDosBoxLauncher = null;
-    public FrameLayout mFrameLayout = null;
     public MugenDirectoryCreator mugenDirectoryCreator;
 
-    public String mPID = null;
     private Context mContext;
 
     public JoystickView mJoystickView = null;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mugenDirectoryCreator = new MugenDirectoryCreator(
             getAssets(),
@@ -125,7 +113,6 @@ public class DBMain extends Activity {
 
         System.loadLibrary("dosbox");
 
-        mFrameLayout = (FrameLayout) findViewById(R.id.mFrame);
         mSurfaceView = (DBGLSurfaceView) findViewById(R.id.mSurf);
         mJoystickView = (JoystickView) findViewById(R.id.mJoystickView);
         mJoystickView.setVisibility(View.GONE);
