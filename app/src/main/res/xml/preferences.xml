@@ -131,13 +131,6 @@
         android:title="Overlay Joystick"
         android:defaultValue="true"
         android:summary="Show a Virtual Joystick on screen" />
-      <ListPreference
-        android:key="confbuttonlocation"
-        android:title="Button Location"
-      android:entries="@array/confbuttonlocation"
-        android:entryValues="@array/confbuttonlocation_values"
-        android:defaultValue="1"
-        android:summary="Select location of Virtual On-Screen Buttons" />
   </PreferenceCategory>
   <PreferenceCategory android:title="Screen and Rotation Settings">
     <CheckBoxPreference
