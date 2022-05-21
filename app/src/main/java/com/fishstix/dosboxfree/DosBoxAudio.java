@@ -24,7 +24,6 @@ import android.media.AudioManager;
 import android.media.AudioTrack;
 
 public class DosBoxAudio {
-    private boolean mAudioRunning = true;
     private AudioTrack mAudio = null;
     private final DBMain mParent;
     public short[] mAudioBuffer = null;
@@ -86,13 +85,13 @@ public class DosBoxAudio {
     }
 
     public void AudioWriteBuffer(final int size) {
-        if ((mAudioBuffer != null) && mAudioRunning && (size > 0)) {
+        if ((mAudioBuffer != null) && (size > 0)) {
             writeSamples(mAudioBuffer, (size << 1));
         }
     }
 
     private void writeSamples(final short[] samples, final int size) {
-        if ((mAudioRunning) && (mAudio != null)) {
+        if (mAudio != null) {
             mAudio.write(samples, 0, size);
 
             if (mAudio.getPlayState() != AudioTrack.PLAYSTATE_PLAYING) {
