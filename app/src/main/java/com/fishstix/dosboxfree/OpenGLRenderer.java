@@ -40,7 +40,6 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer {
     private Bitmap mBitmap;
     public int x, y, width, height;
     private int errorCounter;
-    public boolean filter_on = false;
 
     public OpenGLRenderer(final DBMain context) {
         mContext = context;
@@ -92,7 +91,7 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer {
     }
 
     // Notice that I don't allocate the int[] at the beginning but use the one of the image
-    protected void loadSingleTexture(GL10 gl, Bitmap bmp) {
+    protected void loadSingleTexture(final GL10 gl, final Bitmap bmp) {
         gl.glBindTexture(GL10.GL_TEXTURE_2D, mTextureName[0]);
         gl.glTexParameterf(
             GL10.GL_TEXTURE_2D,
@@ -102,7 +101,7 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer {
         gl.glTexParameterf(
             GL10.GL_TEXTURE_2D,
             GL10.GL_TEXTURE_MAG_FILTER,
-            (filter_on) ? GL10.GL_LINEAR : GL10.GL_NEAREST
+            GL10.GL_NEAREST
         );
         gl.glTexParameterf(
             GL10.GL_TEXTURE_2D,

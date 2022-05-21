@@ -91,7 +91,6 @@ public class DBMain extends Activity {
     public FrameLayout mFrameLayout = null;
     public MugenDirectoryCreator mugenDirectoryCreator;
 
-    public boolean mPrefScaleFilterOn = false;
     public String mPID = null;
     private Context mContext;
 

@@ -304,13 +304,6 @@ public class DBMenuSystem {
         // SCALE SCREEN
         context.mSurfaceView.mScale = prefs.getBoolean("confscale", false);
 
-        // SCALE MODE
-        if (Integer.valueOf(prefs.getString("confscalemode", "0")) == 0) {
-            context.mPrefScaleFilterOn = false;
-        } else {
-            context.mPrefScaleFilterOn = true;
-        }
-
         try {
             DBMain.nativeSetOption(
                 DBMenuSystem.DOSBOX_OPTION_ID_CYCLES,

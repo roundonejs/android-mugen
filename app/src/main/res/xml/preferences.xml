@@ -145,13 +145,6 @@
         android:title="Screen Scaling"
         android:defaultValue="true"
         android:summary="Enable Screen Scaling" />
-    <ListPreference
-        android:key="confscalemode"
-        android:title="Scale Quality"
-      android:entries="@array/confscalemode"
-        android:entryValues="@array/confscalemode_values"
-        android:defaultValue="0"
-        android:summary="Select Fast or HQ Scaling" />
     <CheckBoxPreference
         android:key="confgpu"
         android:title="GPU Rendering"

@@ -28,7 +28,6 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.opengl.GLSurfaceView;
@@ -67,7 +66,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     public boolean mGPURendering = false;
 
     Bitmap mBitmap = null;
-    private Paint mBitmapPaint = null;
 
     int mSrc_width = 0;
     int mSrc_height = 0;
@@ -224,7 +222,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
             }
 
             bDirtyCoords.set(false);
-            mRenderer.filter_on = mParent.mPrefScaleFilterOn;
         }
     }
 
@@ -321,9 +318,6 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     private void setup(final Context context) {
         mParent = (DBMain) context;
-
-        mBitmapPaint = new Paint();
-        mBitmapPaint.setFilterBitmap(true);
 
         mBitmap = Bitmap.createBitmap(
             DEFAULT_WIDTH,
@@ -475,16 +469,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                         canvas = surfaceHolder.lockCanvas(mDirtyRect);
                     }
 
-                    if (mScale) {
-                        canvas.drawBitmap(
-                            bitmap,
-                            mSrcRect,
-                            mDstRect,
-                            (mParent.mPrefScaleFilterOn) ? mBitmapPaint : null
-                        );
-                    } else {
-                        canvas.drawBitmap(bitmap, mSrcRect, mDstRect, null);
-                    }
+                    canvas.drawBitmap(bitmap, mSrcRect, mDstRect, null);
                 }
             }
         } finally {
