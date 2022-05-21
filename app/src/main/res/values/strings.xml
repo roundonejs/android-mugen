@@ -68,7 +68,6 @@
 	<string name="pref_cputype">DosBox CPU Type Setting</string>
 	<string name="pref_sbtype">Choose Soundblaster Emulation</string>
 	<string name="pref_sbrate">Choose the Audio Sample Rate/Quality</string>
-	<string name="pref_mixerblocksize">Audio Mixer Blocksize (larger values may reduce skipping)</string>
 	<string name="pref_kblayout">Choose the Locale for the Keyboard Layout</string>
 
 	<string name="pref_mousejoymode">Use Joystick to control Mouse Pointer</string>
@@ -242,20 +241,6 @@
  		<item>22050</item>
  		<item>32000</item>
  		<item>44100</item>
-  	</string-array>
-    <string-array name="dosmixerblocksize">
-  		<item>512 (faster)</item>
-  		<item>1024 (default)</item>
-  		<item>2048</item>
-  		<item>3072</item>
-  		<item>4096</item>
-  	</string-array>
-  	<string-array name="dosmixerblocksize_values">
-  		<item>512</item>
- 		<item>1024</item>
- 		<item>2048</item>
- 		<item>3072</item>
- 		<item>4096</item>
   	</string-array>
 	<string-array name="doskblayout">
   		<item>Auto (default)</item>

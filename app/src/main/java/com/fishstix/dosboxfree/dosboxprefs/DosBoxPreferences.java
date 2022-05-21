@@ -43,7 +43,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
     private Preference doscycles = null;
     private Preference dossbtype = null;
     private Preference dossbrate = null;
-    private Preference dosmixerblocksize = null;
     private Preference doskblayout = null;
     private Preference dosems = null;
     private Preference dosxms = null;
@@ -83,7 +82,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
         doscycles = (Preference) findPreference("doscycles");
         dossbtype = (Preference) findPreference("dossbtype");
         dossbrate = (Preference) findPreference("dossbrate");
-        dosmixerblocksize = (Preference) findPreference("dosmixerblocksize");
         doskblayout = (Preference) findPreference("doskblayout");
         dospcspeaker = (Preference) findPreference("dospcspeaker");
         dosmachine = (Preference) findPreference("dosmachine");
@@ -170,7 +168,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
             || (key.contentEquals("dosxms"))
             || (key.contentEquals("dosumb"))
             || (key.contentEquals("dospcspeaker"))
-            || (key.contentEquals("dosmixerblocksize"))
             || (key.contentEquals("dosmachine"))
             || (key.contentEquals("doscputype"))
             || (key.contentEquals("dosmt32"))

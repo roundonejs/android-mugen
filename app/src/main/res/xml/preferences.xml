@@ -50,13 +50,6 @@
           android:entryValues="@array/dossbrate_values"
           android:defaultValue="22050"
           android:summary="@string/pref_sbrate" />
-      <ListPreference
-          android:key="dosmixerblocksize"
-          android:title="Audio Blocksize"
-        android:entries="@array/dosmixerblocksize"
-          android:entryValues="@array/dosmixerblocksize_values"
-          android:defaultValue="1024"
-          android:summary="@string/pref_mixerblocksize" />
       <CheckBoxPreference
           android:key="dosmt32"
           android:title="MT-32 Midi Emulation"

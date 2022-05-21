@@ -135,10 +135,7 @@ public class DBMenuSystem {
             out.println("[mixer]");
             out.println("prebuffer=15");
             out.println("rate=" + prefs.getString("dossbrate", "22050"));
-            out.println(
-                "blocksize=" +
-                prefs.getString("dosmixerblocksize", "1024")
-            );
+            out.println("blocksize=1024");
             out.println();
             out.println("[dos]");
             out.print("xms=");
