@@ -23,7 +23,6 @@ import java.io.File;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -47,7 +46,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
     private Preference dospcspeaker = null;
     private Preference dosmachine = null;
     private Preference doscputype = null;
-    private Preference version = null;
 
     public static final String CONFIG_FILE = "dosbox.conf";
 
@@ -83,7 +81,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
         dosems = (Preference) findPreference("dosems");
         dosumb = (Preference) findPreference("dosumb");
         dosmt32 = (Preference) findPreference("dosmt32");
-        version = (Preference) findPreference("version");
 
         prefCatOther = (PreferenceCategory) findPreference("prefCatOther");
     }
@@ -115,20 +112,7 @@ public class DosBoxPreferences extends PreferenceActivity implements
         }
 
         // get the two custom preferences
-        Preference versionPref = (Preference) findPreference("version");
         Preference helpPref = (Preference) findPreference("help");
-        String versionName = "";
-        try {
-            versionName =
-                getPackageManager().getPackageInfo(
-                getPackageName(),
-                0
-                ).versionName;
-        } catch (NameNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        versionPref.setSummary(versionName);
 
         prefs.registerOnSharedPreferenceChangeListener(this);
     }

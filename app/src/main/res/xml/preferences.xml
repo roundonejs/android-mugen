@@ -124,9 +124,5 @@
           android:action="android.intent.action.VIEW"
           android:data="http://sites.google.com/site/dosboxturbo/" />
     </Preference>
-    <Preference
-        android:key="version"
-        android:title="Version"
-        android:summary=""/>
   </PreferenceCategory>
 </PreferenceScreen>
