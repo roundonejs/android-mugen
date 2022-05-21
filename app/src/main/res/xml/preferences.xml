@@ -92,12 +92,6 @@
           android:entryValues="@array/doskblayout_values"
           android:defaultValue="auto"
           android:summary="@string/pref_kblayout" />
-      <EditTextPreference
-          android:key="dosautoexec"
-          android:title="Autoexec"
-          android:textSize="11sp"
-          android:defaultValue="-1"
-          android:summary="Edit the autoexec.bat" />
       <CheckBoxPreference
           android:key="dosxms"
           android:title="XMS Support"

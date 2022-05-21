@@ -47,7 +47,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
     private Preference dosmixerprebuffer = null;
     private Preference dosmixerblocksize = null;
     private Preference doskblayout = null;
-    private Preference dosautoexec = null;
     private Preference dosems = null;
     private Preference dosxms = null;
     private Preference dosumb = null;
@@ -61,8 +60,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
     private Preference version = null;
 
     public static final String CONFIG_FILE = "dosbox.conf";
-    public String CONFIG_PATH;
-    public String STORAGE_PATH;
 
     private PreferenceCategory prefCatOther = null;
 
@@ -82,17 +79,7 @@ public class DosBoxPreferences extends PreferenceActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.config);
         ctx = this;
-        STORAGE_PATH = DosBoxPreferences.getExternalDosBoxDir(ctx);
-        CONFIG_PATH = DosBoxPreferences.getExternalDosBoxDir(ctx);
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-        if (prefs.getString("dosautoexec", "-1").contentEquals("-1")) {
-            prefs.edit().putString(
-                "dosautoexec",
-                "mount c: " + STORAGE_PATH +
-                " \nc:"
-            ).commit();
-        }
 
         addPreferencesFromResource(R.xml.preferences);
         doscpu = (Preference) findPreference("doscpu");
@@ -104,7 +91,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
         dosmixerprebuffer = (Preference) findPreference("dosmixerprebuffer");
         dosmixerblocksize = (Preference) findPreference("dosmixerblocksize");
         doskblayout = (Preference) findPreference("doskblayout");
-        dosautoexec = (Preference) findPreference("dosautoexec");
         dospcspeaker = (Preference) findPreference("dospcspeaker");
         dosmachine = (Preference) findPreference("dosmachine");
         dostimedjoy = (Preference) findPreference("dostimedjoy");
@@ -185,7 +171,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
         } else if (
             (key.contentEquals("doscpu"))
             || (key.contentEquals("dossbtype"))
-            || (key.contentEquals("dosautoexec"))
             || (key.contentEquals("dossbrate"))
             || (key.contentEquals("confoptimization"))
             || (key.contentEquals("doskblayout"))
