@@ -32,18 +32,20 @@ import android.os.Bundle;
 import android.os.Message;
 
 public class OpenGLRenderer implements GLSurfaceView.Renderer {
-    private int[] mTextureName = new int[1];       // Hold our texture id
+    private final int[] mTextureName;
+    private final DBMain mContext;
+    public final int[] mCropWorkspace;
     private int mViewWidth;
     private int mViewHeight;
     private Bitmap mBitmap;
-    public int[] mCropWorkspace = {0, 0, 0, 0};
     public int x, y, width, height;
     private int errorCounter;
     public boolean filter_on = false;
-    private Context mContext;
 
-    public OpenGLRenderer(Context context) {
+    public OpenGLRenderer(final DBMain context) {
         mContext = context;
+        mTextureName = new int[1];
+        mCropWorkspace = new int[4];
     }
 
     @Override
@@ -143,7 +145,7 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer {
                     "GPU Rendering Not Supported. GPU Preference Disabled. Please Restart DosBox Turbo."
                 );
                 msg.setData(b);
-                ((DBMain) mContext).mHandler.sendMessage(msg);
+                mContext.mHandler.sendMessage(msg);
             }
         }
     }
