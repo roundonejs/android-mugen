@@ -359,14 +359,6 @@
   		<item>1</item>
   		<item>0</item>
   	</string-array>
-  		<string-array name="confslidingmenu">
-  		<item>Swipe at Margin</item>
-  		<item>Button Only</item>
-  	</string-array>
-  	<string-array name="confslidingmenu_values">
-  		<item>0</item>
-  		<item>1</item>
-   	</string-array>
   	<string-array name="confbuttonlocation">
   		<item>Top</item>
   		<item>Bottom</item>

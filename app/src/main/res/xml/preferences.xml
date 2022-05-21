@@ -152,13 +152,6 @@
       android:entryValues="@array/confrotation_values"
         android:defaultValue="0"
         android:summary="Configure Auto/Portrait/Landscape rotation" />
-      <ListPreference
-       android:key="confslidingmenu"
-        android:title="QuickMenu Display"
-       android:entries="@array/confslidingmenu"
-      android:entryValues="@array/confslidingmenu_values"
-        android:defaultValue="0"
-        android:summary="Change how the QuickMenu slides" />
     </PreferenceCategory>
 
   <PreferenceCategory android:title="Performance Tweaks">
