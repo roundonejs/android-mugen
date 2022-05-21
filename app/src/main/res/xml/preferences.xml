@@ -111,11 +111,6 @@
         android:summary="Show a Virtual Joystick on screen" />
   </PreferenceCategory>
   <PreferenceCategory android:title="Screen and Rotation Settings">
-    <CheckBoxPreference
-        android:key="confgpu"
-        android:title="GPU Rendering"
-        android:defaultValue="true"
-        android:summary="Offload graphics rendering to GPU" />
       <ListPreference
        android:key="confrotation"
         android:title="Rotation Settings"
