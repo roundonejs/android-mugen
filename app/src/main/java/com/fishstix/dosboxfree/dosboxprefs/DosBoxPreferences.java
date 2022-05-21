@@ -27,7 +27,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
@@ -48,8 +47,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
     private Preference doscputype = null;
 
     public static final String CONFIG_FILE = "dosbox.conf";
-
-    private PreferenceCategory prefCatOther = null;
 
     private SharedPreferences prefs;
 
@@ -81,8 +78,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
         dosems = (Preference) findPreference("dosems");
         dosumb = (Preference) findPreference("dosumb");
         dosmt32 = (Preference) findPreference("dosmt32");
-
-        prefCatOther = (PreferenceCategory) findPreference("prefCatOther");
     }
 
     @Override
@@ -133,7 +128,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
         } else if (
             (key.contentEquals("doscpu"))
             || (key.contentEquals("dossbtype"))
-            || (key.contentEquals("confoptimization"))
             || (key.contentEquals("doskblayout"))
             || (key.contentEquals("dosems"))
             || (key.contentEquals("dosxms"))

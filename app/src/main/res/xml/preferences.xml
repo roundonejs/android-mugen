@@ -106,15 +106,4 @@
         android:defaultValue="true"
         android:summary="Experimental Turbo VGA" />
   </PreferenceCategory>
-  <PreferenceCategory
-      android:key="prefCatOther"
-      android:title="Other">
-    <ListPreference
-       android:key="confoptimization"
-        android:title="Optimizations"
-       android:entries="@array/confoptimization"
-      android:entryValues="@array/confoptimization_values"
-        android:defaultValue="2"
-        android:summary="Change optimizations (bugfix for some ASUS devices)" />
-  </PreferenceCategory>
 </PreferenceScreen>

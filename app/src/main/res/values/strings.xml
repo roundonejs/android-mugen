@@ -288,16 +288,6 @@
   		<item>1</item>
   		<item>2</item>
   	</string-array>
-  	<string-array name="confoptimization">
-  		<item>Full Optmizations (default)</item>
-  		<item>ARMv7 Opts Only</item>
-  		<item>No Optimizations (slow)</item>
-  	</string-array>
-  	<string-array name="confoptimization_values">
-  		<item>2</item>
-  		<item>1</item>
-  		<item>0</item>
-  	</string-array>
    	<string-array name="confanalog_maps">
    	    <item>Right Joy, Left Mouse</item>
    	    <item>Left Joy, Right Mouse</item>
