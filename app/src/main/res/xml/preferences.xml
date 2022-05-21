@@ -98,11 +98,6 @@
           android:textSize="11sp"
           android:defaultValue="-1"
           android:summary="Edit the autoexec.bat" />
-<!--         <CheckBoxPreference
-          android:key="dosautocpu"
-          android:title="Force CPU Auto"
-          android:defaultValue="false"
-          android:summary="Give CPU auto priority to reduce audio skipping (may limit max cycles)" />  -->
       <CheckBoxPreference
           android:key="dosxms"
           android:title="XMS Support"
@@ -118,11 +113,6 @@
           android:title="UMB Support"
           android:defaultValue="true"
           android:summary="Enable UMB Support" />
-      <CheckBoxPreference
-          android:key="dospnp"
-          android:title="ISA PnP Support"
-          android:defaultValue="false"
-          android:summary="Emulate ISA Plug &amp; Play BIOS. Enable if booting Win 9x" />
    </PreferenceScreen>
   </PreferenceCategory>
   <PreferenceCategory android:title="Input Preferences">

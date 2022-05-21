@@ -122,13 +122,7 @@ public class DBMenuSystem {
 
             out.println("cycleup=500");
             out.println("cycledown=500");
-            out.print("isapnpbios=");
-
-            if (prefs.getBoolean("dospnp", true)) {
-                out.println("true");
-            } else {
-                out.println("false");
-            }
+            out.println("isapnpbios=false");
 
             out.println();
             out.println("[sblaster]");

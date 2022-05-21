@@ -51,7 +51,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
     private Preference dosems = null;
     private Preference dosxms = null;
     private Preference dosumb = null;
-    private Preference dospnp = null;
     private Preference dosmt32 = null;
     private Preference dospcspeaker = null;
     private Preference dostimedjoy = null;
@@ -112,7 +111,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
         dosxms = (Preference) findPreference("dosxms");
         dosems = (Preference) findPreference("dosems");
         dosumb = (Preference) findPreference("dosumb");
-        dospnp = (Preference) findPreference("dospnp");
         dosmt32 = (Preference) findPreference("dosmt32");
         confreset = (Preference) findPreference("confreset");
         confgpu = (Preference) findPreference("confgpu");
@@ -202,7 +200,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
             || (key.contentEquals("dosmachine"))
             || (key.contentEquals("doscputype"))
             || (key.contentEquals("dosmt32"))
-            || (key.contentEquals("dospnp"))
         ) {
             Toast.makeText(ctx, R.string.restart, Toast.LENGTH_SHORT).show();
         }
