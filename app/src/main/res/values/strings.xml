@@ -61,30 +61,11 @@
 	<!-- Preferences -->
 	<string name="pref_advconfig">Advanced DosBox Config</string>
 	<string name="pref_dbsettings">DosBox Settings</string>
-	<string name="pref_machine">DosBox Machine Emulation Setting</string>
 	<string name="pref_sbtype">Choose Soundblaster Emulation</string>
 	<string name="pref_kblayout">Choose the Locale for the Keyboard Layout</string>
 
 	<string name="pref_mousejoymode">Use Joystick to control Mouse Pointer</string>
     <!--  DOSBOX SETTINGS  -->
-    <string-array name="dosmachine">
-  		<item>svga_s3 (recommended)</item>
-  		<item>vgaonly</item>
-  		<item>ega</item>
-  		<item>pcjr</item>
-  		<item>tandy</item>
-  		<item>cga</item>
-  		<item>hercules</item>
-  	</string-array>
-  	<string-array name="dosmachine_values">
-  		<item>svga_s3</item>
- 		<item>vgaonly</item>
-  		<item>ega</item>
-  		<item>pcjr</item>
-  		<item>tandy</item>
-  		<item>cga</item>
-  		<item>hercules</item>
-  	</string-array>
   	<string-array name="dossbtype">
   		<item>Disable SB Emulation</item>
         <item>SoundBlaster 2.0 (faster)</item>

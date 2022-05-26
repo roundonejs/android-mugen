@@ -8,13 +8,6 @@
     android:key="detail"
     android:title="@string/pref_dbsettings"
     android:summary="@string/pref_advconfig">
-    <ListPreference
-        android:key="dosmachine"
-          android:title="Machine Type"
-          android:entries="@array/dosmachine"
-        android:entryValues="@array/dosmachine_values"
-        android:defaultValue="svga_s3"
-          android:summary="@string/pref_machine" />
        <ListPreference
           android:key="dossbtype"
           android:title="Sound Device"

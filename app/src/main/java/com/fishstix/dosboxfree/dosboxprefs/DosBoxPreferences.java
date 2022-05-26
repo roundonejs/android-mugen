@@ -41,7 +41,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
     private Preference dosumb = null;
     private Preference dosmt32 = null;
     private Preference dospcspeaker = null;
-    private Preference dosmachine = null;
 
     public static final String CONFIG_FILE = "dosbox.conf";
 
@@ -67,7 +66,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
         dossbtype = (Preference) findPreference("dossbtype");
         doskblayout = (Preference) findPreference("doskblayout");
         dospcspeaker = (Preference) findPreference("dospcspeaker");
-        dosmachine = (Preference) findPreference("dosmachine");
         dosxms = (Preference) findPreference("dosxms");
         dosems = (Preference) findPreference("dosems");
         dosumb = (Preference) findPreference("dosumb");
@@ -120,7 +118,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
             || (key.contentEquals("dosxms"))
             || (key.contentEquals("dosumb"))
             || (key.contentEquals("dospcspeaker"))
-            || (key.contentEquals("dosmachine"))
             || (key.contentEquals("dosmt32"))
         ) {
             Toast.makeText(ctx, R.string.restart, Toast.LENGTH_SHORT).show();

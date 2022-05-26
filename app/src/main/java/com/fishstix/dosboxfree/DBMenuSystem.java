@@ -96,12 +96,7 @@ public class DBMenuSystem {
             out.println(getMemorySize(context));
 
             out.println("vmemsize=16");
-            out.println(
-                "machine=" + prefs.getString(
-                    "dosmachine",
-                    "svga_s3"
-                )
-            );
+            out.println("machine=svga_s3");
             out.println();
             out.println("[render]");
             out.println("frameskip=0");
