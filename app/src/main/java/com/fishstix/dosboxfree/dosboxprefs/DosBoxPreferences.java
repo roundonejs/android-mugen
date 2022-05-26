@@ -34,7 +34,6 @@ import com.fishstix.dosboxfree.R;
 
 public class DosBoxPreferences extends PreferenceActivity implements
     OnSharedPreferenceChangeListener {
-    private Preference doscycles = null;
     private Preference dossbtype = null;
     private Preference doskblayout = null;
     private Preference dosems = null;
@@ -65,7 +64,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         addPreferencesFromResource(R.xml.preferences);
-        doscycles = (Preference) findPreference("doscycles");
         dossbtype = (Preference) findPreference("dossbtype");
         doskblayout = (Preference) findPreference("doskblayout");
         dospcspeaker = (Preference) findPreference("dospcspeaker");
@@ -116,12 +114,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
         String key
     ) {
         if (
-            key.contentEquals("doscycles") &&
-            prefs.getString("doscycles", "").contentEquals("auto")
-        ) {
-            // turn on cpuauto and disable it
-            Toast.makeText(ctx, R.string.restart, Toast.LENGTH_SHORT).show();
-        } else if (
             (key.contentEquals("dossbtype"))
             || (key.contentEquals("doskblayout"))
             || (key.contentEquals("dosems"))

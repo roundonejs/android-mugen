@@ -61,109 +61,12 @@
 	<!-- Preferences -->
 	<string name="pref_advconfig">Advanced DosBox Config</string>
 	<string name="pref_dbsettings">DosBox Settings</string>
-	<string name="pref_cycles">DosBox Cycles (setting too high may cause lag)</string>
 	<string name="pref_machine">DosBox Machine Emulation Setting</string>
 	<string name="pref_sbtype">Choose Soundblaster Emulation</string>
 	<string name="pref_kblayout">Choose the Locale for the Keyboard Layout</string>
 
 	<string name="pref_mousejoymode">Use Joystick to control Mouse Pointer</string>
     <!--  DOSBOX SETTINGS  -->
-    <string-array name="doscycles">
-  		<item>auto (default)</item>
-  		<item>1000</item>
-  		<item>2000</item>
-  		<item>3000</item>
-  		<item>4000</item>
-  		<item>5000</item>
-  		<item>6000</item>
-  		<item>7000</item>
-  		<item>8000</item>
-  		<item>9000</item>
-  		<item>10000</item>
-  		<item>11000</item>
-  		<item>12000</item>
-  		<item>13000</item>
-  		<item>14000</item>
-  		<item>15000</item>
-  		<item>16000</item>
-  		<item>17000</item>
-  		<item>18000</item>
-  		<item>19000</item>
-  		<item>20000</item>
-  		<item>21000</item>
-  		<item>22000</item>
-  		<item>23000</item>
-  		<item>24000</item>
-  		<item>25000</item>
-  		<item>26000</item>
-  		<item>27000</item>
-  		<item>28000</item>
-  		<item>29000</item>
-  		<item>30000</item>
-  		<item>31000</item>
-  		<item>32000</item>
-  		<item>33000</item>
-  		<item>34000</item>
-  		<item>35000</item>
-  		<item>36000</item>
-  		<item>37000</item>
-  		<item>38000</item>
-   		<item>39000</item>
-   		<item>40000</item>
-  		<item>41000</item>
-  		<item>42000</item>
-  		<item>43000</item>
-  		<item>44000</item>
-   		<item>45000</item>
-   	</string-array>
-  	<string-array name="doscycles_values">
-  		<item>-1</item>
-  		<item>1000</item>
-  		<item>2000</item>
-  		<item>3000</item>
-  		<item>4000</item>
-  		<item>5000</item>
-  		<item>6000</item>
-  		<item>7000</item>
-  		<item>8000</item>
-  		<item>9000</item>
-  		<item>10000</item>
-  		<item>11000</item>
-  		<item>12000</item>
-  		<item>13000</item>
-  		<item>14000</item>
-  		<item>15000</item>
-  		<item>16000</item>
-  		<item>17000</item>
-  		<item>18000</item>
-  		<item>19000</item>
-  		<item>20000</item>
-  		<item>21000</item>
-  		<item>22000</item>
-  		<item>23000</item>
-  		<item>24000</item>
-  		<item>25000</item>
-  		<item>26000</item>
-  		<item>27000</item>
-  		<item>28000</item>
-  		<item>29000</item>
-  		<item>30000</item>
-  		<item>31000</item>
-  		<item>32000</item>
-  		<item>33000</item>
-  		<item>34000</item>
-  		<item>35000</item>
-  		<item>36000</item>
-  		<item>37000</item>
-  		<item>38000</item>
-   		<item>39000</item>
-   		<item>40000</item>
-  		<item>41000</item>
-  		<item>42000</item>
-  		<item>43000</item>
-  		<item>44000</item>
-   		<item>45000</item>
-   	</string-array>
     <string-array name="dosmachine">
   		<item>svga_s3 (recommended)</item>
   		<item>vgaonly</item>

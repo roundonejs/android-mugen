@@ -8,13 +8,6 @@
     android:key="detail"
     android:title="@string/pref_dbsettings"
     android:summary="@string/pref_advconfig">
-      <ListPreference
-        android:key="doscycles"
-          android:title="Cycles"
-          android:entries="@array/doscycles"
-        android:entryValues="@array/doscycles_values"
-        android:defaultValue="-1"
-          android:summary="@string/pref_cycles" />
     <ListPreference
         android:key="dosmachine"
           android:title="Machine Type"

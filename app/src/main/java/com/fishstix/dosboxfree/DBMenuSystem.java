@@ -42,7 +42,6 @@ import android.view.ViewGroup.LayoutParams;
 import com.fishstix.dosboxfree.dosboxprefs.DosBoxPreferences;
 
 public class DBMenuSystem {
-    private static final String mPrefCycleString = "max";       // default slow system
     private static final int MAX_MEMORY = 128;
 
     // following must sync with AndroidOSfunc.cpp
@@ -110,16 +109,7 @@ public class DBMenuSystem {
             out.println("[cpu]");
             out.println("core=dynamic");
             out.println("cputype=auto");
-
-            if (prefs.getString("doscycles", "-1").contentEquals("-1")) {
-                out.println("cycles=" + mPrefCycleString);                              // auto performance
-            } else {
-                out.println(
-                    "cycles=" +
-                    prefs.getString("doscycles", "3000")
-                );
-            }
-
+            out.println("cycles=max");
             out.println("cycleup=500");
             out.println("cycledown=500");
             out.println("isapnpbios=false");
@@ -263,27 +253,12 @@ public class DBMenuSystem {
         final DBMain context,
         final SharedPreferences prefs
     ) {
-        try {
-            DBMain.nativeSetOption(
-                DBMenuSystem.DOSBOX_OPTION_ID_CYCLES,
-                Integer.valueOf(
-                    prefs.getString(
-                        "doscycles",
-                        "5000"
-                    )
-                ),
-                null,
-                true
-            );
-        } catch (NumberFormatException e) {
-            // set default to 5000 cycles on exception
-            DBMain.nativeSetOption(
-                DBMenuSystem.DOSBOX_OPTION_ID_CYCLES,
-                2000,
-                null,
-                true
-            );
-        }
+        DBMain.nativeSetOption(
+            DBMenuSystem.DOSBOX_OPTION_ID_CYCLES,
+            -1,
+            null,
+            true
+        );
 
         // Set Frameskip
         DBMain.nativeSetOption(
