@@ -30,13 +30,6 @@
         android:defaultValue="dynamic"
           android:summary="@string/pref_cpucore" />
        <ListPreference
-        android:key="doscputype"
-          android:title="CPU Type"
-          android:entries="@array/doscputype"
-        android:entryValues="@array/doscputype_values"
-        android:defaultValue="auto"
-          android:summary="@string/pref_cputype" />
-       <ListPreference
           android:key="dossbtype"
           android:title="Sound Device"
         android:entries="@array/dossbtype"

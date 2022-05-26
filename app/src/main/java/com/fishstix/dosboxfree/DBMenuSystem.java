@@ -109,7 +109,7 @@ public class DBMenuSystem {
             out.println();
             out.println("[cpu]");
             out.println("core=" + prefs.getString("doscpu", "dynamic"));
-            out.println("cputype=" + prefs.getString("doscputype", "auto"));
+            out.println("cputype=auto");
 
             if (prefs.getString("doscycles", "-1").contentEquals("-1")) {
                 out.println("cycles=" + mPrefCycleString);                              // auto performance

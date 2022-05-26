@@ -64,7 +64,6 @@
 	<string name="pref_cycles">DosBox Cycles (setting too high may cause lag)</string>
 	<string name="pref_machine">DosBox Machine Emulation Setting</string>
 	<string name="pref_cpucore">DosBox CPU Core Setting</string>
-	<string name="pref_cputype">DosBox CPU Type Setting</string>
 	<string name="pref_sbtype">Choose Soundblaster Emulation</string>
 	<string name="pref_kblayout">Choose the Locale for the Keyboard Layout</string>
 
@@ -195,20 +194,6 @@
  		<item>auto</item>
   		<item>normal</item>
   		<item>simple</item>
-  	</string-array>
-    <string-array name="doscputype">
-  		<item>auto (fastest)</item>
-  		<item>386</item>
-  		<item>486</item>
-  		<item>pentium</item>
-  		<item>pentium_mmx</item>
-  	</string-array>
-  	<string-array name="doscputype_values">
-  		<item>auto</item>
-  		<item>386</item>
-  		<item>486</item>
-  		<item>pentium</item>
-  		<item>pentium_mmx</item>
   	</string-array>
   	<string-array name="dossbtype">
   		<item>Disable SB Emulation</item>

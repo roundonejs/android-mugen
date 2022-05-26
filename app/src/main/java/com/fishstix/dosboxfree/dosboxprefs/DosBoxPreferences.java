@@ -44,7 +44,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
     private Preference dosmt32 = null;
     private Preference dospcspeaker = null;
     private Preference dosmachine = null;
-    private Preference doscputype = null;
 
     public static final String CONFIG_FILE = "dosbox.conf";
 
@@ -68,7 +67,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
 
         addPreferencesFromResource(R.xml.preferences);
         doscpu = (Preference) findPreference("doscpu");
-        doscputype = (Preference) findPreference("doscputype");
         doscycles = (Preference) findPreference("doscycles");
         dossbtype = (Preference) findPreference("dossbtype");
         doskblayout = (Preference) findPreference("doskblayout");
@@ -134,7 +132,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
             || (key.contentEquals("dosumb"))
             || (key.contentEquals("dospcspeaker"))
             || (key.contentEquals("dosmachine"))
-            || (key.contentEquals("doscputype"))
             || (key.contentEquals("dosmt32"))
         ) {
             Toast.makeText(ctx, R.string.restart, Toast.LENGTH_SHORT).show();
