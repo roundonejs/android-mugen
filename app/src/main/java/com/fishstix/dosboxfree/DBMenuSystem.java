@@ -108,7 +108,7 @@ public class DBMenuSystem {
             out.println("frameskip=0");
             out.println();
             out.println("[cpu]");
-            out.println("core=" + prefs.getString("doscpu", "dynamic"));
+            out.println("core=dynamic");
             out.println("cputype=auto");
 
             if (prefs.getString("doscycles", "-1").contentEquals("-1")) {

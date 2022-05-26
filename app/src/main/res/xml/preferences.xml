@@ -23,13 +23,6 @@
         android:defaultValue="svga_s3"
           android:summary="@string/pref_machine" />
        <ListPreference
-        android:key="doscpu"
-          android:title="CPU Core"
-          android:entries="@array/doscpu"
-        android:entryValues="@array/doscpu_values"
-        android:defaultValue="dynamic"
-          android:summary="@string/pref_cpucore" />
-       <ListPreference
           android:key="dossbtype"
           android:title="Sound Device"
         android:entries="@array/dossbtype"

@@ -63,7 +63,6 @@
 	<string name="pref_dbsettings">DosBox Settings</string>
 	<string name="pref_cycles">DosBox Cycles (setting too high may cause lag)</string>
 	<string name="pref_machine">DosBox Machine Emulation Setting</string>
-	<string name="pref_cpucore">DosBox CPU Core Setting</string>
 	<string name="pref_sbtype">Choose Soundblaster Emulation</string>
 	<string name="pref_kblayout">Choose the Locale for the Keyboard Layout</string>
 
@@ -182,18 +181,6 @@
   		<item>tandy</item>
   		<item>cga</item>
   		<item>hercules</item>
-  	</string-array>
-    <string-array name="doscpu">
-  		<item>dynamic (fastest)</item>
-  		<item>auto</item>
-  		<item>normal</item>
-  		<item>simple</item>
-  	</string-array>
-  	<string-array name="doscpu_values">
-  		<item>dynamic</item>
- 		<item>auto</item>
-  		<item>normal</item>
-  		<item>simple</item>
   	</string-array>
   	<string-array name="dossbtype">
   		<item>Disable SB Emulation</item>
