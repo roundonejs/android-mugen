@@ -1,6 +1,0 @@
-<PreferenceScreen
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:my="http://schemas.android.com/apk/res/"
-  xmlns:ads="http://schemas.android.com/apk/res-auto"
-  android:key="prefMainScreen">
-</PreferenceScreen>

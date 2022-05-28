@@ -100,7 +100,6 @@ public class DBMain extends Activity {
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         );
 
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         if (!DBMenuSystem.MT32_ROM_exists(this)) {

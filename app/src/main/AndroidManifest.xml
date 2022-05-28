@@ -33,10 +33,5 @@
         <data android:mimeType="text/*" />
       </intent-filter>
     </activity>
-    <activity
-      android:label="@string/app_name"
-      android:name="com.fishstix.dosboxfree.dosboxprefs.DosBoxPreferences"
-      android:configChanges="keyboardHidden|orientation|screenSize|navigation|keyboard"
-    ></activity>
   </application>
 </manifest>

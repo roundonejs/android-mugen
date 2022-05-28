@@ -19,58 +19,9 @@
 package com.fishstix.dosboxfree.dosboxprefs;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceActivity;
-import android.preference.PreferenceManager;
-import android.widget.Toast;
 
-import com.fishstix.dosboxfree.R;
-
-public class DosBoxPreferences extends PreferenceActivity implements
-    OnSharedPreferenceChangeListener {
+public class DosBoxPreferences {
     public static final String CONFIG_FILE = "dosbox.conf";
-
-    private SharedPreferences prefs;
-
-    private Context ctx = null;
-
-    private static final int TOUCHSCREEN_MOUSE = 0;
-    private static final int TOUCHSCREEN_JOY = 1;
-    private static final int PHYSICAL_MOUSE = 2;
-    private static final int PHYSICAL_JOY = 3;
-    private static final int SCROLL_SCREEN = 4;
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.config);
-        ctx = this;
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-        addPreferencesFromResource(R.xml.preferences);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        prefs.registerOnSharedPreferenceChangeListener(this);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        prefs.unregisterOnSharedPreferenceChangeListener(this);
-    }
-
-    public void onSharedPreferenceChanged(
-        SharedPreferences preference,
-        String key
-    ) { }
 
     public static String getExternalDosBoxDir(final Context ctx) {
         return ctx.getFilesDir().getAbsolutePath() + "/";
