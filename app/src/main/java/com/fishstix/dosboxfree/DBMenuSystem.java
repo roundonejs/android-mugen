@@ -31,9 +31,7 @@ import java.util.Locale;
 import java.util.Scanner;
 
 import android.app.ActivityManager;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.TypedValue;
@@ -305,10 +303,10 @@ public class DBMenuSystem {
         return Math.min(MAX_MEMORY, maxMem);
     }
 
-    static public void saveBooleanPreference(
-        Context context,
-        String key,
-        boolean value
+    public static void saveBooleanPreference(
+        final Context context,
+        final String key,
+        final boolean value
     ) {
         SharedPreferences sharedPrefs =
             PreferenceManager.getDefaultSharedPreferences(context);
@@ -321,23 +319,6 @@ public class DBMenuSystem {
                 editor.commit();
             }
         }
-    }
-
-    static public void doConfirmQuit(final DBMain context) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(R.string.app_name);
-        builder.setMessage("Exit DosBox?");
-
-        builder.setPositiveButton(
-            "OK",
-            new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface arg0, int arg1) {
-                context.stopDosBox();
-            }
-        }
-        );
-        builder.setNegativeButton("Cancel", null);
-        builder.create().show();
     }
 
     public static void CopyROM(DBMain ctx, File infile) {

@@ -583,10 +583,11 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
     }
 
     private boolean handleKey(final int keyCode, final KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (event.getAction() == KeyEvent.ACTION_UP) {
-                DBMenuSystem.doConfirmQuit(mParent);
-            }
+        if (
+            (keyCode == KeyEvent.KEYCODE_BACK)
+            && (event.getAction() == KeyEvent.ACTION_UP)
+        ) {
+            mParent.stopDosBox();
 
             return true;
         }
