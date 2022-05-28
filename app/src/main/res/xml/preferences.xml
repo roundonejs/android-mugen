@@ -3,11 +3,4 @@
   xmlns:my="http://schemas.android.com/apk/res/"
   xmlns:ads="http://schemas.android.com/apk/res-auto"
   android:key="prefMainScreen">
-  <PreferenceCategory android:title="Performance Tweaks">
-      <CheckBoxPreference
-        android:key="confturbovga"
-        android:title="Turbo VGA"
-        android:defaultValue="true"
-        android:summary="Experimental Turbo VGA" />
-  </PreferenceCategory>
 </PreferenceScreen>

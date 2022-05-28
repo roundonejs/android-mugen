@@ -234,10 +234,7 @@ public class DBMenuSystem {
         // TURBO VGA
         DBMain.nativeSetOption(
             DOSBOX_OPTION_ID_REFRESH_HACK_ON,
-            prefs.getBoolean(
-                "confturbovga",
-                false
-            ) ? 1 : 0,
+            0,
             null,
             true
         );
