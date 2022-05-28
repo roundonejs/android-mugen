@@ -31,7 +31,6 @@ import com.fishstix.dosboxfree.R;
 
 public class DosBoxPreferences extends PreferenceActivity implements
     OnSharedPreferenceChangeListener {
-    private Preference doskblayout = null;
     private Preference dosems = null;
     private Preference dosxms = null;
     private Preference dosumb = null;
@@ -57,7 +56,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         addPreferencesFromResource(R.xml.preferences);
-        doskblayout = (Preference) findPreference("doskblayout");
         dosxms = (Preference) findPreference("dosxms");
         dosems = (Preference) findPreference("dosems");
         dosumb = (Preference) findPreference("dosumb");
@@ -81,8 +79,7 @@ public class DosBoxPreferences extends PreferenceActivity implements
         String key
     ) {
         if (
-            (key.contentEquals("doskblayout"))
-            || (key.contentEquals("dosems"))
+            (key.contentEquals("dosems"))
             || (key.contentEquals("dosxms"))
             || (key.contentEquals("dosumb"))
         ) {

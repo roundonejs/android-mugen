@@ -147,10 +147,7 @@ public class DBMenuSystem {
                 out.println("false");
             }
 
-            out.println(
-                "keyboardlayout=" +
-                prefs.getString("doskblayout", "auto")
-            );
+            out.println("keyboardlayout=auto");
             out.println();
             out.println("[ipx]");
             out.println("ipx=false");

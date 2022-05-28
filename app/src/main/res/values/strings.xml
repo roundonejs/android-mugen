@@ -60,63 +60,8 @@
 	<!-- Preferences -->
 	<string name="pref_advconfig">Advanced DosBox Config</string>
 	<string name="pref_dbsettings">DosBox Settings</string>
-	<string name="pref_kblayout">Choose the Locale for the Keyboard Layout</string>
 
 	<string name="pref_mousejoymode">Use Joystick to control Mouse Pointer</string>
-    <!--  DOSBOX SETTINGS  -->
-	<string-array name="doskblayout">
-  		<item>Auto (default)</item>
-  		<item>Belgium</item>
-  		<item>Brazil</item>
-  		<item>Canadian-French</item>
-  		<item>Czech</item>
-  		<item>Slovak</item>
-  		<item>Denmark</item>
-  		<item>Finland</item>
-  		<item>France</item>
-  		<item>Germany</item>
-  		<item>Hungary</item>
-  		<item>Italy</item>
-  		<item>Latin America</item>
-  		<item>Netherlands</item>
-  		<item>Norway</item>
-  		<item>Poland</item>
-  		<item>Portugal</item>
-  		<item>Spain</item>
-  		<item>Sweden</item>
-  		<item>Swiss(French)</item>
-  		<item>Swiss(German)</item>
-  		<item>UK</item>
-  		<item>USA</item>
-  		<item>Yugoslavia</item>
-  	</string-array>
-  	<string-array name="doskblayout_values">
-  		<item>auto</item>
-  		<item>be</item>
-  		<item>br</item>
-  		<item>cf</item>
-  		<item>cz</item>
-  		<item>sl</item>
-  		<item>dk</item>
-  		<item>su</item>
-  		<item>fr</item>
-  		<item>gr</item>
-  		<item>hu</item>
-  		<item>it</item>
-  		<item>la</item>
-  		<item>nl</item>
-  		<item>no</item>
-  		<item>pl</item>
-  		<item>po</item>
-  		<item>sp</item>
-  		<item>sv</item>
-  		<item>sf</item>
-  		<item>sg</item>
-  		<item>uk</item>
-  		<item>us</item>
-  		<item>yu</item>
-  	</string-array>
-
 	<!--  ORIENTATION  -->
   	<string-array name="confrotation">
   		<item>Auto</item>

@@ -8,13 +8,6 @@
     android:key="detail"
     android:title="@string/pref_dbsettings"
     android:summary="@string/pref_advconfig">
-      <ListPreference
-          android:key="doskblayout"
-          android:title="Keyboard Layout"
-        android:entries="@array/doskblayout"
-          android:entryValues="@array/doskblayout_values"
-          android:defaultValue="auto"
-          android:summary="@string/pref_kblayout" />
       <CheckBoxPreference
           android:key="dosxms"
           android:title="XMS Support"
