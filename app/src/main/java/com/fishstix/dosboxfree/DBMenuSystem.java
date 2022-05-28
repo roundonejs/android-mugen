@@ -123,13 +123,7 @@ public class DBMenuSystem {
             out.println("blocksize=1024");
             out.println();
             out.println("[dos]");
-            out.print("xms=");
-
-            if (prefs.getBoolean("dosxms", true)) {
-                out.println("true");
-            } else {
-                out.println("false");
-            }
+            out.println("xms=true");
 
             out.print("ems=");
 
