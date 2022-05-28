@@ -22,20 +22,15 @@ package com.fishstix.dosboxfree;
 import java.nio.Buffer;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.Settings;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.fishstix.dosboxfree.joystick.JoystickView;
 
@@ -228,22 +223,6 @@ public class DBMain extends Activity {
     protected void onResume() {
         super.onResume();
         resumeDosBox();
-
-        // check for developer option "dont keep activities"
-        int value = Settings.System.getInt(
-            getContentResolver(),
-            Settings.System.ALWAYS_FINISH_ACTIVITIES,
-            0
-        );
-
-        if (value != 0) {
-            // Dont Keep Activities is enabled
-            Toast.makeText(
-                this,
-                R.string.dontkeepactivities,
-                Toast.LENGTH_SHORT
-            ).show();
-        }
 
         mSurfaceView.mDirty.set(true);
     }

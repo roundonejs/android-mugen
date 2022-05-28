@@ -49,7 +49,6 @@
 	<string name="duplicatemap">Error: Duplicate Button Map. Try again.</string>
 	<string name="nomoremaps">No more hardware keymaps available.</string>
 	<string name="gplsource">Copy source code to SD Card?</string>
-	<string name="dontkeepactivities">ERROR: Don\'t keep activies Dev Option enabled! (See FAQ)</string>
 	<string name="glidenogpu">GPU Rendering not compatible with experimental Glide emulation.</string>
 
 	<!-- Preferences -->
