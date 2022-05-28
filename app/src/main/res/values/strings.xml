@@ -44,11 +44,6 @@
     <string name="cont">Continue</string>
     <string name="cycles">DosBox Cycles: </string>
     <string name="select_dos_key">Select DOS Key Mapping</string>
-    <string name="select_controller_key">Press Hardware Key or select Virtual Button:</string>
-    <string name="select_analog_stick">Move the analog stick in all directions</string>
-	<string name="undefined">undefined</string>
-	<string name="clear">Clear</string>
-	<string name="keyboard">Keyboard</string>
 	<string name="noeditor">No system text editor installed.</string>
 	<string name="confirmclear">Confirm clear all button maps?</string>
 	<string name="duplicatemap">Error: Duplicate Button Map. Try again.</string>
