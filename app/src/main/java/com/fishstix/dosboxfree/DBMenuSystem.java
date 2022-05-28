@@ -111,7 +111,7 @@ public class DBMenuSystem {
 
             out.println();
             out.println("[sblaster]");
-            out.println("sbtype=" + prefs.getString("dossbtype", "sb16"));
+            out.println("sbtype=sb16");
             out.println("mixer=true");
             out.println("oplmode=auto");
             out.println("oplemu=fast");

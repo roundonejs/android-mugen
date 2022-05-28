@@ -61,25 +61,10 @@
 	<!-- Preferences -->
 	<string name="pref_advconfig">Advanced DosBox Config</string>
 	<string name="pref_dbsettings">DosBox Settings</string>
-	<string name="pref_sbtype">Choose Soundblaster Emulation</string>
 	<string name="pref_kblayout">Choose the Locale for the Keyboard Layout</string>
 
 	<string name="pref_mousejoymode">Use Joystick to control Mouse Pointer</string>
     <!--  DOSBOX SETTINGS  -->
-  	<string-array name="dossbtype">
-  		<item>Disable SB Emulation</item>
-        <item>SoundBlaster 2.0 (faster)</item>
-  		<item>SoundBlaster Pro 1.0</item>
-  		<item>SoundBlaster Pro 2.0</item>
-  		<item>SoundBlaster 16 (default)</item>
-  	</string-array>
-  	<string-array name="dossbtype_values">
-  	    <item>none</item>
-  		<item>sb2</item>
-  		<item>sbpro1</item>
-  		<item>sbpro2</item>
- 		<item>sb16</item>
-  	</string-array>
 	<string-array name="doskblayout">
   		<item>Auto (default)</item>
   		<item>Belgium</item>

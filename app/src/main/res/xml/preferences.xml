@@ -8,13 +8,6 @@
     android:key="detail"
     android:title="@string/pref_dbsettings"
     android:summary="@string/pref_advconfig">
-       <ListPreference
-          android:key="dossbtype"
-          android:title="Sound Device"
-        android:entries="@array/dossbtype"
-          android:entryValues="@array/dossbtype_values"
-          android:defaultValue="sb16"
-          android:summary="@string/pref_sbtype" />
       <CheckBoxPreference
           android:key="dosmt32"
           android:title="MT-32 Midi Emulation"
