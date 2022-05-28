@@ -18,12 +18,9 @@
 
 package com.fishstix.dosboxfree.dosboxprefs;
 
-import java.io.File;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
@@ -38,7 +35,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
     private Preference dosems = null;
     private Preference dosxms = null;
     private Preference dosumb = null;
-    private Preference dosmt32 = null;
     private Preference dospcspeaker = null;
 
     public static final String CONFIG_FILE = "dosbox.conf";
@@ -67,34 +63,11 @@ public class DosBoxPreferences extends PreferenceActivity implements
         dosxms = (Preference) findPreference("dosxms");
         dosems = (Preference) findPreference("dosems");
         dosumb = (Preference) findPreference("dosumb");
-        dosmt32 = (Preference) findPreference("dosmt32");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
-        final int sdkVersion = Build.VERSION.SDK_INT;
-
-        // update MT32 config
-
-        boolean MTROM_valid = true;
-        File rom = new File(getFilesDir().toString() + "/MT32_CONTROL.ROM");
-
-        if (!rom.exists()) {
-            MTROM_valid = false;
-        }
-
-        rom = new File(getFilesDir().toString() + "/MT32_PCM.ROM");
-
-        if (!rom.exists()) {
-            MTROM_valid = false;
-        }
-
-        if (!MTROM_valid) {
-            dosmt32.setSummary(R.string.mt32missing);
-            dosmt32.setEnabled(false);
-        }
 
         prefs.registerOnSharedPreferenceChangeListener(this);
     }
@@ -115,7 +88,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
             || (key.contentEquals("dosxms"))
             || (key.contentEquals("dosumb"))
             || (key.contentEquals("dospcspeaker"))
-            || (key.contentEquals("dosmt32"))
         ) {
             Toast.makeText(ctx, R.string.restart, Toast.LENGTH_SHORT).show();
         }

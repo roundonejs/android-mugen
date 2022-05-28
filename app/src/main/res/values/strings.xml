@@ -55,7 +55,6 @@
 	<string name="nomoremaps">No more hardware keymaps available.</string>
 	<string name="gplsource">Copy source code to SD Card?</string>
 	<string name="dontkeepactivities">ERROR: Don\'t keep activies Dev Option enabled! (See FAQ)</string>
-	<string name="mt32missing">MT32 ROM missing, please see FAQ for MIDI emulation</string>
 	<string name="glidenogpu">GPU Rendering not compatible with experimental Glide emulation.</string>
 
 	<!-- Preferences -->

@@ -162,16 +162,8 @@ public class DBMenuSystem {
 
             out.println();
             out.println("[midi]");
-
-            if (prefs.getBoolean("dosmt32", false)) {
-                out.println("mpu401=intelligent");
-                out.println("mididevice=mt32");
-                out.println("mt32.thread=on");
-                out.println("mt32.verbose=off");
-            } else {
-                out.println("mpu401=none");
-                out.println("mididevice=none");
-            }
+            out.println("mpu401=none");
+            out.println("mididevice=none");
 
             out.println();
             out.println("[speaker]");

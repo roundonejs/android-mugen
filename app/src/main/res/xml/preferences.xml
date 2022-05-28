@@ -9,11 +9,6 @@
     android:title="@string/pref_dbsettings"
     android:summary="@string/pref_advconfig">
       <CheckBoxPreference
-          android:key="dosmt32"
-          android:title="MT-32 Midi Emulation"
-          android:defaultValue="false"
-          android:summary="Enable Roland MT-32 MIDI Emulation" />
-      <CheckBoxPreference
           android:key="dospcspeaker"
           android:title="PC Speaker"
           android:defaultValue="false"
