@@ -32,7 +32,7 @@ public class DosBoxThread extends Thread {
     }
 
     public void run() {
-        String path = mParent.mConfPath + mParent.mConfFile;
+        String path = mParent.mConfPath + DBMenuSystem.CONFIG_FILE;
 
         mParent.nativeStart(
             mParent,

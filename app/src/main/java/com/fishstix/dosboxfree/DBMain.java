@@ -44,7 +44,6 @@ import com.fishstix.dosboxfree.joystick.JoystickView;
 
 public class DBMain extends Activity {
     public static final String START_COMMAND_ID = "start_command";
-    public String mConfFile = DBMenuSystem.CONFIG_FILE;
     public String mConfPath;
 
     public native void nativeInit(Object ctx);

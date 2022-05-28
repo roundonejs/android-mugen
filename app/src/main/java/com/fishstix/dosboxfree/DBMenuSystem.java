@@ -64,9 +64,7 @@ public class DBMenuSystem {
         final DBMain context,
         final SharedPreferences prefs
     ) {
-        File configurationFile = new File(
-            context.mConfPath + context.mConfFile
-        );
+        File configurationFile = new File(context.mConfPath + CONFIG_FILE);
 
         if (!configurationFile.exists()) {
             writeDosBoxConfigurationFile(context, prefs);
@@ -84,7 +82,7 @@ public class DBMenuSystem {
             myInput = context.getAssets().open(CONFIG_FILE);
             Scanner scanner = new Scanner(myInput);
             out = new PrintStream(
-                new FileOutputStream(context.mConfPath + context.mConfFile)
+                new FileOutputStream(context.mConfPath + CONFIG_FILE)
             );
             // Write text to file
             out.println("[dosbox]");
