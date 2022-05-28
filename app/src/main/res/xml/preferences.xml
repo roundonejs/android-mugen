@@ -9,11 +9,6 @@
     android:title="@string/pref_dbsettings"
     android:summary="@string/pref_advconfig">
       <CheckBoxPreference
-          android:key="dosems"
-          android:title="EMS Support"
-          android:defaultValue="true"
-          android:summary="Enable EMS Support" />
-      <CheckBoxPreference
           android:key="dosumb"
           android:title="UMB Support"
           android:defaultValue="true"

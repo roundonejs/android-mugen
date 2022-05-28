@@ -124,14 +124,7 @@ public class DBMenuSystem {
             out.println();
             out.println("[dos]");
             out.println("xms=true");
-
-            out.print("ems=");
-
-            if (prefs.getBoolean("dosems", true)) {
-                out.println("true");
-            } else {
-                out.println("false");
-            }
+            out.println("ems=true");
 
             out.print("umb=");
 
