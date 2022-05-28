@@ -35,7 +35,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
     private Preference dosems = null;
     private Preference dosxms = null;
     private Preference dosumb = null;
-    private Preference dospcspeaker = null;
 
     public static final String CONFIG_FILE = "dosbox.conf";
 
@@ -59,7 +58,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
 
         addPreferencesFromResource(R.xml.preferences);
         doskblayout = (Preference) findPreference("doskblayout");
-        dospcspeaker = (Preference) findPreference("dospcspeaker");
         dosxms = (Preference) findPreference("dosxms");
         dosems = (Preference) findPreference("dosems");
         dosumb = (Preference) findPreference("dosumb");
@@ -87,7 +85,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
             || (key.contentEquals("dosems"))
             || (key.contentEquals("dosxms"))
             || (key.contentEquals("dosumb"))
-            || (key.contentEquals("dospcspeaker"))
         ) {
             Toast.makeText(ctx, R.string.restart, Toast.LENGTH_SHORT).show();
         }

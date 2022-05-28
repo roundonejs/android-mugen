@@ -167,14 +167,7 @@ public class DBMenuSystem {
 
             out.println();
             out.println("[speaker]");
-            out.print("pcspeaker=");
-
-            if (prefs.getBoolean("dospcspeaker", false)) {
-                out.println("true");
-            } else {
-                out.println("false");
-            }
-
+            out.println("pcspeaker=false");
             out.println("tandyrate=22050");
 
             // concat dosbox conf

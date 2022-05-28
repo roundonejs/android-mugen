@@ -8,11 +8,6 @@
     android:key="detail"
     android:title="@string/pref_dbsettings"
     android:summary="@string/pref_advconfig">
-      <CheckBoxPreference
-          android:key="dospcspeaker"
-          android:title="PC Speaker"
-          android:defaultValue="false"
-          android:summary="Enable PC Speaker Support" />
       <ListPreference
           android:key="doskblayout"
           android:title="Keyboard Layout"
