@@ -23,14 +23,11 @@ import java.nio.Buffer;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.view.KeyEvent;
 import android.view.View;
@@ -68,7 +65,6 @@ public class DBMain extends Activity {
     public DBGLSurfaceView mSurfaceView = null;
     private DosBoxAudio mAudioDevice = null;
     private DosBoxThread mDosBoxThread = null;
-    private SharedPreferences prefs;
     public MugenDirectoryCreator mugenDirectoryCreator;
     public final Handler mHandler;
     public JoystickView mJoystickView = null;
@@ -94,8 +90,6 @@ public class DBMain extends Activity {
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         );
 
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
         System.loadLibrary("dosbox");
 
         mSurfaceView = (DBGLSurfaceView) findViewById(R.id.mSurf);
@@ -103,9 +97,8 @@ public class DBMain extends Activity {
         mJoystickView.setVisibility(View.GONE);
         registerForContextMenu(mSurfaceView);
 
-        mSurfaceView.mGPURendering = prefs.getBoolean("confgpu", true);
         mugenDirectoryCreator.createMugenDirectory();
-        DBMenuSystem.loadPreference(this, prefs);
+        DBMenuSystem.loadPreference(this);
 
         initDosBox();
         startDosBox();
@@ -235,16 +228,6 @@ public class DBMain extends Activity {
     protected void onResume() {
         super.onResume();
         resumeDosBox();
-
-        DBMenuSystem.loadPreference(this, prefs);
-
-        if (Integer.valueOf(prefs.getString("confrotation", "0")) == 0) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
-        } else if (Integer.valueOf(prefs.getString("confrotation", "0")) == 1) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        } else {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }
 
         // check for developer option "dont keep activities"
         int value = Settings.System.getInt(

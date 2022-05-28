@@ -31,6 +31,7 @@ import java.util.Scanner;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.preference.PreferenceManager;
 import android.util.TypedValue;
 import android.view.ViewGroup.LayoutParams;
@@ -52,10 +53,11 @@ public class DBMenuSystem {
     public final static int DOSBOX_OPTION_ID_GLIDE_ENABLE = 19;
     public final static int DOSBOX_OPTION_ID_START_COMMAND = 50;
 
-    public static void loadPreference(
-        final DBMain context,
-        final SharedPreferences prefs
-    ) {
+    public static void loadPreference(final DBMain context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(
+            context
+        );
+
         loadDosBoxConfiguration(context, prefs);
         loadAppConfiguration(context, prefs);
     }
@@ -210,6 +212,7 @@ public class DBMenuSystem {
             true
         );
 
+        context.mSurfaceView.mGPURendering = prefs.getBoolean("confgpu", true);
         // Set Frameskip
         DBMain.nativeSetOption(
             DBMenuSystem.DOSBOX_OPTION_ID_FRAMESKIP,
@@ -274,6 +277,8 @@ public class DBMenuSystem {
             );
         }
 
+        context.setRequestedOrientation(getScreenOrientation(prefs));
+
         LayoutParams params = context.mJoystickView.getLayoutParams();
         params.height = (int) TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
@@ -295,6 +300,19 @@ public class DBMenuSystem {
         int maxMem = (int) Math.max(maxMemory / 1024, memoryClass) * 4;
 
         return Math.min(MAX_MEMORY, maxMem);
+    }
+
+    private static int getScreenOrientation(final SharedPreferences prefs) {
+        int rotation = Integer.valueOf(prefs.getString("confrotation", "0"));
+
+        switch (rotation) {
+            case 0:
+                return ActivityInfo.SCREEN_ORIENTATION_SENSOR;
+            case 1:
+                return ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+            default:
+                return ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+        }
     }
 
     public static void saveBooleanPreference(
