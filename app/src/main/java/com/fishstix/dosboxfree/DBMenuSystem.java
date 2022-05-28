@@ -265,7 +265,7 @@ public class DBMenuSystem {
 
         // VIRTUAL JOYSTICK
         // test enabled
-        if (prefs.getBoolean("confjoyoverlay", false)) {
+        if (prefs.getBoolean("confjoyoverlay", true)) {
             context.mHandler.sendMessage(
                 context.mHandler.obtainMessage(
                     DBMain.

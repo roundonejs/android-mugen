@@ -3,13 +3,6 @@
   xmlns:my="http://schemas.android.com/apk/res/"
   xmlns:ads="http://schemas.android.com/apk/res-auto"
   android:key="prefMainScreen">
-  <PreferenceCategory android:title="Input Preferences">
-      <CheckBoxPreference
-        android:key="confjoyoverlay"
-        android:title="Overlay Joystick"
-        android:defaultValue="true"
-        android:summary="Show a Virtual Joystick on screen" />
-  </PreferenceCategory>
   <PreferenceCategory android:title="Screen and Rotation Settings">
       <ListPreference
        android:key="confrotation"
