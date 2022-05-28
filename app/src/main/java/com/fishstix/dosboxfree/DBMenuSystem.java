@@ -39,9 +39,8 @@ import android.preference.PreferenceManager;
 import android.util.TypedValue;
 import android.view.ViewGroup.LayoutParams;
 
-import com.fishstix.dosboxfree.dosboxprefs.DosBoxPreferences;
-
 public class DBMenuSystem {
+    public static final String CONFIG_FILE = "dosbox.conf";
     private static final int MAX_MEMORY = 128;
 
     // following must sync with AndroidOSfunc.cpp
@@ -84,8 +83,9 @@ public class DBMenuSystem {
     ) {
         PrintStream out;
         InputStream myInput;
+
         try {
-            myInput = context.getAssets().open(DosBoxPreferences.CONFIG_FILE);
+            myInput = context.getAssets().open(CONFIG_FILE);
             Scanner scanner = new Scanner(myInput);
             out = new PrintStream(
                 new FileOutputStream(context.mConfPath + context.mConfFile)

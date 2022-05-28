@@ -42,12 +42,11 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.fishstix.dosboxfree.dosboxprefs.DosBoxPreferences;
 import com.fishstix.dosboxfree.joystick.JoystickView;
 
 public class DBMain extends Activity {
     public static final String START_COMMAND_ID = "start_command";
-    public String mConfFile = DosBoxPreferences.CONFIG_FILE;
+    public String mConfFile = DBMenuSystem.CONFIG_FILE;
     public String mConfPath;
     public static final int HANDLER_ADD_JOYSTICK = 20;
     public static final int HANDLER_REMOVE_JOYSTICK = 21;
@@ -94,7 +93,7 @@ public class DBMain extends Activity {
 
         setContentView(R.layout.main);
 
-        mConfPath = DosBoxPreferences.getExternalDosBoxDir(mContext);
+        mConfPath = getExternalDosBoxDir();
         getWindow().setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
@@ -440,20 +439,12 @@ public class DBMain extends Activity {
 
         if (!ctrlrom.exists() || !pcmrom.exists()) {
             ctrlrom = DBMenuSystem.openFile(
-                DosBoxPreferences.getExternalDosBoxDir(
-                    mContext
-                ) + "MT32_CONTROL.ROM"
+                getExternalDosBoxDir() + "MT32_CONTROL.ROM"
             );
             pcmrom = DBMenuSystem.openFile(
-                DosBoxPreferences.getExternalDosBoxDir(
-                    mContext
-                ) + "MT32_PCM.ROM"
+                getExternalDosBoxDir() + "MT32_PCM.ROM"
             );
-            romdir = DBMenuSystem.openFile(
-                DosBoxPreferences.getExternalDosBoxDir(
-                    mContext
-                )
-            );
+            romdir = DBMenuSystem.openFile(getExternalDosBoxDir());
 
             for (File f : romdir.listFiles()) {
                 if (f.getName().equalsIgnoreCase("MT32_CONTROL.ROM")) {
@@ -474,5 +465,9 @@ public class DBMain extends Activity {
         }
 
         return false;
+    }
+
+    private String getExternalDosBoxDir() {
+        return this.getFilesDir().getAbsolutePath() + "/";
     }
 }
