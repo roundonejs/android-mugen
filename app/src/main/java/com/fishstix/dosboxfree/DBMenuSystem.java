@@ -125,15 +125,7 @@ public class DBMenuSystem {
             out.println("[dos]");
             out.println("xms=true");
             out.println("ems=true");
-
-            out.print("umb=");
-
-            if (prefs.getBoolean("dosumb", true)) {
-                out.println("true");
-            } else {
-                out.println("false");
-            }
-
+            out.println("umb=true");
             out.println("keyboardlayout=auto");
             out.println();
             out.println("[ipx]");

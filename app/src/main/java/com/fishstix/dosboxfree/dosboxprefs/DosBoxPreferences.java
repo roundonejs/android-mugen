@@ -31,8 +31,6 @@ import com.fishstix.dosboxfree.R;
 
 public class DosBoxPreferences extends PreferenceActivity implements
     OnSharedPreferenceChangeListener {
-    private Preference dosumb = null;
-
     public static final String CONFIG_FILE = "dosbox.conf";
 
     private SharedPreferences prefs;
@@ -54,7 +52,6 @@ public class DosBoxPreferences extends PreferenceActivity implements
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         addPreferencesFromResource(R.xml.preferences);
-        dosumb = (Preference) findPreference("dosumb");
     }
 
     @Override
@@ -73,11 +70,7 @@ public class DosBoxPreferences extends PreferenceActivity implements
     public void onSharedPreferenceChanged(
         SharedPreferences preference,
         String key
-    ) {
-        if (key.contentEquals("dosumb")) {
-            Toast.makeText(ctx, R.string.restart, Toast.LENGTH_SHORT).show();
-        }
-    }
+    ) { }
 
     public static String getExternalDosBoxDir(final Context ctx) {
         return ctx.getFilesDir().getAbsolutePath() + "/";

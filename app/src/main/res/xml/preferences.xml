@@ -3,18 +3,6 @@
   xmlns:my="http://schemas.android.com/apk/res/"
   xmlns:ads="http://schemas.android.com/apk/res-auto"
   android:key="prefMainScreen">
-  <PreferenceCategory android:title="Advanced DosBox Config">
-     <PreferenceScreen
-    android:key="detail"
-    android:title="@string/pref_dbsettings"
-    android:summary="@string/pref_advconfig">
-      <CheckBoxPreference
-          android:key="dosumb"
-          android:title="UMB Support"
-          android:defaultValue="true"
-          android:summary="Enable UMB Support" />
-   </PreferenceScreen>
-  </PreferenceCategory>
   <PreferenceCategory android:title="Input Preferences">
       <CheckBoxPreference
         android:key="confjoyoverlay"

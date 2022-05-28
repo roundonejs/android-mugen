@@ -58,7 +58,6 @@
 	<string name="glidenogpu">GPU Rendering not compatible with experimental Glide emulation.</string>
 
 	<!-- Preferences -->
-	<string name="pref_advconfig">Advanced DosBox Config</string>
 	<string name="pref_dbsettings">DosBox Settings</string>
 
 	<string name="pref_mousejoymode">Use Joystick to control Mouse Pointer</string>
