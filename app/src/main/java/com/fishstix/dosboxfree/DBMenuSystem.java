@@ -21,13 +21,11 @@
 package com.fishstix.dosboxfree;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.util.Locale;
 import java.util.Scanner;
 
 import android.app.ActivityManager;
@@ -318,64 +316,6 @@ public class DBMenuSystem {
                 editor.putBoolean(key, value);
                 editor.commit();
             }
-        }
-    }
-
-    public static void CopyROM(DBMain ctx, File infile) {
-        InputStream in = null;
-        OutputStream out = null;
-        try {
-            in = new FileInputStream(infile);       // if files resides inside the "Files" directory itself
-            out = ctx.openFileOutput(
-                infile.getName().toUpperCase(
-                    Locale.US
-                ),
-                Context.MODE_PRIVATE
-            );
-            copyFile(in, out);
-            in.close();
-            in = null;
-            out.flush();
-            out.close();
-            out = null;
-        } catch (Exception e) { }
-    }
-
-    public static boolean MT32_ROM_exists(DBMain ctx) {
-        File ctrlrom = new File(ctx.getFilesDir(), "MT32_CONTROL.ROM");
-        File pcmrom = new File(ctx.getFilesDir(), "MT32_PCM.ROM");
-
-        if (ctrlrom.exists() && pcmrom.exists()) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public static File openFile(String name) {
-        File origFile = new File(name);
-        File dir = origFile.getParentFile();
-
-        if (dir.listFiles() != null) {
-            for (File f : dir.listFiles()) {
-                if (f.getName().equalsIgnoreCase(origFile.getName())) {
-                    return new File(f.getAbsolutePath());
-                }
-            }
-        }
-
-        return new File(name);
-    }
-
-    private static void copyFile(
-        InputStream in,
-        OutputStream out
-    ) throws IOException {
-        byte[] buffer = new byte[1024];
-        int read;
-
-        while ((read = in.read(buffer)) != -1) {
-            out.write(buffer, 0, read);
         }
     }
 }

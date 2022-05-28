@@ -19,7 +19,6 @@
 
 package com.fishstix.dosboxfree;
 
-import java.io.File;
 import java.nio.Buffer;
 
 import android.app.Activity;
@@ -100,10 +99,6 @@ public class DBMain extends Activity {
         );
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-        if (!DBMenuSystem.MT32_ROM_exists(this)) {
-            getMIDIRoms();
-        }
 
         System.loadLibrary("dosbox");
 
@@ -418,54 +413,6 @@ public class DBMain extends Activity {
             }
         }
     };
-
-    private boolean getMIDIRoms() {
-        File ctrlrom = new File(getFilesDir().toString() + "/MT32_CONTROL.ROM");
-        File pcmrom = new File(getFilesDir().toString() + "/MT32_PCM.ROM");
-
-        File romdir = getExternalFilesDir(null);
-
-        if (romdir != null) {
-            for (File f : romdir.listFiles()) {
-                if (f.getName().equalsIgnoreCase("MT32_CONTROL.ROM")) {
-                    ctrlrom = f;
-                }
-
-                if (f.getName().equalsIgnoreCase("MT32_PCM.ROM")) {
-                    pcmrom = f;
-                }
-            }
-        }
-
-        if (!ctrlrom.exists() || !pcmrom.exists()) {
-            ctrlrom = DBMenuSystem.openFile(
-                getExternalDosBoxDir() + "MT32_CONTROL.ROM"
-            );
-            pcmrom = DBMenuSystem.openFile(
-                getExternalDosBoxDir() + "MT32_PCM.ROM"
-            );
-            romdir = DBMenuSystem.openFile(getExternalDosBoxDir());
-
-            for (File f : romdir.listFiles()) {
-                if (f.getName().equalsIgnoreCase("MT32_CONTROL.ROM")) {
-                    ctrlrom = f;
-                }
-
-                if (f.getName().equalsIgnoreCase("MT32_PCM.ROM")) {
-                    pcmrom = f;
-                }
-            }
-        }
-
-        if (ctrlrom.exists() && pcmrom.exists()) {
-            DBMenuSystem.CopyROM(this, ctrlrom);
-            DBMenuSystem.CopyROM(this, pcmrom);
-
-            return true;
-        }
-
-        return false;
-    }
 
     private String getExternalDosBoxDir() {
         return this.getFilesDir().getAbsolutePath() + "/";
