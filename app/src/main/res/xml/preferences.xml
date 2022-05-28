@@ -5,11 +5,6 @@
   android:key="prefMainScreen">
   <PreferenceCategory android:title="Performance Tweaks">
       <CheckBoxPreference
-        android:key="confturbocycle"
-        android:title="Turbo Cycles"
-        android:defaultValue="false"
-        android:summary="Experimental Turbo Cycling (may cause sound problems)" />
-      <CheckBoxPreference
         android:key="confturbovga"
         android:title="Turbo VGA"
         android:defaultValue="true"

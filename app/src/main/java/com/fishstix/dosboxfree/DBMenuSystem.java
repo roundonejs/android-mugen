@@ -227,7 +227,7 @@ public class DBMenuSystem {
         // TURBO CYCLE
         DBMain.nativeSetOption(
             DOSBOX_OPTION_ID_CYCLE_HACK_ON,
-            prefs.getBoolean("confturbocycle", false) ? 1 : 0,
+            0,
             null,
             true
         );
