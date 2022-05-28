@@ -261,8 +261,7 @@ public class DBMenuSystem {
         if (prefs.getBoolean("confjoyoverlay", true)) {
             context.mHandler.sendMessage(
                 context.mHandler.obtainMessage(
-                    DBMain.
-                    HANDLER_ADD_JOYSTICK,
+                    PreferenceHandler.HANDLER_ADD_JOYSTICK,
                     0,
                     0
                 )
@@ -270,8 +269,7 @@ public class DBMenuSystem {
         } else {
             context.mHandler.sendMessage(
                 context.mHandler.obtainMessage(
-                    DBMain.
-                    HANDLER_REMOVE_JOYSTICK,
+                    PreferenceHandler.HANDLER_REMOVE_JOYSTICK,
                     0,
                     0
                 )

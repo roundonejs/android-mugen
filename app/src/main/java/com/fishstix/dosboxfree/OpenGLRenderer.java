@@ -175,7 +175,7 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer {
             if (errorCounter > 10) {
                 // send msg
                 Message msg = new Message();
-                msg.what = DBMain.HANDLER_DISABLE_GPU;
+                msg.what = PreferenceHandler.HANDLER_DISABLE_GPU;
                 Bundle b = new Bundle();
 
                 b.putString(

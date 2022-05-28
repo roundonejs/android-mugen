@@ -30,7 +30,6 @@ import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.view.KeyEvent;
@@ -47,10 +46,6 @@ public class DBMain extends Activity {
     public static final String START_COMMAND_ID = "start_command";
     public String mConfFile = DBMenuSystem.CONFIG_FILE;
     public String mConfPath;
-    public static final int HANDLER_ADD_JOYSTICK = 20;
-    public static final int HANDLER_REMOVE_JOYSTICK = 21;
-    public static final int HANDLER_SEND_KEYCODE = 1011;
-    public static final int HANDLER_DISABLE_GPU = 323;
 
     public native void nativeInit(Object ctx);
     public static native void nativeShutDown();
@@ -75,10 +70,13 @@ public class DBMain extends Activity {
     private DosBoxAudio mAudioDevice = null;
     private DosBoxThread mDosBoxThread = null;
     private SharedPreferences prefs;
-    private DBMain mContext;
     public MugenDirectoryCreator mugenDirectoryCreator;
-
+    public final Handler mHandler;
     public JoystickView mJoystickView = null;
+
+    public DBMain() {
+        mHandler = new PreferenceHandler(this);
+    }
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
@@ -87,7 +85,6 @@ public class DBMain extends Activity {
             getAssets(),
             getApplication().getApplicationInfo().dataDir
         );
-        mContext = this;
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(R.layout.main);
@@ -140,7 +137,7 @@ public class DBMain extends Activity {
     private void initDosBox() {
         mAudioDevice = new DosBoxAudio();
 
-        nativeInit(mContext);
+        nativeInit(this);
 
         String argStartCommand = getIntent().getStringExtra(START_COMMAND_ID);
 
@@ -359,60 +356,6 @@ public class DBMain extends Activity {
 
         return null;
     }
-
-    public Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case HANDLER_ADD_JOYSTICK:
-                    mJoystickView.setVisibility(View.VISIBLE);
-
-                    DBMenuSystem.saveBooleanPreference(
-                        mContext,
-                        "confjoyoverlay",
-                        true
-                    );
-
-                    break;
-                case HANDLER_REMOVE_JOYSTICK:
-                    mJoystickView.setVisibility(View.GONE);
-
-                    DBMenuSystem.saveBooleanPreference(
-                        mContext,
-                        "confjoyoverlay",
-                        false
-                    );
-                    break;
-                case HANDLER_SEND_KEYCODE:
-
-                    if (msg.arg1 == 0) {
-                        mSurfaceView.onKeyDown(msg.arg2, (KeyEvent) msg.obj);
-                    } else {
-                        mSurfaceView.onKeyUp(msg.arg2, (KeyEvent) msg.obj);
-                    }
-
-                    break;
-                case HANDLER_DISABLE_GPU:
-                    DBMenuSystem.saveBooleanPreference(
-                        mContext,
-                        "confgpu",
-                        false
-                    );
-                    Toast.makeText(
-                        mContext,
-                        msg.getData().getString("msg"),
-                        Toast.LENGTH_LONG
-                    ).show();
-                    break;
-                default:
-                    Toast.makeText(
-                        mContext,
-                        msg.getData().getString("msg"),
-                        Toast.LENGTH_LONG
-                    ).show();
-            }
-        }
-    };
 
     private String getExternalDosBoxDir() {
         return this.getFilesDir().getAbsolutePath() + "/";
