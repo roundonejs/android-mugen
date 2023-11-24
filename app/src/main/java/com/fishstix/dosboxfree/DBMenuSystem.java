@@ -154,6 +154,7 @@ public class DBMenuSystem {
             );
             out.println("MUGEN.EXE");
             printInformationOnDosBox(out);
+            out.println("EXIT");
 
             out.flush();
             out.close();
