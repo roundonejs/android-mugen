@@ -17,6 +17,8 @@ public class JoystickKeypad {
     private static final int COLOR_Z_BUTTON = 0x5F88FFFF;
     private static final int COLOR_START_BUTTON = 0x5FDD8833;
     private static final int COLOR_F1_BUTTON = 0x5FDDDDDD;
+    private static final int COLOR_PAUSE_BUTTON = 0x5FDD3388;
+    private static final int COLOR_ESCAPE_BUTTON = 0x5F88DD33;
     private static final String LABEL_A_BUTTON = "A";
     private static final String LABEL_B_BUTTON = "B";
     private static final String LABEL_C_BUTTON = "C";
@@ -25,6 +27,8 @@ public class JoystickKeypad {
     private static final String LABEL_Z_BUTTON = "Z";
     private static final String LABEL_START_BUTTON = "S";
     private static final String LABEL_F1_BUTTON = "F1";
+    private static final String LABEL_PAUSE_BUTTON = "P";
+    private static final String LABEL_ESCAPE_BUTTON = "E";
     private final JoystickButton[] buttons;
     private final JoystickButton[] specialButtons;
     private final JoystickButton[][] actionButtons;
@@ -72,6 +76,16 @@ public class JoystickKeypad {
             DosBoxControl.KEYCODE_F1_BUTTON,
             LABEL_F1_BUTTON
         );
+        JoystickButton buttonPause = new JoystickButton(
+            COLOR_PAUSE_BUTTON,
+            DosBoxControl.KEYCODE_PAUSE_BUTTON,
+            LABEL_PAUSE_BUTTON
+        );
+        JoystickButton buttonEscape = new JoystickButton(
+            COLOR_ESCAPE_BUTTON,
+            DosBoxControl.KEYCODE_ESCAPE_BUTTON,
+            LABEL_ESCAPE_BUTTON
+        );
 
         buttons = new JoystickButton[] {
             buttonStart,
@@ -81,9 +95,13 @@ public class JoystickKeypad {
             buttonF1,
             buttonA,
             buttonB,
-            buttonC
+            buttonC,
+            buttonPause,
+            buttonEscape
         };
-        specialButtons = new JoystickButton[] {buttonF1, buttonStart};
+        specialButtons = new JoystickButton[] {
+            buttonF1, buttonStart, buttonPause, buttonEscape
+        };
         actionButtons = new JoystickButton[][] {
             {buttonX, buttonY, buttonZ},
             {buttonA, buttonB, buttonC}

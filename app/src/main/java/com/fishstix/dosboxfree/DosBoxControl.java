@@ -32,6 +32,8 @@ public class DosBoxControl {
     public static final int KEYCODE_Z_BUTTON = 43;
     public static final int KEYCODE_START_BUTTON = 66;
     public static final int KEYCODE_F1_BUTTON = 131;
+    public static final int KEYCODE_PAUSE_BUTTON = 121;
+    public static final int KEYCODE_ESCAPE_BUTTON = 111;
 
     public static native int nativeKey(
         int keyCode,
