@@ -32,7 +32,6 @@
 #include "setup.h"
 #include "serialport.h"
 #include <time.h>
-#include <sys/timeb.h>
 
 
 /* if mem_systems 0 then size_extended is reported as the real size else 
@@ -60,6 +59,10 @@ const unsigned char isa_pnp_init_keystring[32] = {
 	0xB0,0x58,0x2C,0x16,0x8B,0x45,0xA2,0xD1,
 	0xE8,0x74,0x3A,0x9D,0xCE,0xE7,0x73,0x39
 };
+const Bit8u DOSBOX_ANDROID_MUGEN_DATE_DAY = (Bit8u) 15;
+const Bit8u DOSBOX_ANDROID_MUGEN_DATE_MONTH = (Bit8u) 5;
+const Bit8u DOSBOX_ANDROID_MUGEN_DATE_YEAR = (Bit8u) 2001;
+const Bit32u DOSBOX_ANDROID_MUGEN_DATE_TICKS = (Bit32u) (((double) 10*3600*1000)*(((double)PIT_TICK_RATE/65536.0)/1000.0));
 
 #ifdef C_DEBUG
 #define fprintf silent_fprintf
@@ -1207,30 +1210,11 @@ static Bitu INT11_Handler(void) {
 
 static void BIOS_HostTimeSync() {
 	/* Setup time and date */
-	struct timeb timebuffer;
-	ftime(&timebuffer);
-	
-	struct tm *loctime;
-	loctime = localtime (&timebuffer.time);
+	dos.date.day = DOSBOX_ANDROID_MUGEN_DATE_DAY;
+	dos.date.month = DOSBOX_ANDROID_MUGEN_DATE_MONTH;
+	dos.date.year = DOSBOX_ANDROID_MUGEN_DATE_YEAR;
 
-	/*
-	loctime->tm_hour = 23;
-	loctime->tm_min = 59;
-	loctime->tm_sec = 45;
-	loctime->tm_mday = 28;
-	loctime->tm_mon = 2-1;
-	loctime->tm_year = 2007 - 1900;
-	*/
-
-	dos.date.day=(Bit8u)loctime->tm_mday;
-	dos.date.month=(Bit8u)loctime->tm_mon+1;
-	dos.date.year=(Bit16u)loctime->tm_year+1900;
-
-	Bit32u ticks=(Bit32u)(((double)(
-		loctime->tm_hour*3600*1000+
-		loctime->tm_min*60*1000+
-		loctime->tm_sec*1000+
-		timebuffer.millitm))*(((double)PIT_TICK_RATE/65536.0)/1000.0));
+	Bit32u ticks = DOSBOX_ANDROID_MUGEN_DATE_TICKS;
 	mem_writed(BIOS_TIMER,ticks);
 }
 

@@ -9,7 +9,7 @@ This project is a fork of [DosBox Turbo](https://sites.google.com/site/dosboxtur
 - Linux;
 - Java;
 - Android SDK;
-- Android NDK r9;
+- Android NDK r11;
 - DosMugen;
 - csdpmi*b.zip.
 
