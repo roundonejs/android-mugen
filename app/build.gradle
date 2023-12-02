@@ -71,9 +71,33 @@ android {
                 commandLine 'rm', 'src/main/jni/dosbox/config.h'
             }
 
+            exec {
+                commandLine 'mv', 'src/main/libs/x86', 'src/main/tempLibs/x86'
+            }
+
+
+            exec {
+                commandLine 'cp', 'src/main/jni/Application_x86_64.mk', 'src/main/jni/Application.mk'
+            }
+            exec {
+                commandLine 'cp', 'src/main/jni/dosbox/config_x86_64.h', 'src/main/jni/dosbox/config.h'
+            }
+            exec {
+                commandLine System.getenv('NDK_PATH') + '/ndk-build', '-C', 'src/main/jni/'
+            }
+            exec {
+                commandLine 'rm', 'src/main/jni/Application.mk'
+            }
+            exec {
+                commandLine 'rm', 'src/main/jni/dosbox/config.h'
+            }
+
 
             exec {
                 commandLine 'mv', 'src/main/tempLibs/armeabi-v7a', 'src/main/libs/armeabi-v7a'
+            }
+            exec {
+                commandLine 'mv', 'src/main/tempLibs/x86', 'src/main/libs/x86'
             }
         }
     }

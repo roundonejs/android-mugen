@@ -1,0 +1,8 @@
+# The ARMv7 is significanly faster due to the use of the hardware FPU
+APP_ABI := x86_64
+APP_STL := stlport_static
+
+APP_PLATFORM := android-9
+APP_OPTIM := release
+
+NDK_TOOLCHAIN_VERSION := 4.9
