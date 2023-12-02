@@ -139,6 +139,7 @@ static struct {
 #define ARMV4LE		0x04
 #define ARMV7LE		0x05
 #define POWERPC		0x04
+#define ARMV8LE		0x07
 
 #if C_TARGETCPU == X86_64
 #include "core_dynrec/risc_x64.h"
@@ -150,6 +151,8 @@ static struct {
 #include "core_dynrec/risc_armv4le.h"
 #elif C_TARGETCPU == POWERPC
 #include "core_dynrec/risc_ppc.h"
+#elif C_TARGETCPU == ARMV8LE
+#include "core_dynrec/risc_armv8le.h"
 #endif
 
 #include "core_dynrec/decoder.h"
@@ -256,7 +259,7 @@ run_block:
 		case BR_Cycles:
 			// cycles went negative, return from the core to handle
 			// external events, schedule the pic...
-#if C_HEAVY_DEBUG			
+#if C_HEAVY_DEBUG
 			if (DEBUG_HeavyIsBreakpoint()) return debugCallback;
 #endif
 			return CBRET_NONE;

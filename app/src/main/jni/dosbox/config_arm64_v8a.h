@@ -99,8 +99,8 @@
 /* #define C_SSHOT 1 */
 
 /* The type of cpu this target has */
-/* #define C_TARGETCPU X86_64 */
-#define C_TARGETCPU X86_64
+/* #define C_TARGETCPU ARMV8LE */
+#define C_TARGETCPU ARMV8LE
 
 /* Define to 1 to use a unaligned memory access */
 /* #define C_UNALIGNED_MEMORY 1 */
