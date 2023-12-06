@@ -26,7 +26,7 @@
 #include "AndroidOSfunc.h"
 #include "string.h"
 #include "loader.h"
-#include "util.h"
+//#include "util.h"
 #include "SDL.h"
 //#include "SDL_mouse.h"
 #include "render.h"

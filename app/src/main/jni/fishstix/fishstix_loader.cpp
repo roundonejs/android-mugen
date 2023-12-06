@@ -32,7 +32,7 @@
 
 #include <jni.h>
 #include <cstring>
-#include "util.h"
+//#include "util.h"
 #include "config.h"
 #include "loader.h"
 #include "render.h"

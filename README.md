@@ -9,13 +9,13 @@ This project is a fork of [DosBox Turbo](https://sites.google.com/site/dosboxtur
 - Linux;
 - Java;
 - Android SDK;
-- Android NDK r11;
+- Android NDK r16;
 - DosMugen;
 - csdpmi*b.zip.
 
 ### Environment variables
 
-- `NDK_PATH` the path for **Android NDK r9** directory.
+- `NDK_PATH` the path for **Android NDK r16** directory.
 
 ### Compile project
 

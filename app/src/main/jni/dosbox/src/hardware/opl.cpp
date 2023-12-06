@@ -30,6 +30,7 @@
 #include <stdlib.h> // rand()
 #include "dosbox.h"
 #include "opl.h"
+#include <string.h>
 
 
 static fltype recipsamp;	// inverse of sampling rate

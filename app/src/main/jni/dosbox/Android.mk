@@ -55,7 +55,7 @@ LOCAL_CPPFLAGS := $(LOCAL_CFLAGS)
 LOCAL_CXXFLAGS := $(LOCAL_CFLAGS)
 
 
-LOCAL_STATIC_LIBRARIES := snprintf
+#LOCAL_STATIC_LIBRARIES := snprintf
 #LOCAL_STATIC_LIBRARIES := sdl sdl_net sdl_sound mt32emu snprintf
 
 
