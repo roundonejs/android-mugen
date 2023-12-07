@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "com.fishstix.dosboxfree"
-        minSdkVersion 9
+        minSdkVersion 14
         targetSdkVersion 21
     }
     externalNativeBuild {
