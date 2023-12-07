@@ -13,10 +13,6 @@ This project is a fork of [DosBox Turbo](https://sites.google.com/site/dosboxtur
 - DosMugen;
 - csdpmi*b.zip.
 
-### Environment variables
-
-- `NDK_PATH` the path for **Android NDK r16** directory.
-
 ### Compile project
 
 1. Copy your DosMugen game to directory **app/src/main/assets/mugen**;

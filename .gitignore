@@ -1,6 +1,5 @@
-libs
-obj
 .idea
 .gradle/
 build/
 app/src/main/assets/mugen/
+app/.cxx/

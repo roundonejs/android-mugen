@@ -3,13 +3,18 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 21
     buildToolsVersion "29.0.3"
+    ndkVersion "16.1.4479499"
 
     defaultConfig {
         applicationId "com.fishstix.dosboxfree"
         minSdkVersion 9
         targetSdkVersion 21
     }
-
+    externalNativeBuild {
+        ndkBuild {
+            path 'src/main/jni/Android.mk'
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -24,12 +29,6 @@ android {
     preBuild.doFirst {
         assert file('./src/main/assets/mugen/mugen.exe').exists()
         assert file('./src/main/assets/mugen/CWSDPMI.EXE').exists()
-
-        if ((!file('src/main/libs/armeabi-v7a/libdosbox.so').exists()) || (!file('src/main/libs/x86/libdosbox.so').exists()) || (!file('src/main/libs/x86_64/libdosbox.so').exists()) || (!file('src/main/libs/arm64-v8a/libdosbox.so').exists())) {
-            exec {
-                commandLine System.getenv('NDK_PATH') + '/ndk-build', '-C', 'src/main/jni/'
-            }
-        }
     }
 
     sourceSets {
