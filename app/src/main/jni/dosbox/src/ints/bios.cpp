@@ -61,7 +61,7 @@ const unsigned char isa_pnp_init_keystring[32] = {
 };
 const Bit8u DOSBOX_ANDROID_MUGEN_DATE_DAY = (Bit8u) 15;
 const Bit8u DOSBOX_ANDROID_MUGEN_DATE_MONTH = (Bit8u) 5;
-const Bit8u DOSBOX_ANDROID_MUGEN_DATE_YEAR = (Bit8u) 2001;
+const Bit16u DOSBOX_ANDROID_MUGEN_DATE_YEAR = (Bit16u) 2001;
 const Bit32u DOSBOX_ANDROID_MUGEN_DATE_TICKS = (Bit32u) (((double) 10*3600*1000)*(((double)PIT_TICK_RATE/65536.0)/1000.0));
 
 #ifdef C_DEBUG
