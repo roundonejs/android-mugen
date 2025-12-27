@@ -277,7 +277,7 @@ restart_core:
 	CacheBlock * block=chandler->FindCacheBlock(ip_point&4095);
 	if (!block) {
 		if (!chandler->invalidation_map || (chandler->invalidation_map[ip_point&4095]<4)) {
-			block=CreateCacheBlock(chandler,ip_point,32);
+			block=CreateCacheBlockDynX86(chandler,ip_point,32);
 		} else {
 			Bitu old_cycles=CPU_Cycles;
 			CPU_Cycles=1;

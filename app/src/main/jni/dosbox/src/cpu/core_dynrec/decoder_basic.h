@@ -26,6 +26,10 @@
 	access functions.
 */
 
+#ifndef ANDROID_MUGEN_CPU_CORE_DYNREC_DECODER_BASIC_H
+#define ANDROID_MUGEN_CPU_CORE_DYNREC_DECODER_BASIC_H
+
+#include "../workaround.h"
 
 // instructions that use one operand
 enum SingleOps {
@@ -58,17 +62,6 @@ enum BranchTypes {
 	BR_Z,BR_NZ,BR_BE,BR_NBE,
 	BR_S,BR_NS,BR_P,BR_NP,
 	BR_L,BR_NL,BR_LE,BR_NLE
-};
-
-// string instructions
-enum StringOps {
-	STR_OUTSB=0,STR_OUTSW,STR_OUTSD,
-	STR_INSB=4,STR_INSW,STR_INSD,
-	STR_MOVSB=8,STR_MOVSW,STR_MOVSD,
-	STR_LODSB=12,STR_LODSW,STR_LODSD,
-	STR_STOSB=16,STR_STOSW,STR_STOSD,
-	STR_SCASB=20,STR_SCASW,STR_SCASD,
-	STR_CMPSB=24,STR_CMPSW,STR_CMPSD
 };
 
 // repeat prefix type (for string operations)
@@ -1267,3 +1260,5 @@ static void AcquireFlags(Bitu flags_mask) {
 	mf_functions_num=0;
 #endif
 }
+
+#endif

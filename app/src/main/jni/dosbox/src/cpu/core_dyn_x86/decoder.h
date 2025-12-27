@@ -1978,7 +1978,7 @@ static void dyn_add_iocheck_var(Bit8u accessed_port,Bitu access_size) {
 #endif
 #include "dyn_fpu.h"
 
-static CacheBlock * CreateCacheBlock(CodePageHandler * codepage,PhysPt start,Bitu max_opcodes) {
+static CacheBlock * CreateCacheBlockDynX86(CodePageHandler * codepage,PhysPt start,Bitu max_opcodes) {
 	Bits i;
 /* Init a load of variables */
 	decode.code_start=start;

@@ -202,11 +202,11 @@ extern DECLSPEC int SDLCALL SDL_JoystickNumAxes(SDL_Joystick *joystick){return 2
 extern DECLSPEC Uint8 SDLCALL SDL_JoystickGetButton(SDL_Joystick *joystick, int button){return 0;}
 extern DECLSPEC int SDLCALL SDL_JoystickNumHats(SDL_Joystick *joystick){return 0;}
 extern DECLSPEC Uint8 SDLCALL SDL_JoystickGetHat(SDL_Joystick *joystick, int hat){return 0;}
-extern DECLSPEC const char * SDLCALL SDL_JoystickName(int index){return "Joystick " + index;}
+extern DECLSPEC const char * SDLCALL SDL_JoystickName(int index){return "Joystick ";}
 //extern DECLSPEC void SDLCALL SDL_JoystickUpdate(void) {}
 extern DECLSPEC int SDLCALL SDL_JoystickEventState(int state){return 0;}
 
-extern DECLSPEC char * SDLCALL SDL_GetKeyName(SDLKey key){return (char *)("Key " + key);}
+extern DECLSPEC char * SDLCALL SDL_GetKeyName(SDLKey key){return (char *)("Key ");}
 
 
 bool autofire = false;
@@ -226,7 +226,7 @@ extern DECLSPEC int SDLCALL SDL_ShowCursor(int toggle){return SDL_ENABLE;}
 extern DECLSPEC void SDLCALL SDL_WM_SetCaption(const char *title, const char *icon){}
 
 extern DECLSPEC int SDLCALL SDL_CDNumDrives(){return 0;}
-extern DECLSPEC const char * SDLCALL SDL_CDName(int drive){return "CDROM " + drive;}
+extern DECLSPEC const char * SDLCALL SDL_CDName(int drive){return "CDROM ";}
 
 extern DECLSPEC char * SDLCALL SDL_GetError(void){return (char *)"";}
 

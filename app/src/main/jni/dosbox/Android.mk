@@ -27,13 +27,16 @@ MY_PATH := $(LOCAL_PATH)
 LOCAL_PATH := $(abspath $(LOCAL_PATH))
 
 CG_SRCDIR := $(LOCAL_PATH)
-LOCAL_CFLAGS :=	-I$(LOCAL_PATH)/include \
+LOCAL_CFLAGS := -include $(LOCAL_PATH)/include/workaround.h \
+        -I$(LOCAL_PATH)/include \
 				$(foreach D, $(CG_SUBDIRS), -I$(CG_SRCDIR)/$(D)) \
 				-I$(LOCAL_PATH)/../sdl/include \
 				-I$(LOCAL_PATH)/../fishstix/include \
-				-I$(LOCAL_PATH) 
+				-I$(LOCAL_PATH) \
+				-ferror-limit=2000 \
+				-include stddef.h -include string.h -Wno-error=narrowing -Wno-error=pointer-arith -fpermissive -Wpointer-arith -Wno-reserved-user-defined-literal
 #				-I$(LOCAL_PATH)/../sdl_net/include \
-#				-I$(LOCAL_PATH)/../sdl_sound/include \				
+#				-I$(LOCAL_PATH)/../sdl_sound/include \
 
 LOCAL_PATH := $(MY_PATH)
 
@@ -51,8 +54,8 @@ ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
 	#LOCAL_ARM_NEON := true
 endif
 
-LOCAL_CPPFLAGS := $(LOCAL_CFLAGS)
-LOCAL_CXXFLAGS := $(LOCAL_CFLAGS)
+LOCAL_CPPFLAGS := $(LOCAL_CFLAGS) -include $(LOCAL_PATH)/config_workaround.hpp
+LOCAL_CXXFLAGS := $(LOCAL_CFLAGS) -include $(LOCAL_PATH)/config_workaround.hpp
 
 
 #LOCAL_STATIC_LIBRARIES := snprintf
@@ -60,4 +63,3 @@ LOCAL_CXXFLAGS := $(LOCAL_CFLAGS)
 
 
 include $(BUILD_STATIC_LIBRARY)
-

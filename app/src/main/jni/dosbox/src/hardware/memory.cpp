@@ -273,7 +273,7 @@ void MEM_BlockWrite(PhysPt pt,void const * const data,Bitu size) {
 		Bitu current = (((pt>>12)+1)<<12) - pt;
 		Bitu remainder = size - current;
 		MEM_BlockWrite(pt, data, current);
-		MEM_BlockWrite(pt+current, data+current, remainder);
+		MEM_BlockWrite(pt+current, (void *) ((uintptr_t) data+current), remainder);
 	}
 }
 
