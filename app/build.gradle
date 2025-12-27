@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "29.0.3"
+    namespace "com.fishstix.dosboxfree"
     ndkVersion "21.4.7075529"
 
     defaultConfig {
         applicationId "com.fishstix.dosboxfree"
-        minSdkVersion 14
-        targetSdkVersion 21
+        compileSdk 36
+        minSdkVersion 21
+        targetSdkVersion 36
     }
     externalNativeBuild {
         ndkBuild {
@@ -36,8 +36,4 @@ android {
             jniLibs.srcDirs = ['src/main/libs']
         }
     }
-}
-
-dependencies {
-    compile 'com.android.support:support-v4:18.0.+'
 }

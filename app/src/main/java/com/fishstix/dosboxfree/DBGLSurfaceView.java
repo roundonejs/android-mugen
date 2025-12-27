@@ -33,7 +33,6 @@ import android.graphics.Rect;
 import android.opengl.GLSurfaceView;
 import android.os.Build;
 import android.os.SystemClock;
-import android.support.v4.view.MotionEventCompat;
 import android.util.AttributeSet;
 import android.view.InputDevice;
 import android.view.InputDevice.MotionRange;
@@ -50,7 +49,7 @@ import com.fishstix.dosboxfree.input.JoystickHandleListener;
 import com.fishstix.dosboxfree.touchevent.TouchEventWrapper;
 
 public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
-    Callback {
+Callback {
     private final static int DEFAULT_WIDTH = 512;
     private final static int DEFAULT_HEIGHT = 512;
     private final static int BUTTON_REPEAT_DELAY = 100;
@@ -325,7 +324,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     private class MySystemUiVisibilityChangeListener implements View.
-        OnSystemUiVisibilityChangeListener {
+    OnSystemUiVisibilityChangeListener {
         @Override
         public void onSystemUiVisibilityChange(final int visibility) {
             Timer timer = new Timer();
@@ -507,8 +506,7 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
         }
 
         if (
-            (MotionEventCompat.getActionMasked(event) ==
-            MotionEvent.ACTION_MOVE) &&
+            (event.getActionMasked() == MotionEvent.ACTION_MOVE) &&
             ((mWrap.getSource(event) & TouchEventWrapper.SOURCE_CLASS_MASK) ==
             TouchEventWrapper.SOURCE_CLASS_JOYSTICK)
         ) {
@@ -525,11 +523,8 @@ public class DBGLSurfaceView extends GLSurfaceView implements SurfaceHolder.
                 return true;
             } else {
                 // use older 2.2+ API to handle joystick movements
-                int pointerIndex = MotionEventCompat.getActionIndex(event);
-                int pointerId = MotionEventCompat.getPointerId(
-                    event,
-                    pointerIndex
-                );
+                int pointerIndex = event.getActionIndex();
+                int pointerId = event.getPointerId(pointerIndex);
 
                 float x = mWrap.getX(event, pointerId);
                 float y = mWrap.getY(event, pointerId);
